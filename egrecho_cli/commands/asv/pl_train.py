@@ -13,6 +13,7 @@ from lightning.pytorch.callbacks import (
     EarlyStopping,
     ModelCheckpoint,
     RichProgressBar,
+    LearningRateMonitor,
 )
 from lightning.pytorch.loggers import CSVLogger, Logger, TensorBoardLogger
 from lightning.pytorch.utilities import rank_zero_warn
@@ -24,7 +25,7 @@ from egrecho.core.pl_parser import LightningParser, SaveConfigCallback
 from egrecho.core.teacher import Teacher
 from egrecho.data.builder.asv import ASVPipeBuilder, DataBuilder
 from egrecho.models.groups.asv_group import SVTeacher, XvectorMixin
-from egrecho.training.callbacks import DataSetEpochCallback, LearningRate
+from egrecho.training.callbacks import DataSetEpochCallback
 from egrecho.utils.logging import _infer_rank, get_logger
 from egrecho_cli.register import register_command
 
@@ -222,7 +223,7 @@ class TrainASV(BaseCommand):
     def _get_default_callbacks(self) -> Optional[List[Callback]]:
         callbacks = [
             RichProgressBar(refresh_rate=1, leave=True),
-            LearningRate(),
+            LearningRateMonitor(),
         ]
         if self.subcommand_init.get("use_early_stopping", False):
             callbacks.append(self.subcommand_init["early_stopping"])
