@@ -1,0 +1,21 @@
+wav_file: null
+dirpath: ./exp/ecapa/logs
+gpus: '0,1,2,3'
+number_processes: 8
+data:
+  data_type: shard
+  lazyload_source: null
+  shuffle: false
+  partition: false
+  loader_kwargs: {}
+pipeline:
+  extract_kwargs: null
+  checkpoint: last.ckpt
+  model_type: null
+  feature_config: null
+  hparams_file: null
+  strict: true
+  num_workers: null
+outdir: null
+sub_outdir: ''
+summary_depth: 2

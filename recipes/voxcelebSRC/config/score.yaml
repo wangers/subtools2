@@ -1,0 +1,14 @@
+eval_scp: vox1/xvector.scp
+trial_fpatterns: data/raw/voxceleb1/*.trials
+helper_scp: vox2_train/xvector.scp
+skip_mean: false
+spk2utt: data/raw/voxceleb2_dev/spk2utt
+submean: true
+score_norm: true
+sn_kwds:
+  top_n: 300
+  cohort_sub: null
+metric_kwds:
+  p_target: 0.01
+result_file: null
+verbose: true

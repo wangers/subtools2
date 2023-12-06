@@ -1,0 +1,29 @@
+# type `egrecho kd2egs -h` to show help
+kaldidir: null
+outdir: null
+fcmd: false
+nj: 16
+kd_args:
+  must_exists: null
+  maybe_exists: null
+  more: false
+  nj: 1
+  min_dur: 0.4
+  max_dur: 40.
+  cls_attr: utt2spk
+  min_cls2utt: 8
+  label_fname: speaker
+  filt_noseg: false
+  split_valid: true
+  split_requirement: total_class
+  split_num: 4096
+  split_attr: utt2spk
+dumps:
+  data_type: shard
+  raw_chunksize: null
+  even_chunksize: false
+  split_prefix: ''
+  shard_dir: /your/path/shards/voxceleb2_dev
+  shardsize: 1000
+  clear_shards: false
+  gzip_out: false

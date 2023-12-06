@@ -1,0 +1,1 @@
+from egrecho_cli.register import register_command

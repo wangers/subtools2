@@ -1,0 +1,7 @@
+# type `egrecho mkmr -h` to show help
+output_folder: null
+db_type: lmdb
+openrir_folder: ./data
+musan_folder: ./data
+resample: 16000
+nj: 4

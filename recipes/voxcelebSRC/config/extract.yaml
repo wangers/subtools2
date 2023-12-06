@@ -1,0 +1,13 @@
+wav_file: exp/egs/voxceleb1_shard
+dirpath: ./exp/ecapa/logs
+outdir: null
+sub_outdir: ''
+gpus: '0,1,2,3'
+number_processes: 8
+data:
+  data_type: shard
+pipeline:
+  checkpoint: last.ckpt
+  strict: true
+  num_workers: null
+summary_depth: 2

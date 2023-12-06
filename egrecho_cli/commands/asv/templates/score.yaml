@@ -1,0 +1,16 @@
+eval_scp: null
+trial_fpatterns: null
+scp_dir: null
+trial_dir: null
+helper_scp: null
+skip_mean: false
+spk2utt: null
+submean: true
+score_norm: true
+sn_kwds:
+  top_n: 300
+  cohort_sub: null
+metric_kwds:
+  p_target: 0.01
+result_file: null
+verbose: true
