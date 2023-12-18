@@ -284,23 +284,6 @@ class Teacher(ABC):
             return [optimizer], [self.instantiate_lr_scheduler(optimizer, lr_scheduler)]
         return optimizer
 
-    def instantiate_tail_reducep(
-        self, optimizer: Optimizer, lr_scheduler: LR_SCHEDULER_TYPE
-    ) -> Dict[str, Any]:
-        """
-        Initiates ReduceLROnPlateau as lightning's lr_scheduler config.
-
-        This method gives a shortcut to get a default ReduceLROnPlateau which can append to the end of another
-        scheduler (e.g., warmup_constant) behaviours like `torch.optim.lr_scheduler.ChainedScheduler`.
-        And can utilize the auto optimization of lightning.
-
-        NOTE:
-            Actually, the use case of chain reducep is limited since the lr changed by the reducep may
-            infulence other lr_scheduler in front of it (e.g., CosineAnnealingLR will not act as it was.).
-            It is recommanded to combine with some simple scheduler whose lr scale scheduler is
-        """
-        ...
-
     def instantiate_lr_scheduler(
         self, optimizer: Optimizer, lr_scheduler: LR_SCHEDULER_TYPE
     ) -> Dict[str, Any]:
