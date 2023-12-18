@@ -59,7 +59,7 @@ def score_set(
         verbose:
             whether std out the metric results.
         result_file:
-            If specify set, metrics dicts will be saved as json line style.
+            If specify set, metrics dicts will be saved as json style.
             defaults save to the dir `scp_dir` with name eer.results.json.
     """
     if Path(scp_dir).is_file():
