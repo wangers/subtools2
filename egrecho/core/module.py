@@ -137,7 +137,7 @@ class TopVirtualModel(pl.LightningModule):
             raise ConfigurationException(
                 "Module can't find a teacher to train, please set a teacher first."
             )
-        return self.teacher.on_train_start()
+        self.teacher.on_train_start()
 
     def on_train_end(self) -> None:
         """Called at the very end of train.
@@ -149,7 +149,7 @@ class TopVirtualModel(pl.LightningModule):
             raise ConfigurationException(
                 "Module can't find a teacher to train, please set a teacher first."
             )
-        return self.teacher.on_train_end()
+        self.teacher.on_train_end()
 
     def configure_optimizers(self) -> OptimizerLRScheduler:
         """
@@ -543,7 +543,15 @@ class DataMoudle(pl.LightningDataModule):
             pin_memory=self.pin_memory,
             **self.extra_dl_kwargs,
         )
-
+        # Temporary ugly workaround, lightning now underlying wrapper dataloaders to a CombinedLoader
+        # with max_size_cycle mode, which will elimiate our dataloader's StopIteration, as we may
+        # manually set __len__ larger than real lengths. Here we directely returns a 'min_size' mode.
+        # remove this once have a nicer solution.
+        # return (
+        #     pl.utilities.CombinedLoader(dataloader, mode="min_size")
+        #     if self.fullsync
+        #     else dataloader
+        # )
         return dataloader
 
     def _val_dataloader(self) -> DataLoader:

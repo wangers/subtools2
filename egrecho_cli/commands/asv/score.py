@@ -78,7 +78,7 @@ def score_set(
     if need_help_scp:
         if not helper_scp:
             raise ConfigurationException(
-                f"Need a xvec scp lsuch as trainset to apply submean={submean}, score_norm={score_norm}."
+                f"Need a xvec scp such as trainset to apply submean={submean}, score_norm={score_norm}."
             )
         helper_scp = resolve_file(helper_scp, scp_dir)
         if not skip_mean:

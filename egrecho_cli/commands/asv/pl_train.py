@@ -11,9 +11,9 @@ from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks import (
     Callback,
     EarlyStopping,
+    LearningRateMonitor,
     ModelCheckpoint,
     RichProgressBar,
-    LearningRateMonitor,
 )
 from lightning.pytorch.loggers import CSVLogger, Logger, TensorBoardLogger
 from lightning.pytorch.utilities import rank_zero_warn
@@ -25,7 +25,7 @@ from egrecho.core.pl_parser import LightningParser, SaveConfigCallback
 from egrecho.core.teacher import Teacher
 from egrecho.data.builder.asv import ASVPipeBuilder, DataBuilder
 from egrecho.models.groups.asv_group import SVTeacher, XvectorMixin
-from egrecho.training.callbacks import DataSetEpochCallback
+from egrecho.training.callbacks import DataSetEpochCallback, LastBatchPatchCallback
 from egrecho.utils.logging import _infer_rank, get_logger
 from egrecho_cli.register import register_command
 
@@ -122,6 +122,13 @@ class TrainASV(BaseCommand):
                 "IterableDataset if it has `set_epoch` method while its sampler is infinite.",
                 default=True,
             )
+            train_parser.add_argument(
+                "--patch_last_b",
+                type=bool,
+                help="Wheter patch to set last batch flag in fit loop in IterableDataset case, "
+                "can remove when lighning fix this or manually handle it.",
+                default=True,
+            )
             displaydata_parser = LightningParser(description="Display data.")
             subcommands.add_subcommand("display", displaydata_parser)
         except Exception as ex:  # noqa
@@ -215,7 +222,7 @@ class TrainASV(BaseCommand):
         """Use CSVLogger and TensorBoardLogger."""
         if not bool(self.subcommand_init["trainer"].get("barebones")):
             return [
-                TensorBoardLogger(save_dir=self.save_dir, name="logs"),
+                TensorBoardLogger(save_dir=self.save_dir, name=""),
                 CSVLogger(save_dir=self.save_dir, name="csv_logs"),
             ]
         return None
@@ -223,12 +230,14 @@ class TrainASV(BaseCommand):
     def _get_default_callbacks(self) -> Optional[List[Callback]]:
         callbacks = [
             RichProgressBar(refresh_rate=1, leave=True),
-            LearningRateMonitor(),
+            # LearningRateMonitor(),
         ]
         if self.subcommand_init.get("use_early_stopping", False):
             callbacks.append(self.subcommand_init["early_stopping"])
         if self.subcommand_init.get("set_dataset_epoch"):
             callbacks.append(DataSetEpochCallback())
+        if self.subcommand_init.get("patch_last_b"):
+            callbacks.append(LastBatchPatchCallback())
         return callbacks
 
     def _gather_callbacks(self, config: Namespace, parser: LightningParser):
@@ -298,7 +307,8 @@ class TrainASV(BaseCommand):
     def run_train(self):
         """Fit."""
         self.trainer.fit(**self.fit_kwargs)
-        self.model_checkpoint.to_yaml()
+        if not self.subcommand_init["trainer"]["fast_dev_run"]:
+            self.model_checkpoint.to_yaml()
 
     def run_display(self):
         """TODO: display data."""

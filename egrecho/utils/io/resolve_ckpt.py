@@ -86,7 +86,8 @@ def resolve_ckpt(
     if ckpt.is_file():
         return str(ckpt.resolve())
     base_dir = Path(dirpath) if dirpath is not None else Path().resolve()
-    assert base_dir.is_dir()
+    if not base_dir.is_dir():
+        raise ValueError(f"dirpath=({dirpath}) is not a dir.")
     if ckpt := resolve_version_ckpt(
         dirpath=str(base_dir),
         checkpoint=checkpoint,
@@ -268,25 +269,26 @@ def resolve_rel_ckpt(
     if checkpoint == "best":
         best_k_fpath = dirpath / best_k_fname
         if not best_k_fpath.is_file():
-            return None
-        best_k_maps = SerializationFn.load_file(best_k_fpath)
-        _op = min if best_k_mode == "min" else max
-        best_model_path_record = _op(best_k_maps, key=best_k_maps.get)  # type: ignore[arg-type]
-        best_model_name = Path(best_model_path_record).name
+            checkpoint = None
+        else:
+            best_k_maps = SerializationFn.load_file(best_k_fpath)
+            _op = min if best_k_mode == "min" else max
+            best_model_path_record = _op(best_k_maps, key=best_k_maps.get)  # type: ignore[arg-type]
+            best_model_name = Path(best_model_path_record).name
 
-        # the best model path in best map file may not in this directory, fetch its file base name
-        best_model_path = dirpath / best_model_name
-        if not best_model_path.is_file():
-            raise ValueError(
-                f"Resolved best model name {best_model_name} in best k map {best_k_fpath} "
-                f"but failed to find ckpt name in dirpath ({best_model_path})."
-            )
-        return str(best_model_path)
+            # the best model path in best map file may not in this directory, fetch its file base name
+            best_model_path = dirpath / best_model_name
+            if not best_model_path.is_file():
+                raise ValueError(
+                    f"Resolved best model name {best_model_name} in best k map {best_k_fpath} "
+                    f"but failed to find ckpt name in dirpath ({best_model_path})."
+                )
+            checkpoint = str(best_model_path)
+    else:
+        # can directly resolve
+        checkpoint = dirpath / orig_ckpt
 
-    # can directly resolve
-    checkpoint = dirpath / orig_ckpt
-
-    checkpoint = str(Path(checkpoint)) if checkpoint.is_file() else None
+        checkpoint = str(Path(checkpoint)) if checkpoint.is_file() else None
 
     # Recurve ckpt_subdir on 1-depth.
     if checkpoint is None:

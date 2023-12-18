@@ -40,7 +40,7 @@ package_name = "egrecho"
 setup(
     name=package_name,
     version=VERSION,
-    author="xmuspeech",
+    author="Dexin Liao",
     packages=find_packages(include=("egrecho*",))
     + find_namespace_packages(include=("egrecho_cli*",)),
     entry_points={
@@ -48,7 +48,7 @@ setup(
             "egrecho=egrecho_cli.__main__:main",
         ]
     },
+    license="Apache-2.0 License",
     install_requires=reqs,
     python_requires=">=3.8",
-    license="Apache-2.0 License",
 )

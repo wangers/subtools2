@@ -1,4 +1,10 @@
+# -*- coding:utf-8 -*-
+# Copyright xmuspeech (Author: Leo 2023-03)
+
 from egrecho.utils.types import Split
+
+# If the specified file exists, the CLI will import it, providing flexibility for constructing local projects.
+LOCAL_EGRECHO = "/dynamic_egrecho.py"
 
 DATASET_META_FILENAME = "dataset_meta.json"
 DEFAULT_FILES = {

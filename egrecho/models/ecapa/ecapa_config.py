@@ -50,7 +50,7 @@ class EcapaConfig(DataclassConfig):
     mfa_dim: int = 1536
     pooling_params: dict = field(default_factory=lambda: default_pooling_params)
     embd_layer_num: Literal[1, 2] = 1
-    post_norm: bool = False
+    post_norm: bool = True
 
     def __post_init__(self):
         self.pooling_params = {**default_pooling_params, **self.pooling_params}

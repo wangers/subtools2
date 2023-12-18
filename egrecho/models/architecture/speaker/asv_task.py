@@ -4,6 +4,7 @@
 from copy import deepcopy
 from typing import Any, Callable, Dict, Optional
 
+import torch
 import torch.nn.functional as F
 from torchmetrics import Accuracy
 
@@ -65,6 +66,23 @@ class SVTeacher(ClassificationMixin, Teacher):
         e.g., `('warm_cosine', {"warmup_steps": 20000}, {'interval': "step"})`. while the last dict is used to
         overwrite lr config of `egrecho.core.teacher.DEFAULT_PL_LRCONFIG`
         which is used to compose `lightning` lr scheduler.
+
+    post_reducep (bool):
+        Specifies whether to append a `ReduceLROnPlateau` scheduler that operates on an epoch level.
+        It is important to note the following:
+
+    - The use case for chaining `ReduceLROnPlateau` is limited, as the learning rate changed by `ReduceLROnPlateau`
+    may become invalid. The other lr_schedulers preceding it (e.g., `LambdaLR, OneCycleLR, CyclicLR, CosineAnnealingWarmRestarts`)
+    will obtain a certain learning rate at a specific step, potentially nullifying the effect of the learning
+    rate decay applied by the post `ReduceLROnPlateau`.
+    - It is recommended to combine `ReduceLROnPlateau` with schedulers that scale the runtime learning rate
+    (e.g., `MultiplicativeLR, StepLR, MultiStepLR`, etc.).
+    - A simple usage example involves appending it to the registered `('warm_stay', {"warmup_steps": 20000})`.
+    - Currently, no case checking is applied for the mentioned situations above.
+    User should ensure correctness when configuring complex schedulers.
+
+    reducep_kwargs (Optional[Dict]):
+        kwargs for reducep. see defaults in :method::`__init__`.
     """
 
     task_name = "automatic-speaker-verification"
@@ -77,6 +95,8 @@ class SVTeacher(ClassificationMixin, Teacher):
         optimizer: OPTIMIZER_TYPE = "",
         lr_scheduler: LR_SCHEDULER_TYPE = "",
         lr: Optional[float] = 0.01,
+        post_reducep: bool = False,
+        reducep_kwargs: Optional[Dict] = None,
     ) -> None:
         super().__init__()
 
@@ -89,7 +109,15 @@ class SVTeacher(ClassificationMixin, Teacher):
         self.optimizer = optimizer or ("adamw", {"weight_decay": 0.1})
         self.lr_scheduler = lr_scheduler or ("warm_cosine", {"warmup_steps": 20000})
         self.lr = lr
+        self.post_reducep = post_reducep
 
+        self.reducep_kwargs = {
+            "factor": 0.1,
+            "patience": 1,
+            "min_lr": 1e-6,
+            "monitor": "val_loss",  # this is used for pl lr_scheduler config.
+            **(reducep_kwargs or {}),
+        }
         self.margin_scheduler = None
 
     def setup_model(self):
@@ -150,7 +178,13 @@ class SVTeacher(ClassificationMixin, Teacher):
             logger.warning(f"Got NaN loss in batch_idx:{batch_idx}, skip it.")
 
             return None
+        curr_lr = self.trainer.optimizers[0].param_groups[0]["lr"]
 
+        self.model.log(
+            "lr",
+            curr_lr,
+            prog_bar=True,
+        )
         self.model.log_dict(
             {f"train_{k}": v for k, v in outputs["logs"].items()},
             on_step=True,
@@ -203,6 +237,31 @@ class SVTeacher(ClassificationMixin, Teacher):
             )
 
     def configure_optimizers(self):
-        return self.configure_single_optimizer(
+        if not self.post_reducep:
+            return self.configure_single_optimizer(
+                self.optimizer, self.lr_scheduler, self.lr
+            )
+        opt_sche = self.configure_single_optimizer(
             self.optimizer, self.lr_scheduler, self.lr
         )
+        if isinstance(opt_sche, tuple):
+            opt, sche = opt_sche
+
+            sche.append(self._get_reducep(opt[0]))
+            return opt, sche
+        else:
+            sche = self._get_reducep(opt_sche)
+            return [opt_sche], [sche]
+
+    def _get_reducep(self, optimizer):
+        monitor = self.reducep_kwargs.pop("monitor", "val_loss")
+        frequency = self.reducep_kwargs.pop("frequency", 1)
+        return {
+            "scheduler": torch.optim.lr_scheduler.ReduceLROnPlateau(
+                optimizer, **self.reducep_kwargs
+            ),
+            "monitor": monitor,
+            "interval": "epoch",
+            "frequency": frequency,
+            "strict": False,
+        }

@@ -400,7 +400,7 @@ class ResponseImpulse(SinglePerturb):
     noise_db_type: str
         Set to choose NoiseSet if load rirs from noisedataset.
     rir_fix_len:
-        If set True, loaded rir kernel longer than signal will slice to the head wave length.
+        If set True, loaded rir kernel longer than signal will slice to the wave length from head.
     sim_rir_conf: dict
         The config for simulate rir when noise_db is None.
     init_p: float

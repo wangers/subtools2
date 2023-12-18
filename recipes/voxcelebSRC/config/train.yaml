@@ -1,5 +1,5 @@
 # type `egrecho train-asv -h` to show help
-save_dir: './exp/ecapa'
+save_dir: './exp/ecapa1024'
 seed_everything: 42
 data_builder:
   class_path: ASVPipeBuilder
@@ -7,11 +7,11 @@ data_builder:
     config:
       class_path: ASVBuilderConfig
       init_args:
-        data_dir: exp/egs/cnsrc_train
+        data_dir: exp/egs/voxceleb2_shard
         file_patterns:
           train: egs*train*
           val: egs*val*
-        data_type: raw
+        data_type: shard
         shuffle: true
         partition: true
         label_fname: speaker.yaml
@@ -21,15 +21,21 @@ data_builder:
         - 1.0
         - 1.1
         rand_chunksize: 200
+        chunk_retry_param:
+          retry: 0
         frame_shift: 0.01
         speech_aug: true
         speech_aug_config:
           batch_size: 1
-          db_dir: /data/speech_aug
+          db_dir: /data/speech_aug  # replace your noise set
+          init_p: 0.5
+          sim_rir_prob: 0.5
+          wave_drop: false
         shard_shuffle_size: 1500
         batch_size: 128
         drop_last: true
         extractor_param:
+          # scale_bit: 16
           mean_norm: true
           std_norm: false
           return_attention_mask: false
@@ -40,7 +46,7 @@ data_attrs:
 - num_classes
 data:
   num_workers: 8
-  prefetch_factor: 50
+  prefetch_factor: 20
   val_num_workers: 0
   pin_memory: false
   fullsync: true
@@ -52,7 +58,7 @@ run:
         class_path: EcapaSVConfig
         init_args:
           inputs_dim: 80
-          channels: 512
+          channels: 1024
           embd_dim: 192
           mfa_dim: 1536
           pooling_params:
@@ -68,34 +74,38 @@ run:
           head_params:
             sub_k: 1
             do_topk: false
+  ckpt_path: null
   teacher:
     class_path: SVTeacher
     init_args:
       num_classes: null
       margin_warm: true
       margin_warm_kwargs:
-        start_epoch: 5
-        end_epoch: 15
+        start_epoch: 10
+        end_epoch: 25
       optimizer:
-      - adamw
-      - weight_decay: 0.05
+      - sgd
+      - weight_decay: 1e-4
+        momentum: 0.9
+        nesterov: true
       lr_scheduler:
       - warm_cosine
-      - warmup_steps: 0.1
-        pct_start: 0.1
-      lr: 0.002
+      - warmup_steps: 0.05
+        # pct_start: 0.1
+        eta_min: 1e-6
+      lr: 0.2
   trainer:
     accelerator: gpu
     strategy: auto
     devices: 4
     precision: 16-mixed
     fast_dev_run: false
-    max_epochs: 60
+    max_epochs: 80
     limit_val_batches: null
-    val_check_interval: 500
+    val_check_interval: 1000
     check_val_every_n_epoch: 1
     num_sanity_val_steps: null
-    log_every_n_steps: 100
+    log_every_n_steps: 500
     accumulate_grad_batches: 1
     gradient_clip_val: 5.0
     gradient_clip_algorithm: norm
@@ -106,7 +116,7 @@ run:
     sync_batchnorm: true
   mckpt:
     dirpath: null
-    filename: epoch{epoch}-val_loss{val_loss:.4f}-step{step}
+    filename: epoch{epoch}-val_loss{val_loss:.2f}-step{step:.2e}
     monitor: val_loss
     save_last: true
     save_top_k: 10
@@ -120,8 +130,7 @@ run:
   early_stopping:
     monitor: val_loss
     min_delta: 0.0
-    patience: 5
+    patience: 10
     mode: min
     check_on_train_epoch_end: true
-    log_rank_zero_only: false
-
+    log_rank_zero_only: true

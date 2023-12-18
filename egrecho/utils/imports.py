@@ -5,7 +5,7 @@ import functools
 import importlib
 import operator
 import types
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 
 import packaging
 import pkg_resources

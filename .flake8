@@ -1,0 +1,29 @@
+[flake8]
+extend-ignore =
+    ;line too long
+    E501
+    ; missing docstring in __init__
+    D107
+    ; missing docstring in magic method
+    D105
+    ;E203 whitespace before ':'
+    E203
+    ;too many leading '#' for block comment
+    E266
+    ;W503 line break before binary operator
+    W503
+    ; unused import
+    F401
+    ;'from module import *' used; unable to detect undefined names
+    F403
+
+; exclude file
+exclude =
+    .git,
+    __pycache__,
+    *.pyc,
+    *.egg-info,
+    .cache,
+    .eggs
+
+max-line-length = 120

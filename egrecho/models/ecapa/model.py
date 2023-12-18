@@ -94,8 +94,9 @@ class EcapaModel(XvectorMixin):
             model_out = self(chunk)
             this_embedding = model_out[0] if position == "near" else model_out[1]
             if embedding_stats.size(0) == 0:
-                embedding_stats = this_embedding
-            embedding_stats += chunk_sizes[idx] * this_embedding
+                embedding_stats = this_embedding * chunk_sizes[idx]
+            else:
+                embedding_stats += chunk_sizes[idx] * this_embedding
         embedding = embedding_stats / sum(chunk_sizes)
 
         return XvectorOutput(xvector=embedding)

@@ -1,4 +1,4 @@
-from collections import Mapping
+from collections.abc import Mapping
 from dataclasses import dataclass, field, fields
 from typing import Sequence, Type, TypeVar, Union
 
@@ -13,7 +13,7 @@ EXTRA_COLUMN_NAME = "others"
 def _sketch_to_tuple(sketch):
     assert isinstance(sketch, Sequence)
     if isinstance(sketch, str):
-        return tuple(sketch.strip().spilt())
+        return tuple(sketch.strip().split())
     return tuple(list(sketch))
 
 

@@ -72,14 +72,13 @@ class SyncDataLoader(_DataLoader):
                 try:
                     batch = self.fullsyn_ext.return_next()
                     yield batch
+                except StopIteration:
+                    # Handle StopIteration to break out of the loop
+                    self.fullsyn_ext.reset(shutdown_workers=not self.persistent_workers)
+                    break
                 except Exception as e:
-                    if isinstance(e, StopIteration):
-                        self.fullsyn_ext.reset(
-                            shutdown_workers=not self.persistent_workers
-                        )
-                        break
-                    else:
-                        raise e
+                    self.fullsyn_ext.reset(shutdown_workers=not self.persistent_workers)
+                    raise e  # Reraise other exceptions
         else:
             data_source = super().__iter__()
             for batch in data_source:

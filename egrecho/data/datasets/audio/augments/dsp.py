@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 # Copyright xmuspeech (Author: Leo 2023-01-11)
-# Low level signal processing utilities
+"""Low level signal processing utilities."""
 
 import io
 import math

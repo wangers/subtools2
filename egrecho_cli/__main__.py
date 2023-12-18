@@ -11,6 +11,7 @@ from egrecho.core.parser import BaseCommand, CommonParser
 from egrecho.utils.imports import _PL_AVAILABLE
 from egrecho.utils.io import DataFilesList
 from egrecho.utils.logging import get_logger
+from egrecho.utils.misc import imports_local
 from egrecho_cli.register import COMMAND_REGISTRY
 
 logger = get_logger()
@@ -19,6 +20,10 @@ SCRIPT_PATTERNS = "commands" + os.path.sep + "**.py"
 
 
 def setup_registry():
+    """Register available commands."""
+    # imports 'dynamic_egrecho'
+    imports_local()
+
     cli_module = importlib.import_module(CONMMANDS_NAMESPACE)
     cli_base_path = cli_module.__file__.replace("__init__.py", "")
     scripts = DataFilesList.from_local_or_remote(

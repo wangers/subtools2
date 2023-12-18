@@ -173,19 +173,17 @@ class LazyDictReader(LazyDict):
                 f"It seems the samples lack an 'id' key in {self.files}, "
                 f"the picked one is {first} in file:{self.files[0]}."
             )
-            warnings.warn(warn_msg)
             if self.random_id_ifneed:
-                first["id"] = str(uuid.uuid4())
                 warnings.warn(
-                    "You seem use random uuuid to generate ids, please notice your seed."
+                    f"{warn_msg} You seem use random uuuid to generate ids, please notice your seed."
                 )
             else:
                 raise ConfigurationException(
-                    f"{warn_msg}+' Please provide it in manifest or or choose strategy "
+                    f"{warn_msg} Please provide it in manifest or or choose strategy "
                     f"via `rename_col_map`/`concat_col_id`/`random_id_ifneed`."
                 )
         except StopIteration:
-            raise
+            return
         for item in chain([first], iterator):
             if not has_id and self.random_id_ifneed:
                 item["id"] = str(uuid.uuid4())

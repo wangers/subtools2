@@ -59,13 +59,17 @@ class ASVTemplate(VoyageTemplate):
         super().__post_init__()
 
 
-def get_extractor_param():
-    return {
-        "mean_norm": True,
-        "std_norm": False,
-        "return_attention_mask": False,
-        "feat_conf": {"feature_type": "kaldi-fbank"},
-    }
+default_extractor_param = {
+    "mean_norm": True,
+    "std_norm": False,
+    "return_attention_mask": False,
+    "feat_conf": {"feature_type": "kaldi-fbank"},
+}
+default_chunk_retry_param = {
+    "retry": 0,
+    "force_retry": True,
+    "retry_ampth": 2e-4,
+}
 
 
 @dataclass
@@ -100,6 +104,9 @@ class ASVBuilderConfig(DataBuilderConfig):
             Defaults to None. This will change speaker label.
         rand_chunksize (int):
             fix chunk training, defaults to 200 means 2s audio with 0.01 `frame_shift`.
+        chunk_retry_param (dict):
+            retry random chunk when chunk energy is too low.
+            defaults to `{'retry': 0, 'force_retry': True, 'retry_ampth': 2e-4}`.
         frame_shift (float):
             frame shift in `seconds(s)`. Defaults to 0.01.
         speech_aug (bool):
@@ -132,6 +139,9 @@ class ASVBuilderConfig(DataBuilderConfig):
     )
 
     rand_chunksize: Optional[int] = 200
+    chunk_retry_param: Dict[str, Any] = field(
+        default_factory=lambda: default_chunk_retry_param
+    )
     frame_shift: float = 0.01
 
     speech_aug: bool = True
@@ -143,12 +153,15 @@ class ASVBuilderConfig(DataBuilderConfig):
     batch_size: int = 128
     drop_last: bool = True
 
-    extractor_param: dict = field(default_factory=lambda: get_extractor_param())
+    extractor_param: dict = field(default_factory=lambda: default_extractor_param)
 
     def __post_init__(self):
         super().__post_init__()
         sample_rate = self.resample_rate
-        self.extractor_param = dict_union(get_extractor_param(), self.extractor_param)
+        self.extractor_param = dict_union(default_extractor_param, self.extractor_param)
+        self.chunk_retry_param = dict_union(
+            default_chunk_retry_param, self.chunk_retry_param
+        )
         self.extractor_param["feat_conf"]["sampling_rate"] = sample_rate
         self.speech_aug_config["sample_rate"] = sample_rate
         if self.start_sketch is None:
@@ -170,13 +183,13 @@ class ASVBuilderConfig(DataBuilderConfig):
 
     @property
     def train_mode(self):
-        if not hasattr(self, "__train_mode"):
-            self.__train_mode = True
-        return self.__train_mode
+        if not hasattr(self, "_train_mode"):
+            self._train_mode = True
+        return self._train_mode
 
     @train_mode.setter
     def train_mode(self, mode: bool):
-        self.__train_mode = mode
+        self._train_mode = mode
 
 
 class ASVPipeBuilder(DataBuilder):
@@ -236,7 +249,6 @@ class ASVPipeBuilder(DataBuilder):
         # format dict sample
         build_table_fn = functools.partial(build_table, sketch=config.start_sketch)
         datapipe = Processor(datapipe, processors.maps, build_table_fn)
-
         # element-wise
         datapipe = self._ele_processor(datapipe, config)
 
@@ -315,10 +327,12 @@ class ASVPipeBuilder(DataBuilder):
             datapipe = Processor(
                 datapipe,
                 audio_functional.random_chunk,
-                chunk_len,
+                chunk_len=chunk_len,
                 data_type=config.data_type,
-                train_mode=getattr(config, "train_mode", True),
+                train_mode=config.train_mode,
+                **config.chunk_retry_param,
             )
+
         if config.data_type in ("raw", "shard") and config.speech_aug:
             speech_aug = audio_functional.SpeechAugPipline(**config.speech_aug_config)
             logger.info(f"Got speech aug: {speech_aug} ", ranks=0)

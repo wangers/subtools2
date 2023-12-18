@@ -173,7 +173,7 @@ class EgrechoDistSampler(BaseDistSampler):
         if self.shuffle:
             rng = np.random.default_rng(self.seed + self.epoch)
             self._ready_data = self.data_source.shuffle(
-                rng, buffer_size=self.buffer_shuffle_size
+                rng=rng, buffer_size=self.buffer_shuffle_size
             )
         return self
 

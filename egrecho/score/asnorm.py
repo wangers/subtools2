@@ -91,9 +91,7 @@ def spk_vector_mean(
         output_scp = (Path(embed_scp).parent) / ("spk_" + embed_fname)
     vec_reader = KaldiVectorReader(embed_scp)
     with KaldiVectorWriter(Path(output_scp).parent, Path(output_scp).name) as vec_w:
-        for spk, utts in tqdm(
-            spk2utt_map.items(),
-        ):
+        for spk, utts in tqdm(spk2utt_map.items(), desc="Cohort vec mean"):
             utt_embeds = (vec_reader.read(utt) for utt in utts)
             mean_vec = compute_mean_stats(utt_embeds)
             vec_w.write(spk, mean_vec)

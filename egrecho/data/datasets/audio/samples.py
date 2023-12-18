@@ -243,6 +243,7 @@ def decode_audio_shard(sample: Dict) -> Dict:
         extension = (re.sub(r".*[.]", "", k)).lower()
         if extension in ["flac", "mp3", "m4a", "ogg", "opus", "wav", "wma"]:
             waveforms, sample_rate = torchaudio.backend.soundfile_backend.load(v)
+
             ret[AUDIO_COLUMN] = waveforms
             ret[SAMPLE_RATE_COLUMN] = sample_rate
         if extension in ["json", "jsn"]:
@@ -256,6 +257,7 @@ def decode_audio_shard(sample: Dict) -> Dict:
 
         if is_stream_handle(v):
             v.close()
+
     return ret
 
 

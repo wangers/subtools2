@@ -13,7 +13,7 @@ from torch import Tensor, nn
 
 from egrecho.core.model_base import ModelBase
 from egrecho.models.ecapa.ecapa_config import EcapaConfig
-from egrecho.nn.components import TDNNBlock
+from egrecho.nn.components import DenseLayer, TDNNBlock
 
 
 def compute_statistics(x, m, dim: int = -1, stddev: bool = True, eps: float = 1e-5):
@@ -52,17 +52,16 @@ def compute_statistics(x, m, dim: int = -1, stddev: bool = True, eps: float = 1e
         - If stddev is True, it calculates the standard deviation;
           otherwise, the standard deviation will be an empty tensor.
     """
-    mean = torch.sum(m * x, dim=dim, keepdim=True)
 
+    mean = torch.sum(m * x, dim=dim, keepdim=True)
     if stddev:
-        # std = torch.sqrt(
-        #     (m * (x - mean.unsqueeze(dim)).pow(2)).sum(dim).clamp(eps)
-        # )
         std = torch.sqrt(
             (torch.sum(m * (x**2), dim=dim, keepdim=True) - mean**2).clamp(eps)
         )
+
     else:
         std = torch.empty(0)
+
     return mean, std
 
 
@@ -140,6 +139,7 @@ class MQMHASP(nn.Module):
         mean, std = compute_statistics(
             x.reshape(B, self.num_head, 1, -1, T), alpha, stddev=self.stddev
         )  # mean: [B, head, q, C/head, 1]
+
         mean = mean.reshape(B, -1, 1)
         if self.stddev:
             std = std.reshape(B, -1, 1)
@@ -354,9 +354,11 @@ class EcapaBase(ModelBase):
 
             if module.bias is not None:
                 module.bias.data.zero_()
-        elif isinstance(module, (nn.LayerNorm, nn.BatchNorm1d)):
-            module.bias.data.zero_()
-            module.weight.data.fill_(1.0)
+        elif isinstance(module, (nn.LayerNorm, nn.BatchNorm1d, nn.GroupNorm)):
+            if module.bias is not None:
+                module.bias.data.zero_()
+            if module.weight is not None:
+                module.weight.data.fill_(1.0)
 
 
 class EcapaXvector(EcapaBase):
@@ -398,24 +400,29 @@ class EcapaXvector(EcapaBase):
         self.stats: MQMHASP = MQMHASP(mfa_dim, **pooling_params)
         self.bn_stats = nn.BatchNorm1d(self.stats.get_output_dim())
         self.embd_layer_num = config.embd_layer_num
+
+        dense_norm = "bn" if config.post_norm else ""
+
         if self.embd_layer_num == 1:
-            self.embd1 = nn.Linear(self.stats.get_output_dim(), self.embd_dim)
+            self.embd1 = DenseLayer(
+                self.stats.get_output_dim(), self.embd_dim, norm_type=dense_norm
+            )
             self.embd2 = nn.Identity()
         else:
-            self.embd1 = TDNNBlock(self.stats.get_output_dim(), self.embd_dim)
-            self.embd2 = nn.Linear(self.embd_dim, self.embd_dim)
-        if config.post_norm:
-            self.post_norm = nn.BatchNorm1d(self.embd_dim)
-        else:
-            self.post_norm = nn.Identity()
+            self.embd1 = TDNNBlock(
+                self.stats.get_output_dim(),
+                self.embd_dim,
+            )
+            self.embd2 = DenseLayer(self.embd_dim, self.embd_dim, norm_type=dense_norm)
+
         self.post_init()
 
     def forward(self, input_features: Tensor):
         x = input_features.permute(0, 2, 1)  # [B, T, F] -> [B, F, T]
         x = self.layer1(x)
         x1 = self.layer2(x)
-        x2 = self.layer3(x + x1)
-        x3 = self.layer4(x + x1 + x2)
+        x2 = self.layer3(x1)
+        x3 = self.layer4(x2)
         x = torch.cat([x1, x2, x3], dim=1)
         x = self.mfa(x)
 
@@ -427,6 +434,5 @@ class EcapaXvector(EcapaBase):
         else:
             embd_far = self.embd1(x)
             embd = self.embd2(embd_far)
-        embd = self.post_norm(embd)
 
         return embd, embd_far

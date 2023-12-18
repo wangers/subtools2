@@ -3,8 +3,9 @@
 
 import math
 import random
-from typing import Any, Optional, cast
+from typing import Any, Optional, Union, cast
 
+import torch
 from torch import Tensor
 
 from egrecho.data import processors
@@ -41,12 +42,13 @@ def de_sil(data, win_len=0.1, min_eng=50, retry_times=1, force_output=True):
         cache_wave, cache_len = de_silence(
             waveform, sr=sr, win_len=win_len, min_eng=min_eng
         )
-        while retry_times and cache_len == 0:
+        retry_left = retry_times
+        while retry_left and cache_len == 0:
             min_eng /= 2
             cache_wave, _ = de_silence(
-                waveform, sr=sr, win_len=win_len, min_eng=min_eng / 2
+                waveform, sr=sr, win_len=win_len, min_eng=min_eng
             )
-            retry_times -= 1
+            retry_left -= 1
         if force_output and cache_len == 0:
             cache_wave = waveform
         sample[AUDIO_COLUMN] = cache_wave
@@ -88,6 +90,7 @@ def filter(data, max_length=15.0, min_length=0.1, truncate=True):
     Returns:
         Iterable[{audio, sample_rate, ...}]
     """
+
     for sample in data:
         waveform: Tensor = sample[AUDIO_COLUMN]
         sample_rate = sample[SAMPLE_RATE_COLUMN]
@@ -212,11 +215,32 @@ class PreSpeedPerturb(object):
         return self.train(False)
 
 
-def random_chunk(data, chunk_len: int, data_type: str = "raw", train_mode: bool = True):
+def random_chunk(
+    data,
+    chunk_len: int,
+    data_type: str = "raw",
+    train_mode: bool = True,
+    retry: Union[int, bool] = 0,
+    force_retry: bool = True,
+    retry_ampth: float = 2e-4,
+):
     """fixed-chunk
 
     Args:
-        data: Iterable[{audio, ...}]
+        data:
+            Iterable[{audio, ...}]
+        chunk_len:
+            Random chunk length
+        train_mode:
+            If False, always return the middle chunk.
+        retry:
+            This is only use for the case of input is audio signal with train mode.
+            If > 0, will retry random chunk to avoid it with very small energy. if it is still invalid after that,
+            returns the last retried chunk or filter it according to param `force_retry`.
+        force_retry:
+            Force output when failed retrying.
+        retry_ampth:
+            The mean value of chunk lower then this threashould is treated as invalid when applying retry.
     Returns:
         Iterable[{audio, ...}]
     """
@@ -230,7 +254,24 @@ def random_chunk(data, chunk_len: int, data_type: str = "raw", train_mode: bool 
     else:
         for sample in data:
             waveform: Tensor = sample[AUDIO_COLUMN]
-            sample[AUDIO_COLUMN] = apply_random_chunk(waveform, chunk_len, train_mode)
+            chunk = apply_random_chunk(waveform, chunk_len, train_mode)
+            retry_left = int(retry)
+
+            if train_mode and retry_left > 0:
+                length = waveform.shape[-1]
+                while (
+                    retry_left
+                    and length > chunk_len
+                    and not is_valid_chunk(chunk, retry_ampth)
+                ):
+                    chunk = apply_random_chunk(waveform, chunk_len, train_mode)
+                    retry_left -= 1
+                if is_valid_chunk(chunk, retry_ampth) or force_retry:
+                    sample[AUDIO_COLUMN] = chunk
+                else:
+                    continue
+            else:
+                sample[AUDIO_COLUMN] = chunk
             yield sample
 
 
@@ -254,6 +295,7 @@ def apply_random_chunk(data: Tensor, chunk_len: int, train_mode: bool = True):
         else:
             start = (data_len - chunk_len) // 2
         data = data[..., start : start + chunk_len]
+        data = data.clone()
     else:
         repeat_num = math.ceil(chunk_len / data_len)
         repeat_shape = [
@@ -264,6 +306,12 @@ def apply_random_chunk(data: Tensor, chunk_len: int, train_mode: bool = True):
         ]
         data = data.repeat(repeat_shape)[..., :chunk_len]
     return data
+
+
+def is_valid_chunk(data: Tensor, mean_th: float = 5e-4):
+    if torch.mean(torch.abs(data[0])) < mean_th:
+        return False
+    return True
 
 
 class SpeechAugPipline(object):

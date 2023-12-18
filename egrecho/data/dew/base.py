@@ -574,7 +574,7 @@ class DewSamples:
 
     def shuffle(
         self,
-        seed: int = 42,
+        seed: Optional[int] = 42,
         rng: Optional[np.random.Generator] = None,
         buffer_size: int = 20_000,
     ):
@@ -585,25 +585,25 @@ class DewSamples:
         Args:
             buffer_size: int
             seed: int
+            rng: np.random.Generator
+                the real generator controls shuffle, if specified, seed param is invalid.
             buffer_size: int
                 for lazy shuffle buffer.
 
         Returns:
             A new DewSamples.
         """
-        if seed is not None and rng is not None:
-            raise ValueError(
-                "Both `seed` and `rng` were provided. Please specify just one of them."
-            )
         if rng is not None and not isinstance(rng, np.random.Generator):
             raise ValueError(
                 "The provided rng must be an instance of numpy.random.Generator"
             )
         if rng is None:
-            if seed is not None:
+            if seed is None:
                 _, seed, pos, *_ = np.random.get_state()
+
                 seed = seed[pos] if pos < 624 else seed[0]
                 _ = np.random.random()  # imitate 1 step
+
             rng = np.random.default_rng(seed)
         cls = type(self)
 

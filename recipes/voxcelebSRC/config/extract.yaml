@@ -1,5 +1,5 @@
 wav_file: exp/egs/voxceleb1_shard
-dirpath: ./exp/ecapa/logs
+dirpath: ./exp/ecapa1024
 outdir: null
 sub_outdir: ''
 gpus: '0,1,2,3'

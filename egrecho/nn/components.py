@@ -168,7 +168,7 @@ class TDNNBlock(nn.Module):
         dilation: int = 1,
         bias: bool = True,
         affine: bool = True,
-        norm_type: Literal["bn", "ln"] = "bn",
+        norm_type: Literal["bn", "ln", ""] = "bn",
         pre_norm: bool = False,
         nonlinearity: str = "relu",
     ):
@@ -190,15 +190,16 @@ class TDNNBlock(nn.Module):
             dilation=dilation,
             bias=bias,
         )
-        assert norm_type in (
-            "bn",
-            "ln",
-        ), f"Expect norm of 'bn' or 'ln', but got {norm_type}"
-        norm_mod = (
-            nn.BatchNorm1d(out_channels, affine=affine)
-            if norm_type == "bn"
-            else LayerNorm(out_channels, learnabel_affine=affine)
-        )
+        norm_type = norm_type.strip()
+
+        if norm_type == "bn":
+            norm_mod = nn.BatchNorm1d(out_channels, affine=affine)
+        elif norm_type == "ln":
+            norm_mod = LayerNorm(out_channels, learnabel_affine=affine)
+        elif norm_type == "":
+            norm_mod = nn.Identity()
+        else:
+            raise ValueError(f"Expect norm of 'bn' or 'ln', '', but got {norm_type}")
 
         self.nonlinear = (
             nn.Sequential(
@@ -221,6 +222,34 @@ class TDNNBlock(nn.Module):
         x = self.nonlinear(x)
 
         return x.squeeze(2) if unsqueezed else x
+
+
+class DenseLayer(TDNNBlock):
+    """
+    A dense layer wrappers TDNNBlock. Gives a shotcut for the last embedding layer
+
+    Defaults to a 1-d conv wihout bias come after a batchnorm whthout affine.
+    """
+
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        bias=False,
+        affine=False,
+        norm_type: Literal["bn", "ln", ""] = "bn",
+        nonlinearity=None,
+        **kwargs,
+    ):
+        super().__init__(
+            in_channels,
+            out_channels,
+            bias=bias,
+            affine=affine,
+            norm_type=norm_type,
+            nonlinearity=nonlinearity,
+            **kwargs,
+        )
 
 
 class SoftmaxAffineLayer(torch.nn.Module):
