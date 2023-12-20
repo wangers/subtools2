@@ -7,7 +7,7 @@ from torch import optim
 
 from egrecho.utils.register import Register
 
-OPTIMIZERS_ = Register("optimizer")
+TORCH_OPTIMIZERS = Register("optimizer")
 
 optims = {
     k.lower(): v
@@ -25,4 +25,4 @@ for name, opt_cls in optims.items():
             return opt_cls(parameters, lr, **kwargs)
 
         opt_cls = partial(wrapper, opt_cls)
-    OPTIMIZERS_.register(opt_cls, name=name)
+    TORCH_OPTIMIZERS.register(opt_cls, name=name)

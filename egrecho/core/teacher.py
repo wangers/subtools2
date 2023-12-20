@@ -15,10 +15,11 @@ from torch.optim.optimizer import Optimizer
 from egrecho.core.optimization import (
     _TORCH_LRSCHEDULER,
     LR_TOTAL_STEPS_KEY,
-    OPTIMIZERS_,
     TORCH_LRSCHEDULERS,
-    WARM_LRSCHEDULERS,
+    TORCH_OPTIMIZERS,
 )
+from egrecho.training.lr_schedulers import WARM_LRSCHEDULERS
+from egrecho.training.optimizers import OPTIMIZERS_
 from egrecho.utils.register import Register, StrRegister
 from egrecho.utils.types import ModelOutput
 
@@ -46,6 +47,10 @@ DEFAULT_PL_LRCONFIG = {
 LRSCHEDULERS = Register("schedulers")
 LRSCHEDULERS += TORCH_LRSCHEDULERS
 LRSCHEDULERS += WARM_LRSCHEDULERS
+
+OPTIMIZERS = Register("optimizers")
+OPTIMIZERS += TORCH_OPTIMIZERS
+OPTIMIZERS += OPTIMIZERS_
 
 
 def _no_ops(x):
