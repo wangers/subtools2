@@ -76,6 +76,8 @@ class MarginHead(torch.nn.Module):
         """
         if name == "linear":
             return LinearHead(input_dim, num_classes, sub_k=sub_k, **kwargs)
+        if name == "cosine":
+            return CosineHead(input_dim, num_classes, sub_k=sub_k, **kwargs)
         elif name == "am":
             return AdditiveMarginHead(
                 input_dim, num_classes, sub_k=sub_k, do_topk=do_topk, **kwargs
@@ -127,7 +129,7 @@ class LinearHead(MarginHead):
         Returns:
             torch.Tensor: The output tensor after applying the linear transformation.
         """
-        cosine_theta = F.linear(F.normalize(inputs), F.normalize(self.weight))
+        cosine_theta = F.linear(inputs, self.weight)
         if self.sub_k > 1:
             cosine_theta = cosine_theta.reshape(-1, self.num_classes, self.sub_k)
             cosine_theta, _ = torch.max(cosine_theta, dim=2)
@@ -136,6 +138,55 @@ class LinearHead(MarginHead):
 
     def extra_repr(self):
         return f"(input_dim={self.input_dim}, num_classes={self.num_classes}, sub_k={self.sub_k} "
+
+
+class CosineHead(MarginHead):
+    """
+    A cosine projection with sub-center.
+
+    Args:
+        input_dim (int): The input dimension.
+        num_classes (int): The number of labels.
+        sub_k (int, optional): Sub-center parameter. Default is 1.
+    """
+
+    def __init__(self, input_dim, num_classes, sub_k=1, s=30.0, **kwargs):
+        super().__init__()
+        self.input_dim = input_dim
+        self.num_classes = num_classes
+        self.sub_k = max(1, sub_k)
+        self.s = s
+        if kwargs.get("do_topk"):
+            warnings.warn("Skip do_topk=True for linear head.")
+        self.weight = torch.nn.Parameter(
+            torch.randn(self.sub_k * num_classes, input_dim)
+        )
+        # torch.nn.init.xavier_normal_(self.weight, gain=1.0)
+        torch.nn.init.normal_(self.weight, 0.0, 0.01)  # It seems better.
+
+    def update_margin(self, add_margin=None, lambda_m=1.0):
+        ...
+
+    def forward(self, inputs: torch.Tensor, labels: torch.Tensor = torch.empty(0)):
+        """
+        Forward pass of the linear head.
+
+        Args:
+            inputs (torch.Tensor): The input tensor.
+            labels (torch.Tensor, optional): The target labels. Default is an empty tensor.
+
+        Returns:
+            torch.Tensor: The output tensor after applying the linear transformation.
+        """
+        cosine_theta = F.linear(F.normalize(inputs), F.normalize(self.weight))
+        if self.sub_k > 1:
+            cosine_theta = cosine_theta.reshape(-1, self.num_classes, self.sub_k)
+            cosine_theta, _ = torch.max(cosine_theta, dim=2)
+        self.posterior = cosine_theta.detach() * self.s  # For acc metrics.
+        return cosine_theta * self.s
+
+    def extra_repr(self):
+        return f"(input_dim={self.input_dim}, num_classes={self.num_classes}, sub_k={self.sub_k}, s={self.s} "
 
 
 class AdditiveMarginHead(MarginHead):

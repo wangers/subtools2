@@ -16,6 +16,8 @@ extend-ignore =
     F401
     ;'from module import *' used; unable to detect undefined names
     F403
+    ; unused local variable
+    F841
 
 ; exclude file
 exclude =
