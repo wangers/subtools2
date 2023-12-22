@@ -159,7 +159,7 @@ class LAMB(Optimizer):
 class LAMBW(Optimizer):
     r"""Implements Lambw algorithm (like adam -> adamw).
 
-    Apply weight decday as adamw and remove debiasing.
+    Applys weight decay as adamw and removes debiasing.
 
     Arguments:
         params: iterable of parameters to optimize or dicts defining
