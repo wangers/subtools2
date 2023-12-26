@@ -60,7 +60,7 @@ class Teacher(ABC):
     This class adds a point to model to do stepping. key methods:
         - :method:``training_step`` (must be implemented) & :method:``validation_step`` : detail step logics.
         - :method:``setup_model`` (must be implemented): an inferce for building linked model.
-        e.g., loss func, metrics can be configured here.
+       e.g., loss func, metrics can be configured here.
         - :method:``configure_optimizers`` (must be implemented): an inferce for building linked model.
         - :method:``setup``:
             - called in :method:`self.model.setup`.
