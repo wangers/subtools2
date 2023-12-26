@@ -8,6 +8,7 @@ __pycache__
 # data & exp
 data
 !egrecho/data
+!scripts/kaldi_utils/data
 exp
 exp*/
 
