@@ -18,22 +18,19 @@ with open("requirements.txt") as f:
         line = line.strip()
         reqs.append(line)
 
-# try:
-#     # If the user already installed PyTorch, make sure he has torchaudio too.
-#     # Otherwise, we'll just install the latest versions from PyPI for the user.
-#     import torch
+try:
+    # If the user already installed PyTorch, make sure he has torchaudio too.
+    import torch
 
-#     try:
-#         import torchaudio
-#         try:
-#             import torchdata
-#         except ImportError as e:
-#             raise ValueError('need torchdata')
+    try:
+        import torchaudio
 
-#     except ImportError as e:
-#         raise ValueError('need torchdata')
-# except ImportError as e:
-#     reqs.extend(["torch", "torchaudio", "torchdata"])
+    except ImportError as e:
+        raise ValueError("need torchdata")
+except ImportError as e:
+    raise ImportError(
+        f"{e}\n#### Please refer https://pytorch.org/ to install torch and torchaudio."
+    )
 
 package_name = "egrecho"
 
