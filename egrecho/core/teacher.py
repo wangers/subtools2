@@ -8,7 +8,6 @@ import math
 from abc import ABC
 from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple, Union
 
-import torch
 from torch.nn import Module, ModuleDict
 from torch.optim.optimizer import Optimizer
 
@@ -21,7 +20,6 @@ from egrecho.core.optimization import (
 from egrecho.training.lr_schedulers import WARM_LRSCHEDULERS
 from egrecho.training.optimizers import OPTIMIZERS_
 from egrecho.utils.register import Register, StrRegister
-from egrecho.utils.types import ModelOutput
 
 # use Module indicates torchmetrics.
 TORCH_METRICS_TYPE = Union[Module, Sequence[Module], Mapping[str, Module], None]
@@ -53,34 +51,72 @@ OPTIMIZERS += TORCH_OPTIMIZERS
 OPTIMIZERS += OPTIMIZERS_
 
 
-def _no_ops(x):
-    return x
-
-
-class DefaultOut(ModelOutput):
-    loss: Optional[torch.FloatTensor] = None
-    logits: torch.FloatTensor = None
-
-
 class Teacher(ABC):
     """
-    Base class for teacher aims to provide an access to data, criterion for model, and step action details.
+    Base class for teacher aims to provide an access to criterion, metrics for model, and configure training details.
 
     Usually, the step details in fit (train + validation) stage is related to the data and objectives (criterion),
-    combines with model's `method::forward`. A teacher inheriets from `Lightning-AI`'s `LightningDataModule`
-    extracts the logics of traning step, make data and objective independent with model forward.
-    In addition to `LightningDataModule`, it adds a point to model to do stepping. key methods:
-        - :method:``train_dataloader`` & :method:``val_dataloader``: access to data.
-        - :method:``training_step`` & :method:``validation_step``: detail step logics.
-        - :method:``setup_model``:
+    and further combine with model's `:method::forward`. A teacher class is desgined to extract the training logics.
+    This class adds a point to model to do stepping. key methods:
+        - :method:``training_step`` (must be implemented) & :method:``validation_step`` : detail step logics.
+        - :method:``setup_model`` (must be implemented): an inferce for building linked model.
+        e.g., loss func, metrics can be configured here.
+        - :method:``configure_optimizers`` (must be implemented): an inferce for building linked model.
+        - :method:``setup``:
             - called in :method:`self.model.setup`.
             - build models dynamically or adjust something about them at the beginning of fit stage.
             see :method:``pl.LightningDataModul.setup``
 
-    In this class, :method:``training_step`` & :method:``validation_step``, :method:``setup_model` are simple
-    examples referring to:
-        https://github.com/Lightning-Universe/lightning-flash/blob/master/src/flash/core/model.py#Task
-    Feel free to modify them in derived implementations.
+    See ``egrecho.models.architecture.speaker.asv_task.SVTeacher`` as an example use.
+
+    Example::
+
+        class LitTeacher(Teacher):
+            def __init__(
+                self,
+                num_classes,
+                optimizer='adam',
+                lr_scheduler='warm_cosine',
+                lr=0.01,
+            ):
+                super().__init__()
+                self.num_classes = num_classes
+                self.optimizer = optimizer
+                self.lr_scheduler = lr_scheduler
+                self.lr = lr
+
+            def setup_model(self):
+                self.setup_loss_fn_dict({"loss": F.cross_entropy})
+
+            def configure_optimizers(self):
+                return self.configure_single_optimizer(
+                    self.optimizer, self.lr_scheduler, self.lr
+                )
+
+            def training_step(self, batch, batch_idx):
+                some codes ...
+
+
+            class LitModel(TopVirtualModule):
+                def __init__(self):
+                    super().__init__()
+                    self.l1 = nn.Linear(28, 1000)
+                    self.classifier = nn.Linear(1000, 42)
+
+
+            model = LitModel()
+            teacher = LitTeacher(42)
+            # link teacher & pre-configure training details.
+            model.setup_teacher(teacher)
+            dataloader = ...
+            trainer = pl.Trainer(...)
+            trainer.fit(model, dataloader)
+
+    NOTE:
+        In this class, :method::``setup_loss_fn_dict`, :method::``setup_train_metrics`` are
+        modified from:
+            https://github.com/Lightning-Universe/lightning-flash/blob/master/src/flash/core/model.py#Task
+        Feel free to modify them in derived implementations.
 
     Class attributes (overridden by derived classes):
         - **task_name** (`str`) -- name of task, e.g., `"automatic-speaker-verification"`.

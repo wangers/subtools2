@@ -419,30 +419,6 @@ def _jit_compile() -> Generator:
         TopVirtualModel._jit_is_scripting = False
 
 
-# def valid_dummy_input_keys(
-#     model: Union[Module,TopVirtualModule], model_inputs: Iterable[str]
-# ) -> Tuple[bool, List[str]]:
-#     """
-#     validation the input keys
-#     """
-#     forward_parameters = signature(model.forward).parameters
-
-#     model_inputs_set = set(model_inputs)
-
-#     # We are fine if config_inputs has more keys than model_inputs
-#     forward_inputs_set = set(forward_parameters.keys())
-#     is_ok = model_inputs_set.issubset(forward_inputs_set)
-
-#     # Make sure the input order match (VERY IMPORTANT !!!!)
-#     matching_inputs = forward_inputs_set.intersection(model_inputs_set)
-#     ordered_inputs = [
-#         parameter
-#         for parameter in forward_parameters.keys()
-#         if parameter in matching_inputs
-#     ]
-#     return is_ok, ordered_inputs
-
-
 class DataMoudle(pl.LightningDataModule):
     """
     A simple lightning datamoudle wrapper for dataloader.
@@ -543,15 +519,6 @@ class DataMoudle(pl.LightningDataModule):
             pin_memory=self.pin_memory,
             **self.extra_dl_kwargs,
         )
-        # Temporary ugly workaround, lightning now underlying wrapper dataloaders to a CombinedLoader
-        # with max_size_cycle mode, which will elimiate our dataloader's StopIteration, as we may
-        # manually set __len__ larger than real lengths. Here we directely returns a 'min_size' mode.
-        # remove this once have a nicer solution.
-        # return (
-        #     pl.utilities.CombinedLoader(dataloader, mode="min_size")
-        #     if self.fullsync
-        #     else dataloader
-        # )
         return dataloader
 
     def _val_dataloader(self) -> DataLoader:

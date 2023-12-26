@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
-# Copyright xmuspeech (Author: Leo 2023-9)
+# Copyright xmuspeech (Author: Leo 2023-09)
 
 import os
 import traceback
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
 
+import torch
 from jsonargparse import Namespace, lazy_instance
 from lightning.pytorch import seed_everything
 from lightning.pytorch.callbacks import (
@@ -18,7 +19,7 @@ from lightning.pytorch.callbacks import (
 from lightning.pytorch.loggers import CSVLogger, Logger, TensorBoardLogger
 from lightning.pytorch.utilities import rank_zero_warn
 
-from egrecho.core.loads import save_ckpt_conf_dir
+from egrecho.core.loads import resolve_ckpt, save_ckpt_conf_dir
 from egrecho.core.module import DataMoudle, TopVirtualModel
 from egrecho.core.parser import BaseCommand
 from egrecho.core.pl_parser import LightningParser, SaveConfigCallback
@@ -26,6 +27,7 @@ from egrecho.core.teacher import Teacher
 from egrecho.data.builder.asv import ASVPipeBuilder, DataBuilder
 from egrecho.models.groups.asv_group import SVTeacher, XvectorMixin
 from egrecho.training.callbacks import DataSetEpochCallback, LastBatchPatchCallback
+from egrecho.utils.cuda_utils import release_memory
 from egrecho.utils.logging import _infer_rank, get_logger
 from egrecho_cli.register import register_command
 
@@ -84,13 +86,26 @@ class TrainASV(BaseCommand):
                 XvectorMixin,
                 "model",
             )
+
             train_parser.add_argument(
-                "--ckpt_path",
+                "--resume_ckpt",
                 type=Optional[str],
                 default=None,
                 help="Path/URL of the checkpoint from which training is resumed. Could also be "
                 'one of two special keywords ``"last"`` and ``"hpc"``. If there is no checkpoint file at '
                 "the path, an exception is raised.",
+            )
+            train_parser.add_argument(
+                "--init_weight",
+                "-init-wt",
+                action="store_true",
+                help="Whether init model weight, and you must proved params --init_weight_params to resolve a ckpt. "
+                "Similar but different to --resume_ckpt, this init weight will ignore other previous training status. "
+                "(e.g., optimizer & lr scheduler).",
+            )
+            train_parser.add_function_arguments(
+                resolve_ckpt,
+                "init_weight_params",
             )
             train_parser.add_subclass_arguments(
                 Teacher,
@@ -182,14 +197,44 @@ class TrainASV(BaseCommand):
             }
             self.link_data_attr()
             self.config_tosave["run"] = self.sub_config
+
+            # initiate model
             self.subcommand_init = self.sub_parser.instantiate_classes(self.sub_config)
             self.model: TopVirtualModel = self.subcommand_init["model"]
             self.teacher: Teacher = self.subcommand_init["teacher"]
-            self.ckpt_path = self.subcommand_init["ckpt_path"]
-            self.model_checkpoint: ModelCheckpoint = self.subcommand_init["mckpt"]
             self.setup_model_teacher()
+
+            # resume whole training or just initiate weights from previous ckpt.
+            self.resume_ckpt = self.subcommand_init["resume_ckpt"]
+            self.init_weight = self.subcommand_init["init_weight"]
+            if bool(self.resume_ckpt) and self.init_weight:
+                logger.warning(
+                    f"Got both resume_ckpt={self.resume_ckpt} and init_weight={self.init_weight}, "
+                    f"invalids the init_weight and resumes this tranining from resume_ckpt."
+                )
+                self.init_weight = False
+
+            # TODO: move this to a callback?
+            if self.init_weight:
+                self.init_weight_params = self.subcommand_init["init_weight_params"]
+                init_ckpt = resolve_ckpt(**self.init_weight_params)
+
+                logger.info(
+                    f"Loading {type(self.model).__name__} from ckpt ({init_ckpt}) to cpu, "
+                    "skips mismatch weight keys with strict=False.",
+                    ranks=0,
+                )
+                states = torch.load(init_ckpt, map_location="cpu")
+                states = states["state_dict"] if "state_dict" in states else states
+                self.model.load_state_dict(states, strict=False)
+                release_memory(states)
+
+            # callbacks
+            self.model_checkpoint: ModelCheckpoint = self.subcommand_init["mckpt"]
             self.default_callbacks += self._get_default_callbacks()
             self.instantiate_trainer()
+
+            # prepare fit
             self.prepare_fit_kwargs()
 
             # TODO: move this out of cli and consider rank problem
@@ -283,14 +328,14 @@ class TrainASV(BaseCommand):
         """Prepares fit_kwargs including datamodule."""
         self.fit_kwargs = {"model": self.model}
         self.fit_kwargs["datamodule"] = self.data
-        self.fit_kwargs["ckpt_path"] = self.ckpt_path
+        self.fit_kwargs["ckpt_path"] = self.resume_ckpt
 
     # TODO: move this out of cli and consider rank problem
     def save_ckpt_conf_dir(self):
         if (
             (_infer_rank() or 0) == 0
             and not self.subcommand_init["trainer"]["fast_dev_run"]
-            and self.ckpt_path is None
+            and self.resume_ckpt is None
         ):
             ckpt_dir = Path(self.trainer.log_dir) / "checkpoints"
             model_type = self.model.__class__

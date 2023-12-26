@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2023-09)
 
-import os
 import shutil
 import warnings
 from pathlib import Path
@@ -212,7 +211,7 @@ class ExtractEmbedding(BaseCommand):
             result_file = shutil.copy(total_embed_file, self.embd_dir)
 
             # records ckpt-related embed location last running.
-            with open(Path(self.args.dirpath) / "last_extract_outdir", "w") as f:
+            with open(Path(self.args.dirpath) / "extract_outdir.last", "w") as f:
                 f.write(str(self.outdir))
 
             logger.info(

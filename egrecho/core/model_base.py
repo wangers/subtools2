@@ -266,27 +266,3 @@ def _jit_compile() -> Generator:
         yield
     finally:
         ModelBase.__jit_is_scripting = False
-
-
-# def valid_dummy_input_keys(
-#     model: Union[Module,TopVirtualModule], model_inputs: Iterable[str]
-# ) -> Tuple[bool, List[str]]:
-#     """
-#     validation the input keys
-#     """
-#     forward_parameters = signature(model.forward).parameters
-
-#     model_inputs_set = set(model_inputs)
-
-#     # We are fine if config_inputs has more keys than model_inputs
-#     forward_inputs_set = set(forward_parameters.keys())
-#     is_ok = model_inputs_set.issubset(forward_inputs_set)
-
-#     # Make sure the input order match (VERY IMPORTANT !!!!)
-#     matching_inputs = forward_inputs_set.intersection(model_inputs_set)
-#     ordered_inputs = [
-#         parameter
-#         for parameter in forward_parameters.keys()
-#         if parameter in matching_inputs
-#     ]
-#     return is_ok, ordered_inputs
