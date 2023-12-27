@@ -1,4 +1,4 @@
-# torch
+# torch >= 1.13.0
 # torchaudio
 black == 22.3.0
 lmdb >= 1.4.0
