@@ -1,5 +1,4 @@
-# type `egrecho train-asv -h` to show help
-save_dir: './exp/ecapa1024'
+save_dir: './exp/ecapa1024_lm'
 seed_everything: 42
 data_builder:
   class_path: ASVPipeBuilder
@@ -16,23 +15,26 @@ data_builder:
         partition: true
         label_fname: speaker.yaml
         resample_rate: 16000
+        pre_sp_init_p: 0.  # close speeder but keep num classes.
         pre_sp_factors:
         - 0.9
         - 1.0
         - 1.1
-        rand_chunksize: 200
+        rand_chunksize: 600  # longer chunk
         chunk_retry_param:
-          retry: 0
+          retry: 2
         frame_shift: 0.01
         speech_aug: true
         speech_aug_config:
           batch_size: 1
           db_dir: /data/speech_aug  # replace your noise set
           init_p: 0.5
-          sim_rir_prob: 0.5
-          wave_drop: false
+          # sim_rir_prob: 0.5
+          tempo_factors: [1.0] # close tempo
+          wave_drop: true
+          drop_time_count: [0, 10]
         shard_shuffle_size: 1500
-        batch_size: 128
+        batch_size: 64
         drop_last: true
         extractor_param:
           # scale_bit: 16
@@ -51,7 +53,6 @@ data:
   pin_memory: false
   fullsync: true
 run:
-  model:
     class_path: EcapaModel
     init_args:
       config:
@@ -72,35 +73,43 @@ run:
           num_classes: 2
           head_name: aam
           head_params:
+            m: 0.5  # large-margin
             sub_k: 1
             do_topk: false
-  ckpt_path: null
+  # init weight from previous
+  init_weight: true
+  init_weight_params:
+    dirpath: ./exp/ecapa1024
+    checkpoint: last.ckpt
+    version: version
+  resume_ckpt: null
   teacher:
     class_path: SVTeacher
     init_args:
       num_classes: null
       margin_warm: true
       margin_warm_kwargs:
-        start_epoch: 10
-        end_epoch: 25
+        start_epoch: 0
+        end_epoch: 1
+        offset_margin: -0.3  # 0.2 -> 0.5
       optimizer:
       - sgd
-      - weight_decay: 1e-4
+      - weight_decay: 1e-5
         momentum: 0.9
-        nesterov: true
+        nesterov: false
       lr_scheduler:
       - warm_cosine
-      - warmup_steps: 0.05
+      - warmup_steps: 0.1
         # pct_start: 0.1
         eta_min: 1e-6
-      lr: 0.2
+      lr: 4e-4
   trainer:
     accelerator: gpu
     strategy: auto
     devices: 4
-    precision: 16-mixed
+    precision: 32-true  # 16-mixed cause warning as nan scalar in begin.
     fast_dev_run: false
-    max_epochs: 80
+    max_epochs: 8
     limit_val_batches: null
     val_check_interval: 1000
     check_val_every_n_epoch: 1

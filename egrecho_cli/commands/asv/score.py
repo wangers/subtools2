@@ -128,10 +128,10 @@ def score_set(
     return metrics
 
 
-DESCRIPTION = """Extract xvector."""
+DESCRIPTION = """Scores sv."""
 
 
-@register_command(name="score", help=DESCRIPTION)
+@register_command(name="score-sv", help=DESCRIPTION)
 class Score(BaseCommand):
     @classmethod
     def get_dummy_parser(cls) -> CommonParser:
