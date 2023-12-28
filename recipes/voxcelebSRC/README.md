@@ -4,7 +4,7 @@
 * Egs = Voxceleb2_dev(online random aug) + random chunk(2s)
 * Optimization = [sgd (lr = 0.2 - 1e-6) + warm_cosine] x 4 GPUs (total batch-size=512) + AMP training 120 epochs + average best 5
 * ECAPA-TDNN (channels = 1024) + AAM-Softmax (margin = 0.2)
-* LM: random chunk(2s -> 6s), close speed perturb, margin (0.2 -> 0.5), see config file for details.
+* Large-Margin Finetune: random chunk(2s -> 6s), close speed perturb, margin (0.2 -> 0.5), see config file for details.
 
 | EER% | vox1-O | vox1-O-clean | vox1-E | vox1-E-clean | vox1-H | vox1-H-clean |
 |:-----|:------:|:------------:|:------:|:------------:|:------:|:------------:|
@@ -15,8 +15,8 @@
 <br/>
 
 #### adamw VS sgd
-Adamw converges really fast in early stage, but its last performance slightly worse than sgd, maybe it needs more hparams fine-tuning.
-* Adamw: [(lr = 0.002 - 1e-8, weight decay = 0.05) + warm_sqrt]
+Adamw converges quiet fast in the early stage, but its final performance is slightly worse than sgd, maybe it needs further training protocol tuning.
+* Adamw: [(lr = 0.002 - 1e-8, weight decay = 0.05) + warm_cosine]
 * Sgd: [(lr = 0.2 - 1e-6) + warm_cosine]
 * AMP for 80 epochs + last checkpoint
 
@@ -24,8 +24,8 @@ Adamw converges really fast in early stage, but its last performance slightly wo
 |:-----|:------:|:------------:|:------:|:------------:|:------:|:------------:|
 |  Sgd-Submean   | 1.098 |  0.962 | 1.209 | 1.088 | 2.141 | 2.007 |
 |  Sgd-Asnorm    | 0.938 |  0.819 | 1.14  | 1.014 | 1.986 | 1.851 |
-|  Adamw-Submean | 1.135 |  0.994 | 1.3   | 1.182 | 2.384 | 2.258 |
-|  Adamw-Asnorm  | 0.986 |  0.856 | 1.187 | 1.061 | 2.116 | 1.983 |
+|  Adamw-Submean | 1.071 |  0.941 | 1.248 | 1.129 | 2.355 | 2.219 |
+|  Adamw-Asnorm  | 0.901 |  0.771 | 1.163 | 1.041 | 2.129 | 2.004 |
 <br/>
 
 ### Results of ECAPA-TDNN (old version)
