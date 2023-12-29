@@ -5,14 +5,14 @@
 
 import math
 import warnings
-from typing import Dict
+from typing import Dict, Protocol, runtime_checkable
 
 import torch
 import torch.nn.functional as F
 
 
-class MarginHead(torch.nn.Module):
-    r"""This is a base class of margin heads. Besides apply margin penalty to its outputs,
+class Classifier(torch.nn.Module):
+    r"""This is a base class of classifiers. Besides apply margin penalty to its outputs,
     it will record the raw outputs (self.posterior) before penalty for computting a reliable accuracy.
 
     Examles:
@@ -32,6 +32,9 @@ class MarginHead(torch.nn.Module):
     def forward(self, *inputs):
         raise NotImplementedError
 
+    def get_init_margin(self):
+        return getattr(self, "m", None)
+
     @property
     def posterior(self):
         return self._posterior
@@ -40,50 +43,37 @@ class MarginHead(torch.nn.Module):
     def posterior(self, rawout):
         self._posterior = rawout
 
-    def get_init_margin(self):
-        return getattr(self, "m", None)
-
-    def update_margin(self, add_margin=None, lambda_m=1.0):
-        """
-        An inferce to contral margin dynamically during training.
-
-        Args:
-            add_margin (float, optional): Additional margin to be added. Default is None.
-            lambda_m (float, optional): A smoothing factor for margin updates.
-        """
-        pass
-
-    def from_name(
+    def from_str(
         name: str,
         input_dim: int,
         num_classes: int,
         sub_k: int = 1,
         do_topk: bool = False,
         **kwargs,
-    ) -> "MarginHead":
+    ) -> "Classifier":
         """
-        Create an instance of MarginHead subclass based on its name.
+        Create an instance of Classifier subclass based on its name.
 
         Args:
-            name (str): The name of the margin head subclass.
+            name (str): The name of the classifier subclass.
             input_dim (int): The input dimension.
             num_classes (int): The number of labels.
             sub_k (int, optional): Sub-center parameter. Default is 1.
             do_topk (bool, optional): Flag to enable top-k penalty. Default is False.
 
         Returns:
-            MarginHead: An instance of the specified MarginHead subclass.
+            Classifier: An instance of the specified Classifier subclass.
         """
         if name == "linear":
-            return LinearHead(input_dim, num_classes, sub_k=sub_k, **kwargs)
+            return LinearClassifier(input_dim, num_classes, sub_k=sub_k, **kwargs)
         if name == "cosine":
-            return CosineHead(input_dim, num_classes, sub_k=sub_k, **kwargs)
+            return CosineClassifier(input_dim, num_classes, sub_k=sub_k, **kwargs)
         elif name == "am":
-            return AdditiveMarginHead(
+            return AdditiveMarginClassifier(
                 input_dim, num_classes, sub_k=sub_k, do_topk=do_topk, **kwargs
             )
         elif name == "aam":
-            return ArcMarginHead(
+            return ArcMarginClassifier(
                 input_dim, num_classes, sub_k=sub_k, do_topk=do_topk, **kwargs
             )
         else:
@@ -92,7 +82,7 @@ class MarginHead(torch.nn.Module):
             )
 
 
-class LinearHead(MarginHead):
+class LinearClassifier(Classifier):
     """
     A linear projection with sub-center.
 
@@ -114,9 +104,6 @@ class LinearHead(MarginHead):
         )
         # torch.nn.init.xavier_normal_(self.weight, gain=1.0)
         torch.nn.init.normal_(self.weight, 0.0, 0.01)  # It seems better.
-
-    def update_margin(self, add_margin=None, lambda_m=1.0):
-        ...
 
     def forward(self, inputs: torch.Tensor, labels: torch.Tensor = torch.empty(0)):
         """
@@ -140,7 +127,7 @@ class LinearHead(MarginHead):
         return f"(input_dim={self.input_dim}, num_classes={self.num_classes}, sub_k={self.sub_k} "
 
 
-class CosineHead(MarginHead):
+class CosineClassifier(Classifier):
     """
     A cosine projection with sub-center.
 
@@ -164,9 +151,6 @@ class CosineHead(MarginHead):
         # torch.nn.init.xavier_normal_(self.weight, gain=1.0)
         torch.nn.init.normal_(self.weight, 0.0, 0.01)  # It seems better.
 
-    def update_margin(self, add_margin=None, lambda_m=1.0):
-        ...
-
     def forward(self, inputs: torch.Tensor, labels: torch.Tensor = torch.empty(0)):
         """
         Forward pass of the linear head.
@@ -189,7 +173,20 @@ class CosineHead(MarginHead):
         return f"(input_dim={self.input_dim}, num_classes={self.num_classes}, sub_k={self.sub_k}, s={self.s} "
 
 
-class AdditiveMarginHead(MarginHead):
+@runtime_checkable
+class Marginable(Protocol):
+    def update_margin(self, add_margin=None, lambda_m=1.0):
+        """
+        An inferce to contral margin dynamically during training.
+
+        Args:
+            add_margin (float, optional): Additional margin to be added. Default is None.
+            lambda_m (float, optional): A smoothing factor for margin updates.
+        """
+        pass
+
+
+class AdditiveMarginClassifier(Classifier):
     """
     Additive margin projection with sub-center and inter-topk penalty.
 
@@ -313,7 +310,7 @@ class AdditiveMarginHead(MarginHead):
         )
 
 
-class ArcMarginHead(MarginHead):
+class ArcMarginClassifier(Classifier):
     """
     Arcface margin projection with sub-center and inter-topk penalty.
 
@@ -456,11 +453,11 @@ class MarginWarm:
     Between start_epoch and end_epoch, the offset_margin is
     exponentially increasing from offset_margin (usually negative) to 0.
     The lambda_t is linearly increasing from init_lambda to 1.
-    It is designed to control the MarginHead through `margin + offset_margin` and
+    It is designed to control the margin classifier through `margin + offset_margin` and
     `penalty_cosine_theta = lambda * penalty_cosine_theta + (1 - lambda) * cosine_theta`
 
     Args:
-        head (Module): head moudle to apply margin.
+        classifier (Module): classifier moudle to apply margin.
         start_epoch (int): The epoch when the margin warmup starts.
         end_epoch (int): The epoch when the margin warmup ends.
         offset_margin (float, optional): The initial offset margin value.
@@ -477,7 +474,7 @@ class MarginWarm:
 
     def __init__(
         self,
-        head: MarginHead,
+        classifier: Classifier,
         start_epoch,
         end_epoch,
         offset_margin=None,
@@ -488,6 +485,7 @@ class MarginWarm:
     ):
         super().__init__()
         assert start_epoch >= 0
+        assert isinstance(classifier, Marginable)
         if end_epoch < start_epoch:
             raise ValueError(
                 "End_epoch should not smaller then start_epoch, but got end_epoch: {}, start_epoch:{}".format(
@@ -498,11 +496,11 @@ class MarginWarm:
             raise ValueError(
                 f"init_lambda should be in [0, 1],but got ({init_lambda})."
             )
-        self.head = head
+        self.classifier = classifier
         self.start_epoch = start_epoch
         self.end_epoch = end_epoch
         if offset_margin is None:
-            offset_margin = -(self.head.get_init_margin() or 0.0)
+            offset_margin = -(self.classifier.get_init_margin() or 0.0)
         self.offset_margin = offset_margin
         self.init_lambda = init_lambda
         self.num_steps_per_epoch = num_steps_per_epoch
@@ -597,7 +595,7 @@ class MarginWarm:
             offset_margin, lambda_t = self.offset_margin, self.init_lambda
 
         self.offset_stat, self.lambda_t_stat = offset_margin, lambda_t
-        self.head.update_margin(offset_margin, lambda_t)
+        self.classifier.update_margin(offset_margin, lambda_t)
 
     def get_stats(self) -> Dict[str, float]:
         stats = {}
@@ -616,7 +614,7 @@ class MarginWarm:
 
     def __repr__(self):
         return (
-            f"{self.__class__.__name__}(head={self.head.__class__.__name__}, "
+            f"{self.__class__.__name__}(classifier={self.classifier.__class__.__name__}, "
             f"start_epoch={self.start_epoch}, end_epoch={self.end_epoch}, init_offset_margin={self.offset_margin}, "
             f"num_steps_per_epoch={self.num_steps_per_epoch}, init_lambda={self.init_lambda})"
         )

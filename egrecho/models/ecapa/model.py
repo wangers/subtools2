@@ -8,7 +8,7 @@ import torch
 from egrecho.models.architecture.speaker import XvectorMixin, XvectorOutput
 from egrecho.models.ecapa.ecapa_config import EcapaSVConfig
 from egrecho.models.ecapa.ecapa_xvector import EcapaXvector
-from egrecho.nn.head import MarginHead
+from egrecho.nn.classifier import Classifier
 
 
 class EcapaModel(XvectorMixin):
@@ -43,12 +43,12 @@ class EcapaModel(XvectorMixin):
         self.save_hyperparameters("config")
 
         self.ecapa = EcapaXvector(self.config)
-        if self.config.head_name:
-            self.head = MarginHead.from_name(
-                self.config.head_name,
+        if self.config.classifier_str:
+            self.classifier = Classifier.from_str(
+                self.config.classifier_str,
                 self.config.embd_dim,
                 self.config.num_classes,
-                **self.config.head_params
+                **self.config.classifier_params
             )
 
         self.example_input_array = {

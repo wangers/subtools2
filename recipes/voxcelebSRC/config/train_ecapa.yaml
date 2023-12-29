@@ -70,8 +70,8 @@ run:
             stddev: true
           embd_layer_num: 1
           post_norm: false
-          head_name: aam
-          head_params:
+          classifier_str: aam
+          classifier_params:
             sub_k: 1
             do_topk: false
   resume_ckpt: null

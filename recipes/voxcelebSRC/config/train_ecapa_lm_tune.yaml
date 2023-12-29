@@ -71,8 +71,8 @@ run:
           embd_layer_num: 1
           post_norm: false
           num_classes: 2
-          head_name: aam
-          head_params:
+          classifier_str: aam
+          classifier_params:
             m: 0.5  # large-margin
             sub_k: 1
             do_topk: false

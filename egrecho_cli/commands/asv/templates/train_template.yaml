@@ -64,8 +64,8 @@ run:
           embd_layer_num: 1
           post_norm: false
           num_classes: 2
-          head_name: aam
-          head_params:
+          classifier_str: aam
+          classifier_params:
             sub_k: 1
             do_topk: false
   teacher:
@@ -124,4 +124,3 @@ run:
     mode: min
     check_on_train_epoch_end: true
     log_rank_zero_only: false
-

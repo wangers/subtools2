@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from torchmetrics import Accuracy
 
 from egrecho.core.teacher import LR_SCHEDULER_TYPE, OPTIMIZER_TYPE, ModuleDict, Teacher
-from egrecho.nn.head import LinearHead, MarginHead, MarginWarm
+from egrecho.nn.classifier import Classifier, Marginable, MarginWarm
 from egrecho.utils.logging import get_logger
 from egrecho.utils.misc import ConfigurationException
 from egrecho.utils.torch_utils import tensor_has_nan
@@ -128,13 +128,13 @@ class SVTeacher(ClassificationMixin, Teacher):
         self.setup_train_metrics(metrics)
         self.setup_val_metrics(deepcopy(metrics))
         if (
-            getattr(self.model, "head", None)
-            and isinstance(self.model.head, MarginHead)
-            and not isinstance(self.model.head, LinearHead)
+            getattr(self.model, "classifier", None)
+            and isinstance(self.model.classifier, Classifier)
+            and isinstance(self.model.classifier, Marginable)
             and self.margin_warm
         ):
             self.margin_scheduler = MarginWarm(
-                self.model.head, **self.margin_warm_kwargs
+                self.model.classifier, **self.margin_warm_kwargs
             )
 
     def common_step(self, batch: dict, batch_idx: int, metrics: ModuleDict) -> Dict:
@@ -146,11 +146,11 @@ class SVTeacher(ClassificationMixin, Teacher):
             embd = self.model(x)
         if isinstance(embd, (list, tuple)):
             embd = embd[0]
-        out_hat = self.model.head(embd, labels)
+        out_hat = self.model.classifier(embd, labels)
 
         posterior = (
-            self.model.head.posterior
-            if hasattr(self.model.head, "posterior")
+            self.model.classifier.posterior
+            if hasattr(self.model.classifier, "posterior")
             else out_hat
         )
         outputs = {"output": out_hat}

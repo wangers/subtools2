@@ -15,8 +15,6 @@ default_pooling_params = {
     "stddev": True,
 }
 
-default_margin_warm_params = {"start_epoch": 5, "end_epoch": 15, "offset_margin": -0.2}
-
 
 @dataclass
 class EcapaConfig(DataclassConfig):
@@ -64,17 +62,19 @@ class EcapaSVConfig(EcapaConfig):
     Args:
         num_classes:
             Need to be set to label number. Defaults to 2.
-        head_name (str, optional):
-            Margin head. Default is aam.
-        head_kwargs (dict, optinal):
-            other kwargs passing to margin head.
+        classifier_str (str, optional):
+            Margin classifier. Default is aam.
+        classifier_params (dict, optinal):
+            other kwargs passing to margin classifier.
             sub_k: sub center. Default is 1.
             do_topk: wheter do hard sample margin.
     """
 
     num_classes: int = 2
-    head_name: Optional[Literal["linear", "am", "aam"]] = "aam"
-    head_params: dict = field(default_factory=lambda: {"sub_k": 1, "do_topk": False})
+    classifier_str: Optional[Literal["linear", "am", "aam"]] = "aam"
+    classifier_params: dict = field(
+        default_factory=lambda: {"sub_k": 1, "do_topk": False}
+    )
 
     def __post_init__(self):
         super().__post_init__()
