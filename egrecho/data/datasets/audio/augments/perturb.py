@@ -455,13 +455,13 @@ class ResponseImpulse(SinglePerturb):
             if noise.size(-1) > lengths[i] and self.rir_fix_len:
                 direct_index = noise.abs().argmax(axis=1)[0].item()
                 if direct_index > lengths[i]:
-                    end = min(direct_index + lengths[i] // 2, lengths[i])
+                    end = min(direct_index + int(lengths[i]) // 2, lengths[i])
                     noise = noise[
                         ...,
                         end - lengths[i] : end,
                     ]
                 else:
-                    noise = noise[..., 0 : lengths[i] + 1]
+                    noise = noise[..., : lengths[i]]
             noises.append(noise)
 
         noises, _ = audio_collate_fn(noises)
