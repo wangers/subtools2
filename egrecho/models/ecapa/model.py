@@ -62,9 +62,6 @@ class EcapaModel(XvectorMixin):
         Args:
             input_features (Tensor):
                 input tensor of shape (B, T, F)
-            position (bool):
-                some case with two embd layer, far can get the second-to-last embedding.
-
         """
         embd, embd_far = self.ecapa(input_features)
 
@@ -79,6 +76,8 @@ class EcapaModel(XvectorMixin):
         Args:
             input_features (Tensor):
                 input tensor of shape (B, T, F)
+            max_chunk (int):
+                longer input feature will be chunked.
             position (bool):
                 some case with two embd layer, far can get the second-to-last embedding.
         """

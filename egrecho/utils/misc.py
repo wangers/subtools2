@@ -334,31 +334,3 @@ def imports_local(local_file: Optional[Union[str, Path]] = None):
             )
         except Exception as e:
             warnings.warn(f"{e}\nFailed imports local file {local_file}.")
-
-
-# @contextmanager
-# def patch_environment(**kwargs):
-#     """
-#     A context manager that will add each keyword argument passed to `os.environ` and remove them when exiting.
-
-#     Will convert the values in `kwargs` to strings and upper-case all the keys.
-
-#     Example:
-
-#     ```python
-#     >>> import os
-#     >>> from accelerate.utils import patch_environment
-
-#     >>> with patch_environment(FOO="bar"):
-#     ...     print(os.environ["FOO"])  # prints "bar"
-#     >>> print(os.environ["FOO"])  # raises KeyError
-#     ```
-#     """
-#     for key, value in kwargs.items():
-#         os.environ[key.upper()] = str(value)
-
-#     yield
-
-#     for key in kwargs:
-#         if key.upper() in os.environ:
-#             del os.environ[key.upper()]
