@@ -4,6 +4,7 @@
 import importlib
 import os
 import sys
+import traceback
 import warnings
 from typing import Dict, Type
 
@@ -129,11 +130,14 @@ def main():
     try:
         named_cli_cls[command_name].run_from_args(sub_args, named_parsers[command_name])
     except KeyboardInterrupt as exc:  # noqa
-        print("Keyboard exit.")
+        msg = f"#### Keyboard exit ({command_name}): {' '.join(sys.argv)}"
+        print(msg)
         sys.exit(1)
     except Exception as exc:
-        msg = f"{exc}\n#### Run command ({command_name}) error: {' '.join(sys.argv)}"
-        raise type(exc)(msg)
+        traceback.print_exc()
+        msg = f"#### Run command ({command_name}) error: {' '.join(sys.argv)}"
+        print(msg)
+        sys.exit(1)
 
 
 # entry

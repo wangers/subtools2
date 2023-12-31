@@ -214,6 +214,7 @@ class ExtractEmbedding(BaseCommand):
             with open(Path(self.args.dirpath) / "extract_outdir.last", "w") as f:
                 f.write(str(self.outdir))
 
+            release_memory()  # gc
             logger.info(
                 f"Concate extracted embedding done, saved {buf_count_newlines(result_file)} number xv to "
                 f"{result_file}",
