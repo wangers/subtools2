@@ -27,5 +27,6 @@ exclude =
     *.egg-info,
     .cache,
     .eggs
+	docs
 
 max-line-length = 120

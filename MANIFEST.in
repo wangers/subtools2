@@ -1,0 +1,6 @@
+# Include the Requirements
+include requirements.txt
+recursive-include requirements *.txt
+
+# Include the license file
+include LICENSE

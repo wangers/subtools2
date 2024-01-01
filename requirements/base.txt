@@ -1,0 +1,11 @@
+# torch
+# torchaudio
+lmdb >= 1.4.0
+rich >= 13.3.1
+tqdm >= 4.64.1
+tensorboard >= 2.14.0
+soundfile >= 0.12.1
+multiprocess
+kaldi_native_io
+jsonargparse[signatures,argcomplete]
+lightning >= 2.0.1
