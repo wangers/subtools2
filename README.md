@@ -37,7 +37,12 @@ To set up a development environment, run the following commands to clone and ins
 git clone https://github.com/wangers/subtools2.git subtools2
 cd subtools2
 pip install -e .
-pre-commit install  # Format code before `git commit`
+
+or
+
+# Format code tidy
+pip install -e .[dev]
+pre-commit install
 ```
 After installation, use `egrecho -h` to show some commands.
 #### Python package Installation

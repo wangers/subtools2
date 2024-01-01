@@ -1,6 +1,10 @@
 # Include the Requirements
 include requirements.txt
 recursive-include requirements *.txt
+recursive-include docs requirements.txt
+
+# Include the README and CHANGELOG
+include README.md
 
 # Include the license file
 include LICENSE
