@@ -12,7 +12,7 @@ import torch
 @dataclass
 class RandomValue:
     """
-    Generate a uniform distribution in the range `[start, end]`.
+    Generate a uniform distribution in the range ``[start, end]``.
     """
 
     end: Union[int, float]

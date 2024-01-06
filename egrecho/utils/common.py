@@ -39,7 +39,7 @@ def is_in_range(
     Range is close interval (e.g., [1, 2]), If the boundary is None, skip that condition.
 
     Args:
-        val (_type_)
+        val: value to be judged.
         max_val (Optional[Any], optional): Defaults to None.
         min_val (Optional[Any], optional): Defaults to None.
 
@@ -58,9 +58,10 @@ def is_in_range(
 
 class ObjectDict(dict):
     """
-    Make a dictionary behave like an object, with attribute-style access.
+    Makes a dictionary behave like an object, with attribute-style access.
 
-    Here are some examples of how it can be used:
+    Here are some examples of how it can be used::
+
         o = ObjectDict(my_dict)
         # or like this:
         o = ObjectDict(samples=samples, sample_rate=sample_rate)
@@ -99,7 +100,7 @@ class Timer(object):
 
 
 class DataclassSerialMixin:
-    """Makes a dataclass serializable to/from dictionaries.
+    """From/to dict mixin of dataclass.
 
     Example:
         >>> from dataclasses import dataclass
@@ -171,28 +172,28 @@ class DataclassSerialMixin:
     def from_dict(
         cls: type[D], obj: dict, drop_extra_fields: Optional[bool] = None
     ) -> D:
-        """Parses an instance of `cls` from the given dict.
+        """Parses an instance of ``cls`` from the given dict.
 
-        NOTE: If the `decode_into_subclasses` class attribute is set to True (or
-        if `decode_into_subclasses=True` was passed in the class definition),
+        NOTE: If the ``decode_into_subclasses`` class attribute is set to True (or
+        if ``decode_into_subclasses=True`` was passed in the class definition),
         then if there are keys in the dict that aren't fields of the dataclass,
         this will decode the dict into an instance the first subclass of `cls`
         which has all required field names present in the dictionary.
 
-        Passing `drop_extra_fields=None` (default) will use the class attribute
-        described above.
-        Passing `drop_extra_fields=True` will decode the dict into an instance
-        of `cls` and drop the extra keys in the dict.
-        Passing `drop_extra_fields=False` forces the above-mentioned behaviour.
+        - Passing ``drop_extra_fields=None`` (default) will use the class attribute
+            described above.
+        - Passing ``drop_extra_fields=True`` will decode the dict into an instance
+            of ``cls`` and drop the extra keys in the dict.
+            Passing ``drop_extra_fields=False`` forces the above-mentioned behaviour.
         """
         return from_dict(cls, obj, drop_extra_fields=drop_extra_fields)
 
 
 def fields_init_var(class_or_instance):
-    """Return a tuple describing the `InitVar` fields of this dataclass.
+    """Return a tuple describing the ``InitVar`` fields of this dataclass.
 
     Modified from:
-        https://docs.python.org/3/library/dataclasses.html#dataclasses.fields
+    https://docs.python.org/3/library/dataclasses.html#dataclasses.fields
 
     Accepts a dataclass or an instance of one. Tuple elements are of
     type Field.
@@ -217,30 +218,6 @@ def field_dict(dataclass, init_field_only=True) -> Dict[str, Field]:
             continue
         result[field.name] = field
     return result
-
-
-def parse_dict(s: str) -> dict:
-    """
-    Parse a string to a dict, it is useful for parsing cli args.
-
-    comma_separated:
-
-        - "a='test_a', b='test_b'"  -> dict: {a='test_a', b='test_b'}
-        - "(a='test_a', (b='test_b'))"  -> dict: {a='test_a', b='test_b'}
-        - "a='test_a', b=(b='test_b', c='test_c')" -> dict: {a='test_a', b={b='test_b', c='test_c'}}
-
-    json_stye:
-        - '{a:'test_a', b:'test_b'}' -> dict: {a='test_a', b='test_b'}
-    """
-
-    def _parse_comma_separated(s):
-        ret = {}
-        for mapping in s.replace(" ", "").split(","):
-            key, value = mapping.split("=")
-            ret[key] = value
-        return ret
-
-    return _parse_comma_separated(s)
 
 
 def batched(iterable, n):
@@ -283,7 +260,7 @@ def get_diff_dict(curr_dict: Dict, src_dict: Dict) -> Dict:
         src_dict (Dict): The source dictionary to compare against.
 
     Returns:
-        Dict: A dictionary containing the key-value pairs that differ between `src_dict` and `curr_dict`.
+        Dict: A dictionary containing the key-value pairs that differ between ``src_dict`` and ``curr_dict``.
 
     Example:
         >>> src_dict = {"name": "John", "age": 30}
@@ -321,7 +298,7 @@ def del_default_dict(data: Dict, defaults: Dict, recurse: bool = False):
 
     NOTE:
         This function modifies the `data` dictionary in place and also returns it. If
-        `recurse=True` it recursively processes nested dictionaries.
+        ``recurse=True`` it recursively processes nested dictionaries.
     """
     for k in list(data.keys()):
         default_val = defaults.get(k)
@@ -400,7 +377,7 @@ def dict_union(
 
 def list2tuple(func):
     """
-    Transfer the list in input parameter to hashable tuple, it is useful for `lru_cache`.
+    Transfer the list in input parameter to hashable tuple, it is useful for ``lru_cache``.
 
     NOTE: Don't support nest structure.
 

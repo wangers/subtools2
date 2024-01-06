@@ -5,7 +5,7 @@
 import collections
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Generator, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Generator, Optional, Union
 
 import lightning.pytorch as pl
 import torch
@@ -28,11 +28,11 @@ class TopVirtualModel(pl.LightningModule):
     """
     A lightning module is related to training, val, test.
 
-    In fit (train + validate) stage, you need to set :attr:`self.teacher`, where configures
+    In fit (train + validate) stage, you need to set ``self.teacher``, where configures
     step logics, dataloaders, criterion, etc.
     """
 
-    __jit_unused_properties__: List[str] = [
+    __jit_unused_properties__ = [
         "teacher"
     ] + pl.LightningModule.__jit_unused_properties__
 
@@ -45,7 +45,7 @@ class TopVirtualModel(pl.LightningModule):
         self._teacher: Teacher = None
 
     def setup(self, stage: str) -> None:
-        """Hook of :method:`~lightning.pytorch.core.hooks.DataHooks.setup`.
+        """Hook of :meth:`lightning.pytorch.core.hooks.DataHooks.setup`.
 
         Called this at the beginning of fit (train + validate), validate, test, or predict. This is a good hook when
         you need to build models dynamically or adjust something about them. This hook is called on every process
@@ -102,7 +102,7 @@ class TopVirtualModel(pl.LightningModule):
 
     def training_step(self, *args: Any, **kwargs: Any):
         """
-        Redirection to :method:`training_step` in teacher.
+        Redirection to :meth:`training_step` in teacher.
         """
         if self.teacher is None:
             raise ConfigurationException(
@@ -112,7 +112,7 @@ class TopVirtualModel(pl.LightningModule):
 
     def validation_step(self, *args: Any, **kwargs: Any):
         """
-        Redirection to :method:`training_step` in teacher.
+        Redirection to :meth:`training_step` in teacher.
         """
         if self.teacher is None:
             raise ConfigurationException(
@@ -122,7 +122,7 @@ class TopVirtualModel(pl.LightningModule):
 
     @classmethod
     def pipeline_out(cls, model_out: Any) -> Dict:
-        """Transform output (:method:``self.forward``) to dict for pipeline. write it for your specify model."""
+        """Transform output (:meth:`forward`) to dict for pipeline. write it for your specify model."""
         if isinstance(model_out, collections.abc.Mapping):
             return dict(model_out)
         return {"output": model_out}
@@ -153,7 +153,7 @@ class TopVirtualModel(pl.LightningModule):
 
     def configure_optimizers(self) -> OptimizerLRScheduler:
         """
-        Redirection to :method:`configure_optimizers` in teacher.
+        Redirection to :meth:`configure_optimizers` in teacher.
         """
         if self.teacher is None:
             raise ConfigurationException(
@@ -219,12 +219,14 @@ class TopVirtualModel(pl.LightningModule):
         This is raw now, to be implemented.
 
         Args:
-            checkpoint_path: Path to checkpoint. This can also be a URL, or file-like object.
+            checkpoint_path:
+                Path to checkpoint. This can also be a URL, or file-like object.
             map_location:
                 MAP_LOCATION_TYPE as in torch.load(). Defaults to 'cpu'.
 
                 If you preferring to load a checkpoint saved a GPU model
                 to GPU, set it to None (not move to another GPU) or set a specified device.
+
             hparams_file : Path or str, optional
                 Path to a .yaml file with hierarchical structure
                 as in this example::
@@ -282,7 +284,7 @@ class TopVirtualModel(pl.LightningModule):
         Args:
             file_path: The path of the file the onnx model should be saved to.
             input_sample: An input for tracing. Default: None (Use self.example_input_array)
-            **kwargs: Will be passed to `torch.onnx.export` function.
+            \**kwargs: Will be passed to :func:`torch.onnx.export`.
 
         NOTE:
             This general method may not appropriate for every model, you can override it for your specify model.
@@ -332,7 +334,7 @@ class TopVirtualModel(pl.LightningModule):
         Exports the model to a TorchScript representation for inference or saving.
 
         By default, compiles the entire model to a :class:`~torch.jit.ScriptModule`.
-        If you prefer to use tracing, provide the argument ``method='trace'`` and ensure that either the `input_sample` argument
+        If you prefer to use tracing, provide the argument ``method='trace'`` and ensure that either the ``input_sample`` argument
         is provided or the model has :attr:`example_input_array` set for tracing. To customize which modules are scripted,
         you can override this method. To return multiple modules, use a dictionary.
 
@@ -340,12 +342,13 @@ class TopVirtualModel(pl.LightningModule):
             file_path (Optional[Union[str, Path]]): Path to save the TorchScript representation. Default: None (no file saved).
             method (Optional[str]): Choose between 'script' (default) and 'trace' for TorchScript compilation methods.
             input_sample (Optional[Any]): An input to be used for tracing when method is set to 'trace'.
-                Default: None (uses :attr:`example_input_array`) if available.
-            **kwargs (Any): Additional arguments passed to :func:`torch.jit.script` or :func:`torch.jit.trace`.
+            Default: None (uses :attr:`example_input_array`) if available.
+            \**kwargs (Any): Additional arguments passed to :func:`torch.jit.script` or :func:`torch.jit.trace`.
 
         NOTE:
             - The exported script will be set to evaluation mode.
             - It is recommended to install the latest supported version of PyTorch for using this feature without limitations.
+
             Refer to the :mod:`torch.jit` documentation for supported features.
 
         Example::
@@ -423,13 +426,13 @@ class DataMoudle(pl.LightningDataModule):
     """
     A simple lightning datamoudle wrapper for dataloader.
 
-    The iterable dataset in `egrecho.data.iterable.IterabelDatasetWrapper` auto sharding samples in
-    different ranks, we should load the dataset in hook: :method:`setup(self)` as this hook is
+    The iterable dataset in :class:`~egrecho.data.iterable.IterabelDatasetWrapper` auto sharding samples in
+    different ranks, we should load the dataset in hook: :meth:`setup` as this hook is
     called on every process when using DDP.
 
     Args:
         builder (DataBuilder):
-            The data builder instance of :class:`egrecho.core.data_builder.DataBuilder`
+            The data builder instance of :class:`~egrecho.core.data_builder.DataBuilder`
             responsible for creating the dataset.
         batch_size (Optional[int]):
             The batch size for DataLoader. Default is None for iterable dataset.
@@ -443,8 +446,9 @@ class DataMoudle(pl.LightningDataModule):
         pin_memory (bool):
             Whether to pin memory in DataLoader. Default is True.
         fullsync (bool):
-            Whether to use `SyncDataLoader`. Default is True.
-        **extra_dl_kwargs: Additional keyword arguments to pass to DataLoader.
+            Whether to use :class:`~egrecho.data.iterable.SyncDataLoader`. Default is True.
+        \**extra_dl_kwargs:
+            Additional keyword arguments to pass to DataLoader.
     """
 
     def __init__(
@@ -519,6 +523,7 @@ class DataMoudle(pl.LightningDataModule):
             pin_memory=self.pin_memory,
             **self.extra_dl_kwargs,
         )
+
         return dataloader
 
     def _val_dataloader(self) -> DataLoader:

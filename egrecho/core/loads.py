@@ -44,11 +44,12 @@ def save_ckpt_conf_dir(
 
     Args:
         ckptdir:
-            the parent of savedir, it will create a `config` subdir as a placeholder of files.
+            the parent of savedir, it will create a ``config`` subdir as a placeholder of files.
         model_conf:
             a dict of model config.
         extractor:
-            extractor can be either a dict or a instance of `BaseFeature`.
+            extractor can be either a dict or a instance of
+            :class:`~egrecho.core.feature_extractor.BaseFeature`.
         model_type:
             model class type or class import path.
         feature_extractor_type:
@@ -124,9 +125,9 @@ def resolve_pretrained_model(
     extractor_fname: str = constants.DEFAULT_EXTRACTOR_FILENAME,
     **resolve_ckpt_kwargs,
 ) -> ResolveModelResult:
-    """Resolve `checkpoint`, `model_type`, `feats_config`.
+    """Resolves ``checkpoint``, ``model_type``, ``feats_config``.
 
-    Checkpoint resolving see :function::`egrecho.utils.io.resolve_ckpt` for details.
+    Checkpoint resolving see :func:`~egrecho.utils.io.resolve_ckpt.resolve_ckpt` for details.
     Auto resolve local dir like::
 
         ./dirpath/version_1
@@ -141,9 +142,9 @@ def resolve_pretrained_model(
 
     Args:
         checkpoint (str, optional):
-            The file name of checkpoint to resolve, local file needs a suffix like ".ckpt" / ".pt",
-            While checkpoint="best" is a preseved key means it will find `best_k_fname` which is
-            a file contains `Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]`, and sort by its score to
+            The file name of checkpoint to resolve, local file needs a suffix like ``".ckpt" / ".pt"``,
+            While ``checkpoint="best"`` is a preseved key means it will find ``best_k_fname`` which is
+            a file contains Dict[BEST_K_MODEL_PATH, BEST_K_SCORE], and sort by its score to
             match a best ckpt. Defaults to "last.ckpt".
         dirpath (Path or str, optional):
             The root path. Defaults to None, which means the current directory.
@@ -154,9 +155,9 @@ def resolve_pretrained_model(
         best_k_mode (Literal["max", "min"], optional):
             The mode for selecting the best_k checkpoint. Defaults to "min".
         extractor_fname (str):
-            feature extractor file name, defaults to `"feature_config.yaml"`, search in subdir:`"config"`.
+            feature extractor file name, defaults to ``"feature_config.yaml"``, search in ``config/`` subdir.
         resolve_ckpt_kwargs (dict):
-            additional kwargs to :function::`egrecho.utils.io.resolve_ckpt`.
+            additional kwargs to :func:`~egrecho.utils.io.resolve_ckpt.resolve_ckpt`.
     """
     if is_remote_url(checkpoint):
         warnings.warn("To be implemented, download and form a local directory.")
@@ -217,7 +218,7 @@ def load_module_class(
     If import path is full format, it should be dot import format and the last part is the
     class name.
 
-    If only provide model class name (without dot `"."`), it will resolve the subclasses of `base_module_type`
+    If only provide model class name (without dot "."), it will resolve the subclasses of ``base_module_type``
     which have been registered via `imports` in python file and match the model name in the last part.
     if one name matches more than one model class, it'will failed and you need provide the full path
     to elimiate ambiguity.
@@ -225,7 +226,7 @@ def load_module_class(
     Args:
         module_path (str):
             The import path containing the module class. For the case only provide class name,
-            that class should be registered by `import` in your python.
+            that class should be registered by ``import`` in your python.
         base_module_type (Type, optional):
             The base class type to check against.
 

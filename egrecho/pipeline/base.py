@@ -26,7 +26,7 @@ import warnings
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable, Dict, Literal, Optional, Tuple, Union, Type
+from typing import Any, Callable, Dict, Literal, Optional, Tuple, Type, Union
 
 import numpy as np
 import torch
@@ -67,9 +67,15 @@ class PipeLine(ABC):
 
         Input -> Pre-Processing -> Model Inference -> Post-Processing -> Output
 
-    NOTE: This class is following the structure of the Hugging Face Transformers. see:
-         https://github.com/huggingface/transformers/blob/main/src/transformers/pipelines/base.py
+    Args:
+        model: inputs model
+        feature_extractor: extractor
+        tokenizer: tokenizer
+        device: specified device
 
+    NOTE:
+        This class follows the structure of the
+        `Hugging Face Pipeline <https://github.com/huggingface/transformers/blob/main/src/transformers/pipelines/base.py>`_.
     """
 
     def __init__(
@@ -80,10 +86,6 @@ class PipeLine(ABC):
         device: Union[str, int, torch.device, DeviceMode] = None,
         **kwargs,
     ) -> None:
-        """
-        Args:
-            model:
-        """
         if device == DeviceMode.FROM_MODEL:
             try:
                 device = model.device
@@ -120,7 +122,7 @@ class PipeLine(ABC):
         feature_config: Union[str, dict] = None,
         **kwargs,
     ) -> Tuple[ResolveModelResult, Dict[str, Any]]:
-        """Isolate from :method::``from_pretrained`` to check arguments errors early."""
+        """Isolate from :meth:`from_pretrained` to check arguments errors early."""
         kwargs = kwargs.copy()
         best_k_mode: Literal["min", "max"] = kwargs.pop("best_k_mode", "min")
         version = kwargs.pop("version", "version")
@@ -191,10 +193,10 @@ class PipeLine(ABC):
                 The root path. Defaults to None, which means the current directory.
             model_type (str):
                 model type string, if not specified, model type will be resolved from
-                :method::`resolve_pretrained_model`.
+                :meth:`resolve_pretrained_model`.
             feature_config (str or dict):
                 A extractor config dict/config_file must include a key `"feature_extractor_type"` to instantiate.
-                If not specified, it will be resolved from :method::`resolve_pretrained_model`
+                If not specified, it will be resolved from :meth:`resolve_pretrained_model`
             device (Union[str, int, Literal["auto", "from_model"]]):
                 map location.
             hparams_file : Path or str, optional
@@ -210,7 +212,7 @@ class PipeLine(ABC):
                 do not have the hyperparameters saved, use this method to pass in a .yaml
                 file with the hparams you would like to use. These will be converted
                 into a dict and passed into your Model for use.
-            strict: Whether to strictly enforce that the keys in :attr:`checkpoint_path` match the keys
+            strict: Whether to strictly enforce that the keys in ``checkpoint_path`` match the keys
                 returned by this module's state dict.
             version (str, optional):
                 The versioned subdir name. Conmmonly subdir is named as "version_0/version_1", if you specify
@@ -219,14 +221,14 @@ class PipeLine(ABC):
             best_k_mode (Literal["max", "min"], optional):
                 The mode for selecting the best_k checkpoint. Defaults to "min".
             resolve_kwargs (dict):
-                additional kwargs passing to :function::`egrecho.utils.io.resolve_pretrained_model`.
+                additional kwargs passing to :func:`~egrecho.core.loads.resolve_pretrained_model`.
             load_ckpt_kwargs (dict):
-                additional kwargs passing to model's :method::`load_from_checkpoint`.
+                additional kwargs passing to model's :meth:`load_from_checkpoint`.
             resolve_mode (bool):
                 Only returns a tuple contains resolved ckpt opt and remain kwargs,
-                you need manully call :methdod::``_load_ckpt``.
+                you need manully call :meth:`_load_ckpt`.
             \**kwargs:
-                Passing remain kwargs to pipeline :method::`__init__` and an extra keyword args placeholder.
+                Passing remain kwargs to pipeline :meth:`__init__` and an extra keyword args placeholder.
         """
 
         resolved_opt, kwargs = cls.resolve_pretrained_model(
@@ -260,6 +262,7 @@ class PipeLine(ABC):
         strict: bool = True,
         **kwargs,
     ):
+        """Actually loads states dict here."""
         load_ckpt_kwargs = kwargs.pop("load_ckpt_kwargs", {})
         extractor_type = cls.load_extractor_type(
             resolved_opt.feature_config["feature_extractor_type"]
@@ -276,7 +279,7 @@ class PipeLine(ABC):
             device = "cpu"
         map_location = torch.device(device) if device is not None else None
         logger.info(
-            f"Loading {model_class.__name__} from ckpt[{resolved_opt.checkpoint}] to device ({device or 'as_ckpt'}).",
+            f"Loading {model_class.__name__} from ckpt ({resolved_opt.checkpoint}) to device ({device or 'as_ckpt'}).",
             ranks=0,
         )
 
@@ -334,14 +337,14 @@ class PipeLine(ABC):
         self, input_tensors: Dict[str, torch.Tensor], **forward_params: Dict
     ) -> Dict:
         """
-        [Abstract] Recive dict contains tensor from :method:`self.preprocess` and run model's forward.
+        [Abstract] Recive dict contains tensor from :meth:`preprocess` and run model's forward.
         """
         raise NotImplementedError("_forward not implemented")
 
     @abstractmethod
     def postprocess(self, model_outputs: Dict, **postprocess_params: Dict) -> Any:
         """
-        [Abstract] Recive dict contains tensor from :method:`self._forward` and results the final form.
+        [Abstract] Recive dict contains tensor from :meth:`_forward` and results the final form.
         """
         raise NotImplementedError("postprocess not implemented")
 
@@ -547,31 +550,29 @@ class PipelineDataset(Dataset):
 class PipelineIterator(IterableDataset):
     def __init__(self, loader, infer, params, loader_batch_size=None):
         """
-        Roughly equivalent to
+        Initializes the PipelineIterator.
 
-        ```
-        for item in loader:
-            yield infer(item, **params)
-        ```
+        This iterator is roughly equivalent to the following loop::
 
-                Arguments:
-                    loader (`torch.utils.data.DataLoader` or any iterator):
-                        The iterator that will be used to apply `infer` on.
-                    infer (any function):
-                        The function to apply of each element of `loader`.
-                    params (`dict`):
-                        The parameters passed to `infer` along with every item
-                    loader_batch_size (`int`, *optional*):
-                        If specified, the items of `loader` are supposed to come as batch, and are loader_batched here
-                        making it roughly behave as
-
-
-        ```
-        for items in loader:
-            for i in loader_batch_size:
-                item = items[i]
+            for item in loader:
                 yield infer(item, **params)
-        ```"""
+
+        Args:
+            loader (torch.utils.data.DataLoader or any iterator):
+                The iterator that will be used to apply `infer` on.
+            infer (callable):
+                The function to apply to each element of `loader`.
+            params (dict):
+                The parameters passed to `infer` along with every item.
+            loader_batch_size (int, optional):
+                If specified, the items of `loader` are supposed to come as batches,
+                and are loader_batched here making it roughly behave as::
+
+                    for items in loader:
+                        for i in loader_batch_size:
+                            item = items[i]
+                            yield infer(item, **params)
+        """
         self.loader = loader
         self.infer = infer
         self.params = params

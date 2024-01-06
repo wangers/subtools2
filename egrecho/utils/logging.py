@@ -64,7 +64,7 @@ class Logger:
 
     @staticmethod
     def __get_call_info(stack_pos=2):
-        """This function aims to get caller of logger through inspect.stack().
+        """This function aims to get caller of logger through ``inspect.stack()``.
 
         [frameinfo[frame, filename, lineno, function, code_context, index], ... ]
         stack[0]: this function, stack[1]: Logger.info(), stack[2]: the caller of logger outside.
@@ -113,7 +113,9 @@ class Logger:
         """
         Log a warning, but only once.
 
-        :param str msg: Message to display
+        Args:
+             message: Message to display
+             ranks (List[int]): List of parallel ranks.
         """
         global _seen_logs
         if message not in _seen_logs:
@@ -137,7 +139,9 @@ class Logger:
         """
         Log a warning, but only once.
 
-        :param str msg: Message to display
+        Args:
+            message (str): The message to be logged.
+            ranks (List[int]): List of parallel ranks.
         """
         global _seen_logs
         if message not in _seen_logs:
@@ -170,7 +174,9 @@ class Logger:
         """
         Log a error, but only once.
 
-        :param str msg: Message to display
+        Args:
+            message (str): The message to be logged.
+            ranks (List[int]): List of parallel ranks.
         """
         global _seen_logs
         if message not in _seen_logs:

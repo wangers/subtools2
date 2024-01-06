@@ -26,7 +26,7 @@ DC_TYPE_KEY = "_type_"
 
 def default_value(field: Field) -> Any | _MISSING_TYPE:
     """Returns the default value of a field in a dataclass, if available.
-    When not available, returns `dataclasses.MISSING`.
+    When not available, returns ``dataclasses.MISSING``.
 
     Args:
         field (dataclasses.Field): The dataclasses.Field to get the default value of.
@@ -59,11 +59,11 @@ def asdict_filt(
         dict_factory: The factory function to create the resulting dictionary (default: dict).
         filt_type: The type of filtering to apply (default: 'default').
 
-        - 'default': Filters out default values in the dataclass object.
-        - 'none': Filters out None values in the dataclass/dict object.
-        - 'orig': Original dataclasses.asdict() behavior without filtering.
+            - 'default': Filters out default values in the dataclass object.
+            - 'none': Filters out None values in the dataclass/dict object.
+            - 'orig': Original dataclasses.asdict() behavior without filtering.
 
-        init_field_only: If True, considers only fields with `init == True` in dataclasses (default: False).
+        init_field_only: If True, considers only fields with ``init == True`` in dataclasses (default: False).
         save_dc_types: If True, saves the type information of dataclasses in the serialized
             dictionary (default: False).
 
@@ -74,10 +74,10 @@ def asdict_filt(
         TypeError: If the input object is not a dictionary or a dataclass.
 
     Note:
-        - This function is intended to be used as a replacement for the `dataclasses.asdict()` function.
-        - The `init_field_only` parameter is only applicable when the input object is a dataclass,
-            and it controls whether only fields with `init == True` are considered.
-        - The `save_dc_types` parameter is used to include the type information of dataclasses
+        -   This function is intended to be used as a replacement for the ``dataclasses.asdict()`` function.
+        -   The ``init_field_only`` parameter is only applicable when the input object is a dataclass,
+            and it controls whether only fields with ``init == True`` are considered.
+        -   The ``save_dc_types`` parameter is used to include the type information of dataclasses
             in the serialized dictionary.
     """
 
@@ -182,30 +182,28 @@ def asdict_filt(
 def from_dict(
     cls: type[DataclassT], d: dict[str, Any], drop_extra_fields: Optional[bool] = None
 ) -> DataclassT:
-    """Parses an instance of the dataclass `cls` from the dict `d`.
+    """Parses an instance of the dataclass ``cls`` from the dict ``d``.
 
     Args:
-        cls (Type[Dataclass]): A `dataclass` type.
-        d (Dict[str, Any]): A dictionary of `raw` values, obtained for example
-            when deserializing a json file into an instance of class `cls`.
+        cls (Type[Dataclass]): A ``dataclass`` type.
+        d (Dict[str, Any]): A dictionary of raw values, obtained for example
+            when deserializing a json file into an instance of class ``cls``.
         drop_extra_fields (bool, optional): Whether or not to drop extra
             dictionary keys (dataclass fields) when encountered. There are three
             options:
-            - True:
-                The extra keys are dropped, and this function returns an
-                instance of `cls`.
-            - False:
-                The extra keys (if any) are kept, and we search through the
-                subclasses of `cls` for the first dataclass which has all the
-                required fields.
-            - None (default):
-                `drop_extra_fields = not cls.decode_into_subclasses`.
+
+                - True: The extra keys are dropped, and this function returns an
+                    instance of ``cls``.
+                - False: The extra keys (if any) are kept, and we search through the
+                    subclasses of ``cls`` for the first dataclass which has all the
+                    required fields.
+                - None (default): ``drop_extra_fields = not cls.decode_into_subclasses``.
 
     Raises:
         RuntimeError: If an error is encountered while instantiating the class.
 
     Returns:
-        Dataclass: An instance of the dataclass `cls`.
+        Dataclass: An instance of the dataclass ``cls``.
     """
     if d is None:
         return None

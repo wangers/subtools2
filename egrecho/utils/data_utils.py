@@ -44,20 +44,20 @@ def split_sequence(
     Split a sequence into ``num_splits`` equal parts. The element order can be randomized.
     Raises a ``ValueError`` if ``split_num`` is larger than ``len(seq)``.
     Support mode of 'shard' or 'batch'. If 'batch', the splits lists as original sequence
-    else shard the original sequence, e.g., for spliting [0, 1 , 2, 3] to 2 parts,
-    shard mode result: [[0, 2], [1, 3]] while batch mode reult: [[0, 1], [2, 3]].
+    else shard the original sequence, e.g., for spliting ``[0, 1 , 2, 3]`` to 2 parts,
+    shard mode result: ``[[0, 2], [1, 3]]`` while batch mode reult: ``[[0, 1], [2, 3]]``.
 
     Args:
-        seq: Sequence
+        seq (Sequence):
             Input iterable.
-        num_splits: int.
+        num_splits (int):
             Split num.
-        mode: str
+        mode (str):
             ('shard', 'batch')
-        shuffle:
+        shuffle (bool):
             If true, shuffle input sequence before split it.
-        drop_last:
-            If true, drop last items when `len(seq)` is not divisible by `num_splits`.
+        drop_last (bool):
+            If true, drop last items when ``len(seq)`` is not divisible by ``num_splits``.
 
     Returns:
         List of smaller squences.
@@ -135,13 +135,13 @@ def iflatmap_unordered(
     Note: Data are in kwargs_iter, and flats reults of all jobs to a queue.
     This operation don't keep the original order in async way.
 
-    Args
-        nj: int
+    Args:
+        nj (int):
             num of jobs.
-        fn: Callable.
+        fn (Callable):
             a function can yied results from given args.
-        kwargs_iter: Iterable[dict]
-            kwargs map to `fn`.
+        kwargs_iter (Iterable[dict]):
+            kwargs map to ``fn``.
     """
     from multiprocess import Manager, Pool  # Support lambda function.
 
@@ -182,10 +182,12 @@ def buffer_shuffle(
     Buffer shuffle the data.
 
     Args:
-        data: Iterable
+        data (Iterable):
             data source.
-        buffer_size : int.
-        rng: np.random.Generator
+        buffer_size (int):
+            defaults to 10000.
+        rng (np.random.Generator):
+            fix random.
 
     Returns:
         Generator yields data item.
@@ -220,12 +222,12 @@ def ichunk_size(
     Infer an enven split chunksize generator before applying split operation if needed.
 
     Args:
-        total_len: int
+        total_len (int):
             The lengths to be divided.
-        chunk_size: int
-        split_num: int
+        chunk_size (int):
+        split_num (int):
             Number of splits, can be provided to infer chunksizes.
-        even: True
+        even (bool):
             If True, the max differ between chunksize is 1.
 
     Returns:
@@ -281,9 +283,9 @@ def ichunk_size(
 
 def ilen(iterable):
     """
-    Return the number of items in *iterable*.
+    Return the number of items in iterable inputs.
 
-    This consumes the iterable, so handle with care.
+    This consumes the iterable data, so handle with care.
 
     Example:
         >>> ilen(x for x in range(1000000) if x % 3 == 0)
@@ -317,25 +319,27 @@ class ClassLabel(DictFileMixin):
     The instance of this class stores the string names of labels,
     can be used for mapping str2label or label2str.
 
-    Modified from `HuggingFace Datasets`:
-        https://github.com/huggingface/datasets/blob/main/src/datasets/features/features.py#ClassLabel
+    Modified from `HuggingFace Datasets
+    <https://github.com/huggingface/datasets/blob/main/src/datasets/features/features.py#ClassLabel>`_.
 
-    There are 3 ways to define a `ClassLabel`, which correspond to the 3 arguments:
-        * `num_classes`: Create 0 to (num_classes-1) labels.
-        * `names`: List of label strings.
-        * `names_file`: File (Text) containing the list of labels.
+    There are 3 ways to define a ``ClassLabel``, which correspond to the 3 arguments:
+        * ``num_classes``: Create 0 to (num_classes-1) labels.
+        * ``names``: List of label strings.
+        * ``names_file``: File (Text) containing the list of labels.
 
     Under the hood the labels are stored as integers.
     You can use negative integers to represent unknown/missing labels.
 
-    Serialize/deserialize of yaml files will be in a more readable way (`from_yaml`, 'to_yaml`):
+    Serialize/deserialize of yaml files will be in a more readable way (``from_yaml``, '`to_yaml``):
+
         names:                  ->                names:
+
         - negative              ->                  '0': negative
         - positive              ->                  '1': positive
 
     Args:
         num_classes (`int`, *optional*):
-            Number of classes. All labels must be < `num_classes`.
+            Number of classes. All labels must be ``< num_classes``.
         names (`list` of `str`, *optional*):
             String names for the integer classes.
             The order in which the names are provided is kept.
@@ -419,14 +423,12 @@ class ClassLabel(DictFileMixin):
 
     def str2int(self, values: Union[str, Iterable]) -> Union[int, Iterable]:
         """
-        Conversion class name `string` => `integer`.
+        Conversion class name ``string`` => ``integer``.
 
         Example:
-            ```py
             >>> label = ClassLabel(num_classes=3, names=['speaker1', 'speaker2', 'speaker3'])
             >>> label.str2int('speaker1')
             0
-            ```
         """
         if not isinstance(values, str) and not isinstance(
             values, collections.abc.Iterable
@@ -465,16 +467,14 @@ class ClassLabel(DictFileMixin):
 
     def int2str(self, values: Union[int, Iterable]) -> Union[str, Iterable]:
         """
-        Conversion `integer` => class name `string`.
+        Conversion ``integer`` => class name ``string``.
 
-        Regarding unknown/missing labels: passing negative integers raises `ValueError`.
+        Regarding unknown/missing labels: passing negative integers raises ``ValueError``.
 
         Example:
-            ```py
             >>> label = ClassLabel(num_classes=3, names=['speaker1', 'speaker2', 'speaker3'])
             >>> label.int2str(0)
             'speaker1'
-            ```
         """
         if not isinstance(values, int) and not isinstance(
             values, collections.abc.Iterable
@@ -514,8 +514,12 @@ class ClassLabel(DictFileMixin):
         """
         Deserialize from dict.
 
-        names:                  ->                names:
+        transform dict to list:
+
+          names:                ->                  names:
+
           '0': negative         ->                  - negative
+
           '1': positive         ->                  - positive
         """
 
@@ -536,6 +540,7 @@ class ClassLabel(DictFileMixin):
         Serialize to a dict file.
 
         names:                  ->                names:
+
         - negative              ->                  '0': negative
         - positive              ->                  '1': positive
         """

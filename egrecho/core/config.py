@@ -25,15 +25,15 @@ logger = get_logger()
 @dataclass
 class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
     """
-    Base class for `dataclass` configuration.
+    Base class for ``dataclass`` configuration.
 
-    NOTE: Surely we could directly interact args in `dataclass` with outside `argparse` cli.
+    Surely we could directly interact args in ``dataclass`` with outside ``argparse`` cli.
     However, cli can hardly parse nest cases (e.g., dict, nest sequence, etc.).
     What'more, adding all args to cli is redundant. So our configs folllow below rules:
-        - We abandon the `InitVar` set for `dataclasses`, as `InitVar` is
+
+        - We abandon the ``InitVar`` set for ``dataclasses``, since ``InitVar`` is
             tricky to serialize/deserialize.
         - additional keys in fields' metadata:
-            - 'cmd': if set True, means we will handle it in outside argparser, but it is silence now. defaults to False.
             - 'to_dict': if set False, will be ignored when serialization. defaults to True.
             - 'encoding_fn': custom fn when serialization.
             - 'decoding_fn': custom fn when desrialization.
@@ -58,14 +58,17 @@ class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
         **kwargs,
     ):
         """
-        Create an instance from config.
+        Creates an instance from config.
 
-        Input `config` can be an instance or a dict, the invalid overwrite args in
-        **kwargs will be informed and ignored.
+        Input ``config`` can be an instance or a dict, the invalid overwrite args in
+        \**kwargs will be informed and ignored if ``strict=True``.
 
         Args:
             config (Union[dict, DataclassConfig]):
                 The configuration.
+            strict:
+                if True, raise exception if got unexpected arguments.
+                Defautls to False.
 
         Returns:
             DataclassConfig:

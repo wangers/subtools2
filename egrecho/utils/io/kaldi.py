@@ -35,16 +35,16 @@ def close_cached_kaldi_handles() -> None:
 @lru_cache(maxsize=None)
 def lookup_matrix_reader_cache_or_open(storage_path: str):
     """
-    Helper internal function used in KaldiMatrixReader.
+    Helper internal function used in :class:`KaldiMatrixReader`.
     It opens kaldi scp files and keeps their handles open in a global program cache
     to avoid excessive amount of syscalls when the Reader class is instantiated
     and destroyed in a loop repeatedly (frequent use-case).
 
-    The file handles can be freed at any time by calling ``close_cached_file_handles()``.
+    The file handles can be freed at any time by calling :meth`close_cached_file_handles`.
     """
     if not _KALDI_NATIVE_IO_AVAILABLE:
         raise ValueError(
-            "To read Kaldi feats.scp, please 'pip install kaldi_native_io' first."
+            "To read Kaldi feats.scp, please ``pip install kaldi_native_io`` first."
         )
     import kaldi_native_io
 
@@ -54,16 +54,16 @@ def lookup_matrix_reader_cache_or_open(storage_path: str):
 @lru_cache(maxsize=None)
 def lookup_vector_reader_cache_or_open(storage_path: str):
     """
-    Helper internal function used in KaldiVectorReader.
+    Helper internal function used in :class:`KaldiVectorReader`.
     It opens kaldi scp files and keeps their handles open in a global program cache
     to avoid excessive amount of syscalls when the Reader class is instantiated
     and destroyed in a loop repeatedly (frequent use-case).
 
-    The file handles can be freed at any time by calling ``close_cached_file_handles()``.
+    The file handles can be freed at any time by calling :meth:`close_cached_file_handles`.
     """
     if not _KALDI_NATIVE_IO_AVAILABLE:
         raise ValueError(
-            "To read Kaldi scp, please 'pip install kaldi_native_io' first."
+            "To read Kaldi scp, please ``pip install kaldi_native_io`` first."
         )
     import kaldi_native_io
 

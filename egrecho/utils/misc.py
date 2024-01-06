@@ -102,15 +102,11 @@ def kill_name_proc(grep_str: str, force_kill: bool = False):
         grep_str (str):
             The grep string to search for processes.
         force_kill (bool):
-            If True, uses SIGKILL (-9) to forcefully terminate processes.
+            If True, uses ``SIGKILL`` (-9) to forcefully terminate processes.
 
-    The function uses 'ps aux | grep' to search for processes that match the given 'grep_str'.
+    The function uses ``ps aux | grep`` to search for processes that match the given ``grep_str``.
     It then requests user confirmation to kill these processes.
     If the user agrees, it terminates the processes.
-
-    Note:
-    - Be cautious when using 'force_kill' as it forcefully terminates processes.
-
     """
     import subprocess
 
@@ -134,7 +130,7 @@ def kill_name_proc(grep_str: str, force_kill: bool = False):
 
 
 def _kill_process_tree(pid, kill: bool = False):
-    """kill pstree. `kill=True` means `kill -9`."""
+    """kill pstree. ``kill=True`` means ``kill -9``."""
     try:
         import psutil
     except ImportError as e:
@@ -175,7 +171,7 @@ def if_continue() -> bool:
 
 
 def valid_import_clspath(name: str):
-    """Import path must be str with dot pattern (`'calendar.Calendar'`)."""
+    """Import path must be str with dot pattern (``'calendar.Calendar'``)."""
     if not isinstance(name, str) or "." not in name:
         raise ValueError(f"Expected a dot import path string: {name}")
     if not all(x.isidentifier() for x in name.split(".")):
@@ -197,12 +193,9 @@ def class2str(value):
     return s
 
 
+# https://github.com/omni-us/jsonargparse/blob/main/jsonargparse/_util.py#get_import_path
 def get_import_path(value: Any) -> Optional[str]:
-    """Returns the shortest dot import path for the given object.
-
-    Modified from:
-        https://github.com/omni-us/jsonargparse/blob/main/jsonargparse/_util.py#get_import_path
-    """
+    """Returns the shortest dot import path for the given object."""
     import inspect
 
     path = None
@@ -251,11 +244,11 @@ def get_module_var_path(module_path: str, value: Any) -> Optional[str]:
 
 def locate_(path: str):
     """
-    COPIED FROM Hydra:
-    https://github.com/facebookresearch/hydra/blob/f8940600d0ab5c695961ad83abd042ffe9458caf/hydra/_internal/utils.py#L614
+    COPIED FROM `Hydra
+    <https://github.com/facebookresearch/hydra/blob/f8940600d0ab5c695961ad83abd042ffe9458caf/hydra/_internal/utils.py#L614>`_.
 
     Locate an object by name or dotted path, importing as necessary.
-    This is similar to the pydoc function `locate`, except that it checks for
+    This is similar to the pydoc function ``locate``, except that it checks for
     the module from the given path from back to front.
 
     Behaviours like::
@@ -326,6 +319,7 @@ def imports_local(local_file: Optional[Union[str, Path]] = None):
         local_module = (
             str(local_module_file).replace(os.path.sep, ".").replace(".py", "")
         )
+
         try:
             impted = importlib.import_module(local_module)
             logger.info(

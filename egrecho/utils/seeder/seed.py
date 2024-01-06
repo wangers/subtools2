@@ -43,7 +43,7 @@ class SeedWorkers:
     r"""
     Different workers with different seed.
 
-    If provide `rank`, it will randomlize acorssing node
+    If provide ``rank``, it will randomlize acorssing node
 
     Args:
         seed (int)
@@ -75,8 +75,8 @@ def isolate_rng(include_cuda: bool = True) -> Generator[None, None, None]:
     on exit to what it was before entering.
 
     It supports isolating the states for PyTorch, Numpy, and Python built-in random number generators.
-    referring to `Lightning-AI`:
-        https://github.com/Lightning-AI/lightning/blob/master/src/lightning/pytorch/utilities/seed.py#isolate_rng
+    referring to:
+    https://github.com/Lightning-AI/lightning/blob/master/src/lightning/pytorch/utilities/seed.py#isolate_rng
 
     Args:
         include_cuda: Whether to allow this function to also control the `torch.cuda` random number generator.

@@ -423,9 +423,7 @@ def decode_set(item_type: type[T]) -> Callable[[list[T]], set[T]]:
     return _decode_set
 
 
-def decode_dict(
-    K_: type[K], V_: type[V]
-) -> Callable[[list[tuple[Any, Any]]], dict[K, V]]:
+def decode_dict(K_: type[K], V_: type[V]):
     """Creates a decoding function for a dict type. Works with OrderedDict too.
 
     Args:
@@ -433,8 +431,7 @@ def decode_dict(
         V_ (Type[V]): The type of the values.
 
     Returns:
-        Callable[[List[Tuple[Any, Any]]], Dict[K, V]]: A function that parses a
-            Dict[K_, V_].
+        A function that parses a dict.
     """
     decode_k = get_decoding_fn(K_)
     decode_v = get_decoding_fn(V_)

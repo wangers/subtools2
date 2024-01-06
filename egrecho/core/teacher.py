@@ -52,22 +52,28 @@ OPTIMIZERS += OPTIMIZERS_
 
 
 class Teacher(ABC):
-    """
-    Base class for teacher aims to provide an access to criterion, metrics for model, and configure training details.
+    r"""
+    Base class for a teacher that aims to provide access to
+    criterion, metrics for the model, and configure training details.
 
-    Usually, the step details in fit (train + validation) stage is related to the data and objectives (criterion),
-    and further combine with model's `:method::forward`. A teacher class is desgined to extract the training logics.
-    This class adds a point to model to do stepping. key methods:
-        - :method:``training_step`` (must be implemented) & :method:``validation_step`` : detail step logics.
-        - :method:``setup_model`` (must be implemented): an inferce for building linked model.
-       e.g., loss func, metrics can be configured here.
-        - :method:``configure_optimizers`` (must be implemented): an inferce for building linked model.
-        - :method:``setup``:
-            - called in :method:`self.model.setup`.
-            - build models dynamically or adjust something about them at the beginning of fit stage.
-            see :method:``pl.LightningDataModul.setup``
+    Usually, the step details in the fit (train + validation) stage are related to the data and objectives (criterion),
+    and further combined with the model's :meth:`forward`. A teacher class is designed to extract the training logics.
+    This class adds a point to the model to do stepping. Key methods:
 
-    See ``egrecho.models.architecture.speaker.asv_task.SVTeacher`` as an example use.
+    - :meth:`training_step` (**must be implemented**) and :meth:`validation_step`:
+        detail step logics.
+    - :meth:`setup_model` (**must be implemented**):
+        an inference for building linked model, e.g., loss func, metrics can be configured here.
+    - :meth:`configure_optimizers` (**must be implemented**):
+        an inference for building linked model.
+    - :meth:`setup`:
+
+        - called in ``self.model.setup``.
+        - build models dynamically or adjust something about them at the beginning of the fit stage.
+
+        see :meth:`~egrecho.core.module.TopVirtualModel.setup`.
+
+    See :class:`egrecho.models.architecture.speaker.asv_task.SVTeacher` as an example use.
 
     Example::
 
@@ -113,13 +119,13 @@ class Teacher(ABC):
             trainer.fit(model, dataloader)
 
     NOTE:
-        In this class, :method::``setup_loss_fn_dict`, :method::``setup_train_metrics`` are
-        modified from:
-            https://github.com/Lightning-Universe/lightning-flash/blob/master/src/flash/core/model.py#Task
+        In this class, :meth:`setup_loss_fn_dict`, :meth:`setup_train_metrics` are
+        modified from `flash
+        <https://github.com/Lightning-Universe/lightning-flash/blob/master/src/flash/core/model.py#Task>`_.
         Feel free to modify them in derived implementations.
 
     Class attributes (overridden by derived classes):
-        - **task_name** (`str`) -- name of task, e.g., `"automatic-speaker-verification"`.
+        - **task_name** (`str`) -- name of task, e.g., "automatic-speaker-verification".
     """
 
     optimizers_registry: Register = OPTIMIZERS_
@@ -153,7 +159,7 @@ class Teacher(ABC):
 
     def setup(self):
         """
-        Called by linked model's hook: :method:`setup` in fit stage, gives a chance to setup in accelerate environment.
+        Called by linked model's hook: :meth:`setup` in fit stage, gives a chance to setup in accelerate environment.
         """
 
     def setup_model(self):
@@ -162,13 +168,13 @@ class Teacher(ABC):
         """
 
     def setup_loss_fn_dict(self, loss_fn: LOSS_FN_TYPE):
-        """Use one attr :attr:`loss_fn_dict` in model as loss container."""
+        """Use one attr `loss_fn_dict` in model as loss container."""
         self.model.loss_fn_dict = (
             {} if loss_fn is None else normalize_callable_dict(loss_fn)
         )
 
     def setup_train_metrics(self, metrics: TORCH_METRICS_TYPE):
-        """Use one attr :attr:`train_metrics` in model as metrics(recommand torchmetrics) container."""
+        """Use one attr `train_metrics` in model as metrics(recommand torchmetrics) container."""
 
         self.model.train_metrics = ModuleDict(
             {} if metrics is None else normalize_callable_dict(metrics)
@@ -176,7 +182,7 @@ class Teacher(ABC):
         self.model.train_metrics.to(self.model.device)
 
     def setup_val_metrics(self, metrics: TORCH_METRICS_TYPE):
-        """Use one attr :attr:`val_metrics` in model as metrics(recommand torchmetrics) container."""
+        """Use one attr `val_metrics` in model as metrics(recommand torchmetrics) container."""
 
         self.model.val_metrics = ModuleDict(
             {} if metrics is None else normalize_callable_dict(metrics)
@@ -271,7 +277,7 @@ class Teacher(ABC):
 
     def configure_optimizers(self):
         """
-        Implement this method in subclasses. see :method:``lightning.pytorch.LightningModule.configure_optimizers``.
+        Implement this method in subclasses. see :meth:`lightning.pytorch.LightningModule.configure_optimizers`.
         """
         return NotImplementedError
 
@@ -480,9 +486,9 @@ class Teacher(ABC):
     def get_lr_scheduler_total_steps_name(cls, lr_scheduler_key: str) -> Optional[str]:
         """Try to get the num of training steps key name for lr_scheduler if needed.
 
-        - Use the metadata `total_steps_key=...` registed in registry of that scheduler key.
-        - Find the signature of registry `fn`, return the signature param key which is
-        in `lr_total_steps_key_registry` of this teacher class.
+        - Use the metadata ``total_steps_key=...`` registed in registry of that scheduler key.
+        - Find the signature of registry ``fn``, return the signature param key which is
+          in :attr:`lr_total_steps_key_registry` of this teacher class.
         - Return None if all faield.
 
         you can dynamicly register key in lr_total_steps_key_registry.

@@ -11,6 +11,7 @@ from glob import has_magic
 from pathlib import Path
 
 
+# https://github.com/lhotse-speech/lhotse/blob/master/lhotse/workarounds.py#AltGzipFilePatched
 def gzip_open_patch(
     filename,
     mode="rb",
@@ -21,7 +22,6 @@ def gzip_open_patch(
 ):
     """
     Open a gzip-compressed file in binary or text mode. To handle "trailing garbage" in gzip files.
-    modified from Source: https://github.com/lhotse-speech/lhotse/blob/master/lhotse/workarounds.py#AltGzipFilePatched
     """
     if "t" in mode:
         if "b" in mode:
@@ -81,13 +81,17 @@ class AltGzipFile(gzip.GzipFile):
 
 class FsspecLocalGlob:
     """
-    A glob from fsspec(http://github.com/fsspec/filesystem_spec).
+    A glob from `fsspec <http://github.com/fsspec/filesystem_spec>`_.
 
-    Note: Here are some behaviors specific to fsspec glob that are different from glob.glob, Path.glob, Path.match or fnmatch:
-    - '*' matches only first level items
-    - '**' matches all items
-    - '**/*' matches all at least second level items.
-        e.g., glob.glob('**/*', recursive=True), the last /* is invalid as greedy mode of first pattern '**'.
+    Here are some behaviors specific to fsspec glob that are different from
+    glob.glob, Path.glob, Path.match or fnmatch:
+
+    - ``'*'`` matches only first level items
+    - ``'**'`` matches all items
+    - ``'**/*'`` matches all at least second level items
+
+        For example, ``glob.glob('**/*', recursive=True)``, the last ``/*`` is invalid as greedy mode of first pattern ``'**'``.
+
     """
 
     root_marker = "/"
@@ -143,20 +147,22 @@ class FsspecLocalGlob:
         Find files by glob-matching.
 
         Here are some behaviors specific to fsspec glob that are different from glob.glob, Path.glob, Path.match or fnmatch:
-        - '*' matches only first level items
-        - '**' matches all items
-        - '**/*' matches all at least second level items.
-            e.g., glob.glob('**/*', recursive=True), the last /* is invalid as greedy mode of first pattern '**'.
 
-        If the path ends with '/' and does not contain "*", it is essentially
+        - ``'*'`` matches only first level items
+        - ``'**'`` matches all items
+        - ``'**/*'`` matches all at least second level items
+
+            e.g., glob.glob('**/*', recursive=True), the last '/*' is invalid as greedy mode of first pattern '**'.
+
+        If the path ends with '/' and does not contain `"*"`, it is essentially
         the same as ``ls(path)``, returning only files.
 
         We support ``"**"``,
-        ``"?"`` and ``"[..]"``. We do not support ^ for pattern negation.
+        ``"?"`` and ``"[..]"``. We do not support '^' for pattern negation.
 
         Search path names that contain embedded characters special to this
         implementation of glob may not produce expected results;
-        e.g., 'foo/bar/*starredfilename*'.
+        e.g., `'foo/bar/*starredfilename*'`.
 
         kwargs are passed to ``ls``.
         """
@@ -277,7 +283,8 @@ class FsspecLocalGlob:
         topdown: bool (True)
             Whether to walk the directory tree from the top downwards or from
             the bottom upwards.
-        kwargs: passed to ``ls``
+        **kwargs:
+            passed to ``ls``.
         """
         if maxdepth is not None and maxdepth < 1:
             raise ValueError("maxdepth must be at least 1")
@@ -352,7 +359,8 @@ class FsspecLocalGlob:
         withdirs: bool
             Whether to include directory paths in the output. This is True
             when used by glob, but users usually only want files.
-        kwargs are passed to ``ls``.
+        **kwargs:
+            passed to ``ls``.
         """
         # TODO: allow equivalent of -name parameter
         path = cls._strip_protocol(path)
@@ -435,12 +443,15 @@ def make_path_posix(path, sep=os.sep):
 
 def stringify_path(filepath):
     """Attempt to convert a path-like object to a string.
+
     Parameters
     ----------
     filepath: object to be converted
+
     Returns
     -------
     filepath_str: maybe a string version of the object
+
     Notes
     -----
     Objects supporting the fspath protocol are coerced according to its

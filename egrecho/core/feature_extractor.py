@@ -14,19 +14,18 @@ logger = get_logger()
 
 class BaseFeature(ConfigFileMixin):
     r"""
-    A base class offers serialize methods for acoustic feature extractor.
+    A base class offers serialize methods for feature extractor.
 
     The implementation of the extraction method is intended for derived classes.
     Its purpose is to align with open-source pretrained models and facilitate
     coordination between model inputs and the frontend data processor.
-    Consequently, this structure is a simplified adaptation of
-    the `feature_extractor` module found in `huggingface.transformers`.
-    For more in-depth insight, please refer to:
-        https://huggingface.co/docs/transformers/main_classes/feature_extractor
+    Consequently, it is a simplified adaptation of
+    the feature_extractor module in `huggingface extractor
+    <https://huggingface.co/docs/transformers/main_classes/feature_extractor>`_.
     """
 
     def __init__(self, **kwargs):
-        """Set elements of `kwargs` as attributes."""
+        """Set elements of ``kwargs`` as attributes."""
 
         # Additional attributes without default values
         for key, value in kwargs.items():
@@ -60,7 +59,7 @@ class BaseFeature(ConfigFileMixin):
         Instantiates a feature extractor from a Python dictionary of parameters.
 
         Args:
-            feature_extractor_dict (`Dict[str, Any]`):
+            feature_extractor_dict:
                 Dictionary that will be used to instantiate the feature extractor object.
             \**kwargs:
                 overwrite kwargs.
@@ -95,7 +94,7 @@ class BaseFeature(ConfigFileMixin):
         Serializes this instance to a Python dictionary.
 
         Returns:
-            `Dict[str, Any]`.
+            Dict[str, Any].
         """
 
         output = copy.deepcopy(self.__dict__)

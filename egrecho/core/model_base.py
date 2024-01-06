@@ -41,7 +41,7 @@ class ModuleUtilMixin:
     @property
     def device(self) -> torch.device:
         """
-        `torch.device`: The device on which the module.
+        The device on which of the module.
         """
         return next(self.parameters()).device
 
@@ -49,7 +49,7 @@ class ModuleUtilMixin:
     @property
     def dtype(self) -> torch.dtype:
         """
-        `torch.dtype`: The dtype of the module (assuming that all the module parameters have the same dtype).
+        The dtype of the module (assuming that all the module parameters have the same dtype).
         """
         last_dtype = None
         for t in self.parameters():
@@ -110,12 +110,12 @@ class ModelBase(ModuleUtilMixin, Module):
 
         The return type is interpreted as follows:
 
-            - Single tensor: It is assumed the model takes a single argument, i.e.,
-                ``model.forward(model.dummy_inputs)``
-            - Tuple: The inputs is interpreted as a sequence of positional arguments, i.e.,
-                ``model.forward(*model.dummy_inputs)``
-            - Dict: The input array represents named keyword arguments, i.e.,
-                ``model.forward(**model.dummy_inputs)``
+        -   Single tensor: It is assumed the model takes a single argument, i.e.,
+            ``model.forward(model.dummy_inputs)``.
+        -   Tuple: The inputs is interpreted as a sequence of positional arguments, i.e.,
+            ``model.forward(*model.dummy_inputs)``.
+        -   Dict: The input array represents named keyword arguments, i.e.,
+            ``model.forward(**model.dummy_inputs)``.
         """
         return self._dummy_inputs
 
@@ -134,12 +134,11 @@ class ModelBase(ModuleUtilMixin, Module):
 
         Args:
             file_path: The path of the file the onnx model should be saved to.
-            input_sample: An input for tracing. Default: None (Use self.dummy_inputs)
-            **kwargs: Will be passed to `torch.onnx.export` function.
+            input_sample: An input for tracing. Default: None (Use :attr:`dummy_inputs`)
+            \**kwargs: Will be passed to :func:`torch.onnx.export`.
 
         NOTE:
             This general method may not appropriate for every model, you can override it for your specify model.
-            If you want a Scripting onnx model, you should
 
         Example::
 
@@ -186,21 +185,24 @@ class ModelBase(ModuleUtilMixin, Module):
         Exports the model to a TorchScript representation for inference or saving.
 
         By default, compiles the entire model to a :class:`~torch.jit.ScriptModule`.
-        If you prefer to use tracing, provide the argument ``method='trace'`` and ensure that either the `input_sample` argument
-        is provided or the model has :attr:`dummy_inputs` set for tracing. To customize which modules are scripted,
+        If you prefer to use tracing, provide the argument ``method='trace'`` and
+        ensure that either the ``input_sample`` argument is provided or the model
+        has :attr:`dummy_inputs` set for tracing. To customize which modules are scripted,
         you can override this method. To return multiple modules, use a dictionary.
 
         Args:
-            file_path (Optional[Union[str, Path]]): Path to save the TorchScript representation. Default: None (no file saved).
+            file_path (Optional[Union[str, Path]]): Path to save the TorchScript representation.
+                Default: None (no file saved).
             method (Optional[str]): Choose between 'script' (default) and 'trace' for TorchScript compilation methods.
             input_sample (Optional[Any]): An input to be used for tracing when method is set to 'trace'.
-                Default: None (uses :attr:`example_input_array`) if available.
-            **kwargs (Any): Additional arguments passed to :func:`torch.jit.script` or :func:`torch.jit.trace`.
+                Default: None (uses :attr:`dummy_inputs`) if available.
+            \**kwargs (Any): Additional arguments passed to :func:`torch.jit.script` or :func:`torch.jit.trace`.
 
         NOTE:
             - The exported script will be set to evaluation mode.
             - It is recommended to install the latest supported version of PyTorch for using this feature without limitations.
-            Refer to the :mod:`torch.jit` documentation for supported features.
+
+            Refer to the pytorch :mod:`torch.jit` documentation for supported features.
 
         Example::
 

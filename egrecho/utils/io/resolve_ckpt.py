@@ -20,21 +20,22 @@ def resolve_ckpt(
     """
     Resolve checkpoint path from local or remote.
 
-    Automatically search checkpoint, parameters except `checkpoint` is for local fs,
+    Automatically search checkpoint, parameters except ``checkpoint`` is for local fs,
     checkpoint can be either:
 
     - remote url (e.g., startwith "http"): return it directly, otherwise change to local mode.
     - absolute file path: return it if exists, otherwise raise a FileExistError.
-    - relative file name: rel to `dirpath`, return it if exist, otherwise change mode to auto-matching.
-    - auto-matching: `checkpoint` must a parameter of one level rel path (recommand one file name)
+    - relative file name: rel to ``dirpath``, return it if exist, otherwise change mode to auto-matching.
+    - auto-matching: ``checkpoint`` must a parameter of one level rel path (recommand one file name)
+
     to avoid messing:
 
-        - `dirpath`: base dir.
-        - `ckpt_subdir`: defaults to name as "checkpoints"
-        - `version`: version subdir, if specified will check it otherwise find the max version number (means latest training).
-        - See :function::`resolve_version_ckpt` and :function::`resolve_version_ckpt` for details.
+    - ``dirpath``: base dir.
+    - ``ckpt_subdir``: defaults to name as "checkpoints"
+    - ``version``: version subdir, if specified will check it otherwise find the max version number (means latest training).
+    - See :func:`resolve_version_ckpt` and :func:`resolve_rel_ckpt` for details.
 
-        The minist matching unit is like::
+    The minist matching unit is like::
 
         ./dirpath/
         ├── best_k_models.yaml
@@ -62,8 +63,8 @@ def resolve_ckpt(
     Args:
         checkpoint (str, optional):
             The file name of checkpoint to resolve, local file needs a suffix like ".ckpt" / ".pt",
-            While checkpoint="best" is a preseved key means it will find `best_k_fname` which is
-            a file contains `Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]`, and sort by its score to
+            While ``checkpoint="best"`` is a preseved key means it will find ``best_k_fname`` which is
+            a file contains **Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]**, and sort by its score to
             match a best ckpt. Defaults to "last.ckpt".
         dirpath (Path or str, optional):
             The root path. Defaults to None, which means the current directory.
@@ -133,7 +134,7 @@ def resolve_version_ckpt(
                     ├── last.ckpt
                     └── abc.ckpt
 
-    Note: Truly matching see :function::``resolve_rel_ckpt`` for more details.
+    Note: Truly matching see :func:`resolve_rel_ckpt` for more details.
 
     Args:
         version (str, optional):
@@ -144,17 +145,17 @@ def resolve_version_ckpt(
             The root path. Defaults to None, which means the current directory.
         checkpoint (str, optional):
             The file name of checkpoint to resolve, needs a suffix like ".ckpt" / ".pt",
-            While checkpoint="best" is a preseved key means it will find `best_k_fname` which is
-            a file contains `Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]`, and sort by its score to
-            match a best ckpt. Defaults to "last.ckpt".
+            While ``checkpoint="best"`` is a preseved key means it will find ``best_k_fname`` which is
+            a file contains **Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]**, and sort by its score to
+            match a best ckpt. Defaults to ``"last.ckpt"``.
         best_k_fname (str, optional):
             The filename for the best_k map file. Note that the best model path in best map file may
             not in this directory since it is stored in training stage, so we assume that its basename
-            can matching ckpts in the same level. Defaults to best_k_models.yaml.
+            can matching ckpts in the same level. Defaults to ``"best_k_models.yaml"``.
         best_k_mode (Literal["max", "min"], optional):
-            The mode for selecting the best_k checkpoint. Defaults to "min".
+            The mode for selecting the best_k checkpoint. Defaults to ``"min"``.
         ckpt_subdir (str, optional):
-            The name of the checkpoints subdir. Defaults to "checkpoints".
+            The name of the checkpoints subdir. Defaults to ``"checkpoints"``.
     """
     # Check this dir
     if ckpt := resolve_rel_ckpt(
@@ -181,6 +182,7 @@ def resolve_version_ckpt(
             ver_name = version + f"_{max_ver}"
     else:
         ver_name = None
+
     if ver_name:
         if ckpt := resolve_rel_ckpt(
             dirpath=Path(dirpath) / ver_name,
@@ -202,8 +204,8 @@ def resolve_rel_ckpt(
 ) -> Optional[str]:
     """Resolve checkpoint path rel to dirpath.
 
-    Automatically search checkpoint in a directory's checkpoints subdir, normally names as `checkpoints`.
-    The `dirpath` may has such default structure::
+    Automatically search checkpoint in a directory's checkpoints subdir, normally names as ``"checkpoints"``.
+    The ``dirpath`` may has such default structure::
 
         ./dirpath/
         ├── best_k_models.yaml
@@ -219,7 +221,7 @@ def resolve_rel_ckpt(
             ├── last.ckpt
             └── abc.ckpt
 
-    First search dirpath , then fallback to its `ckpt_subdir` (checkpoints) subdir match the valid checpoint path
+    First search dirpath , then fallback to its ``ckpt_subdir`` (checkpoints) subdir match the valid checpoint path
     . If all failed, return None.
 
     Note: ``checkpoint`` must a parameter of one level rel path to avoid mess matching. and deep rel path matching

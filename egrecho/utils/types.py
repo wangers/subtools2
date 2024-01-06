@@ -14,19 +14,17 @@ EVAL_DATALOADERS = Any  # any iterable or collection of iterables
 
 class ModelOutput(OrderedDict):
     """
-    Base class for all model outputs as dataclass. Copied from:
-        https://github.com/huggingface/transformers/blob/main/src/transformers/utils/generic.py#ModelOutput
+    Base class for all model outputs as dataclass. Copied from `huggingface modelout
+    <https://github.com/huggingface/transformers/blob/main/src/transformers/utils/generic.py#ModelOutput>`_.
 
-    Has a `__getitem__` that allows indexing by integer or slice (like a
+    Has a :meth:`__getitem__` that allows indexing by integer or slice (like a
     tuple) or strings (like a dictionary) that will ignore the `None` attributes. Otherwise behaves like a regular
     python dictionary.
 
-    <Tip warning={true}>
+    .. tip::
 
-    You can't unpack a `ModelOutput` directly. Use the [ModelOutput.to_tuple`] method to convert it to a tuple
-    before.
-
-    </Tip>
+        You can't unpack a `ModelOutput` directly. Use the [`ModelOutput.to_tuple`] method to convert it to a tuple
+        before.
     """
 
     def __post_init__(self):
@@ -91,16 +89,19 @@ class ModelOutput(OrderedDict):
         )
 
     def setdefault(self, *args, **kwargs):
+        """remove this action"""
         raise Exception(
             f"You cannot use ``setdefault`` on a {self.__class__.__name__} instance."
         )
 
     def pop(self, *args, **kwargs):
+        """remove this action"""
         raise Exception(
             f"You cannot use ``pop`` on a {self.__class__.__name__} instance."
         )
 
     def update(self, *args, **kwargs):
+        """remove this action"""
         raise Exception(
             f"You cannot use ``update`` on a {self.__class__.__name__} instance."
         )
@@ -126,7 +127,7 @@ class ModelOutput(OrderedDict):
 
     def to_tuple(self) -> Tuple[Any]:
         """
-        Convert self to a tuple containing all the attributes/keys that are not `None`.
+        Convert self to a tuple containing all the attributes/keys that are not ``None``.
         """
         return tuple(self[k] for k in self.keys())
 
@@ -154,11 +155,9 @@ class SingletonMeta(type):
         return instance
 
 
+# https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/enums.py
 class StrEnum(str, Enum):
     """Type of any enumerator with allowed comparison to string invariant to cases.
-
-    Copied from:
-        https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/enums.py
 
     >>> class MySE(StrEnum):
     ...     t1 = "T-1"

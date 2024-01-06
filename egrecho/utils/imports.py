@@ -13,9 +13,9 @@ import pkg_resources
 
 def is_package_available(*modules: str) -> bool:
     """
-    Returns if a top-level module with :attr:`name` exists *without**
+    Returns if a top-level module with :attr:`name` exists **without**
     importing it. This is generally safer than try-catch block around a
-    `import X`. It avoids third party libraries breaking assumptions of some of
+    ``import X``. It avoids third party libraries breaking assumptions of some of
     our tests, e.g., setting multiprocessing start method when imported
     (see librosa/#747, torchvision/#544).
     """
@@ -27,14 +27,15 @@ def is_module_available(module_path: str) -> bool:
     """Check if a module path is available in your environment.
     This will try to import it.
 
-    >>> is_module_available('torch')
-    True
-    >>> is_module_available('fake')
-    False
-    >>> is_module_available('torch.utils')
-    True
-    >>> is_module_available('torch.util')
-    False
+    Example:
+        >>> is_module_available('torch')
+        True
+        >>> is_module_available('fake')
+        False
+        >>> is_module_available('torch.utils')
+        True
+        >>> is_module_available('torch.util')
+        False
     """
     module_names = module_path.split(".")
     if not is_package_available(module_names[0]):
@@ -51,10 +52,11 @@ def compare_version(
 ) -> bool:
     """Compare package version with some requirements.
 
-    >>> compare_version("torch", operator.ge, "0.1")
-    True
-    >>> compare_version("does_not_exist", operator.ge, "0.0")
-    False
+    Example:
+        >>> compare_version("torch", operator.ge, "0.1")
+        True
+        >>> compare_version("does_not_exist", operator.ge, "0.0")
+        False
     """
     try:
         pkg = importlib.import_module(package)
@@ -76,12 +78,12 @@ def compare_version(
     return op(pkg_version, packaging.version.parse(ver))
 
 
+# https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/imports.py#lazy_import
 @functools.lru_cache()
 class RequirementCache:
     """Boolean-like class to check for requirement and module availability.
 
-    Avoid overhead import, copied from:
-        https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/imports.py#lazy_import
+    Avoid overhead import
 
     Args:
         requirement: The requirement to check, version specifiers are allowed.
@@ -191,18 +193,8 @@ def torchaudio_ge_2_1():
 def lazy_import(module_name, callback=None):
     """Returns a proxy module object that will lazily import the given module the first time it is used.
 
-    Copied from:
-        https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/imports.py#lazy_import
-
-    Example usage::
-
-        # Lazy version of `import tensorflow as tf`
-        tf = lazy_import("tensorflow")
-
-        # Other commands
-
-        # Now the module is loaded
-        tf.__version__
+    Copied from `lightning utilities
+    <https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/imports.py#lazy_import>`_.
 
     Args:
         module_name: the fully-qualified module name to import
@@ -212,6 +204,15 @@ def lazy_import(module_name, callback=None):
     Returns:
         a proxy module object that will be lazily imported when first used
 
+    Example::
+
+        # Lazy version of `import tensorflow as tf`
+        tf = lazy_import("tensorflow")
+
+        # Other commands
+
+        # Now the module is loaded
+        tf.__version__
     """
     return LazyModule(module_name, callback=callback)
 

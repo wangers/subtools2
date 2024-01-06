@@ -26,7 +26,8 @@ logger = get_logger(__name__)
 def set_to_cuda(modules):
     """Send modules to gpu.
 
-    :param models: nn.module or a list of module
+    Args:
+        modules: nn.module or a list of module
     """
 
     if isinstance(modules, (list, tuple)) and len(modules) > 1:
@@ -53,7 +54,7 @@ def get_current_device() -> torch.device:
 
 class _TransferableDtype(ABC):
     """
-    A type with method `.to()` means it can be transferred to torch device.
+    A type with method ``.to()`` means it can be transferred to torch device.
 
     Example:
         >>> isinstance(dict, _TransferableDtype)
@@ -90,14 +91,14 @@ def to_device(
 
     Args:
         data (Any):
-            A tensor, collection of tensors, or anything with a `.to(...)` method.
+            A tensor, collection of tensors, or anything with a ``.to(...)`` method.
         device_object (Union[torch.device, str, int, torch.Tensor, torch.nn.Module], optional):
             The target device. Can be one of the following:
 
-                - `torch.device`, `str`, `int`: The target device.
-                - `torch.nn.Module`: Infer the device from a module.
-                - `torch.Tensor`: Infer the device from a tensor.
-                (default: the current defualt cuda device.)
+                -   ``torch.device``, ``str``, ``int``, The target device.
+                -   ``torch.nn.Module``: Infer the device from a module.
+                -   ``torch.Tensor``: Infer the device from a tensor.
+                    (default: the current defualt cuda device.)
 
     Returns:
         The same collection with all contained tensors residing on the target device.
@@ -137,7 +138,10 @@ def parse_gpus(gpus: Union[str, int, Sequence[int]]) -> Optional[List[int]]:
     Args:
         gpus:
             GPUs used for training on this machine.
-            (-1: all; N: [0,N); "1,2": comma-seperated; "0" means invalid while "0," specify 1 gpu with id:1).
+
+            -1: all;
+            N: [0,N);
+            "1,2": comma-seperated; "0" means invalid while "0," specify 1 gpu with id:1.
     """
     _check_data_type(gpus)
     if gpus is None:
@@ -158,17 +162,19 @@ def parse_gpus(gpus: Union[str, int, Sequence[int]]) -> Optional[List[int]]:
 
 
 def parse_gpus_opt(gpus: Optional[Union[str, int]]) -> Optional[List[int]]:
-    """Similar to :function::``parse_gpus`` but combines auto choose single gpu.
+    """Similar to `parse_gpus` but combines auto choose a single GPU.
 
     Args:
-        gpus:
-            What GPUs should be used:
+        gpus (Optional[Union[str, int]]): What GPUs should be used:
 
-            Case 0: comma-seperated list, e.g., `"1,"` or `"0,1"` means specified id(s).
-            Case 1: a single int(str) negative number (-1) means all visiable devices `[0, N-1]`.
-            Case 2: `''` or `None` or 0 returns None means no gpu.
-            Case 3: a single int(str) number equals 1 means auto choose a spare gpu.
-            Case 4: a single int(str) number n greater than 1 returns `[0, n-1]`.
+            -   case 0: comma-separated list, e.g., "1," or "0,1" means specified id(s).
+            -   case 1: a single int (str) negative number (-1) means all visible devices ``[0, N-1]``.
+            -   case 2: '' or None or 0 returns None means no GPU.
+            -   case 3: a single int (str) number equals 1 means auto choose a spare GPU.
+            -   case 4: a single int (str) number n greater than 1 returns ``[0, n-1]``.
+
+    Returns:
+        Optional[List[int]]: A list of GPU IDs or None.
     """
     _check_data_type(gpus)
     if gpus is None:
@@ -257,7 +263,7 @@ def peak_cuda_memory() -> Tuple[float]:
 
     Returns:
         max_alloc (float): the allocated CUDA memory
-        max_cached (float):  the cached CUDA memory
+        max_cached (float): the cached CUDA memory
     """
 
     max_alloc = torch.cuda.max_memory_allocated() / (1024**3)
@@ -268,13 +274,13 @@ def peak_cuda_memory() -> Tuple[float]:
     return max_alloc, max_cached
 
 
+# https://github.com/Lightning-AI/lightning/blob/master/src/lightning/pytorch/utilities/memory.py
 def release_memory(*objects):
     """
     Triggers garbage collection and Releases cuda cache memory.
 
     This function sets the inputs to `None`, triggers garbage collection to release
-    CPU memory references, and attempts to clear GPU memory cache. referring:
-        - https://github.com/Lightning-AI/lightning/blob/master/src/lightning/pytorch/utilities/memory.py
+    CPU memory references, and attempts to clear GPU memory cache.
 
     Args:
         *objects: Variable number of objects to release.
@@ -315,7 +321,7 @@ class GPUManager:
     """This class enables the automated selection of the most available GPU or another based on specified mode.
 
     Args:
-        addtional_qargs (Optional): Additional arguments passed to `nvidia-smi`.
+        addtional_qargs (Optional): Additional arguments passed to ``nvidia-smi``.
         mode (AutoGPUMode): mode for GPU selection.
             Defaults to MAX_MEM (max-free) memory.
 
@@ -390,7 +396,7 @@ class GPUManager:
 
     def new_query(self):
         """
-        Running the `nvidia-smi` command and organizing the results as a list of dictionaries
+        Running the ``nvidia-smi`` command and organizing the results as a list of dictionaries
         containing information searched from `nvidia-smi`.
         """
         results = subprocess.run(
@@ -418,7 +424,7 @@ class GPUManager:
 
     @classmethod
     def detect(cls, mode: Optional[AutoGPUMode] = AutoGPUMode.MAX_MEM) -> int:
-        """A classmethod calls `auto_choice` method to select a GPU and returns dveice id."""
+        """A classmethod calls :meth`auto_choice` method to select a GPU and returns dveice id."""
         gm = cls(mode=mode)
         return gm.auto_choice()
 
@@ -536,7 +542,7 @@ def is_cuda_available():
 
 @contextmanager
 def patch_nvml_check_env():
-    """A context manager that patch `PYTORCH_NVML_BASED_CUDA_CHECK=1`, and restore finally."""
+    """A context manager that patch ``PYTORCH_NVML_BASED_CUDA_CHECK=1``, and restore finally."""
     has_nvml_env = "PYTORCH_NVML_BASED_CUDA_CHECK" in os.environ
     cache_nvml_env = os.environ.get("PYTORCH_NVML_BASED_CUDA_CHECK")
     os.environ["PYTORCH_NVML_BASED_CUDA_CHECK"] = str(1)
@@ -548,7 +554,7 @@ def patch_nvml_check_env():
 
 
 class NVMLDeviceCount(object):
-    """A tool for `nvml-based` cuda check for torch < 2.0 which won't trigger the drivers and leave cuda
+    """A tool for nvml-based cuda check for torch < 2.0 which won't trigger the drivers and leave cuda
     uninitialized.
 
     Coppied from pytorch, see:

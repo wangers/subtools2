@@ -27,15 +27,15 @@ if TYPE_CHECKING:
 @dataclass
 class DataBuilderConfig(DataclassConfig):
     """
-    Base class for `DataBuilder` configuration.
+    Base class for :class:`DataBuilder` configuration.
 
     Args:
         data_dir (Optional[Union[str, Path]]):
-            Path (e.g. `"./data"`) directory have data files.
+            Path (e.g. ``"./data"``) directory have data files.
         file_patterns (Optional[Union[str, List[str], Dict[str, str]]]):
             str(s) to source data file(s), support pattern matching.
-            e.g., `"egs.train.csv"` or `"egs.*.csv"`. More over, with an absolute
-            path pattern (e.g., `"/export_path/egs.train.csv"`), it will invalids `data_dir` and
+            e.g., ``"egs.train.csv"`` or ``"egs.*.csv"``. More over, with an absolute
+            path pattern (e.g., ``"/export_path/egs.train.csv"``), it will invalids ``data_dir`` and
             search files in abs path.
     """
 
@@ -54,25 +54,25 @@ class DataBuilder:
     """
     Base builder class for building dataset.
 
-    The subclass should define a class attribute `CONFIG_CLS` that extends arguments,
-    and the configuration class name should have an additional `Config` suffix.
+    The subclass should define a class attribute ``CONFIG_CLS`` that extends arguments,
+    and the configuration class name should have an additional ``"Config"`` suffix.
     Subclasses should implement the dataset setup method which is necessary:
 
-    - :method::``def train_dataset(self):``
-    - :method::``def val_dataset(self):``
-    - :method::``def test_dataset(self):``
+    - :meth:`train_dataset`
+    - :meth:`val_dataset`
+    - :meth:`test_dataset`
 
     Its instance stores config instance, data filenamess of splits, infos, etc.
-    The `build_dataset` function returns either a single split dataset
+    The :func:`build_dataset` function returns either a single split dataset
     or a dict of split datasets according to data files dict.
 
     NOTE:
         In case of overheading dataset building in your procedure, you can use the warpper
-        `functools.lru_cache` as :method:`def _get_data_files(self)` style.
+        ``functools.lru_cache`` as ``def _get_data_files(self):`` style.
 
         Keep in mind that that cached result won't changed
         if you modify the related data files in this instance. You can use
-        :method::`def from_file(...)` or :method::`def from_config(...)` to get a new instance.
+        ``def from_file(...)`` or ``def from_config(...)`` to get a new instance.
     """
 
     CONFIG_CLS: DataBuilderConfig
@@ -117,7 +117,7 @@ class DataBuilder:
     @classmethod
     def from_file(
         cls,
-        path: Optional[Union[str, Path]] = None,
+        path: Optional[str] = None,
         data_dir: Optional[str] = None,
         file_patterns: Optional[Union[str, List[str], Dict[str, str]]] = None,
     ) -> "DataBuilder":
@@ -135,28 +135,26 @@ class DataBuilder:
         file_patterns: Optional[Union[str, List[str], Dict]] = None,
         **kwargs,
     ) -> "DataBuilder":
-        """
-        Create a new `DataBuilder` instance by providing a configuration
-        in the form of a dictionary or a `DataBuilderConfig` instance.
+        r"""
+        Creates a new :class:`DataBuilder` instance by providing a configuration
+        in the form of a dictionary or a instance if :class:`DataBuilderConfig`. All params after
+        ``config`` will overwrite it.
 
         Args:
             config (Optional[Union[dict, DataBuilderConfig]]):
-                The path or instance of `PipeBuilderConfig`.
+                A dict or an instance of :class:`DataBuilderConfig`.
             data_dir (Optional[str]):
-                Path (e.g. `"./data"`) directory have data files.
+                Path (e.g. ``"./data"``) directory have data files.
             file_patterns (Optional[Union[str, List[str], Dict]]):
-                str(s) of source data file(s), support pattern matching.
-                e.g., `"egs.train.csv"` or `"egs.*.csv"`. More over, with an absolute
-                path pattern (e.g., `"/export_path/egs.train.csv"`), it will invalids `data_dir` and
-                search files in abs path.
-            **kwargs (additional keyword arguments):
+                Str(s) of source data file(s), support pattern matching.
+                (e.g., ``"egs.train.csv"`` or ``"egs.*.csv"``.) Moreover, with an absolute
+                path pattern (e.g., ``"/export_path/egs.train.csv"``), it will invalids ``data_dir`` and
+                search files in that abs path.
+            \**kwargs (additional keyword arguments):
                 Arguments to override config.
 
         Returns:
             DataBuilder: The new Databuilder instance.
-
-        Example
-        -------
         """
         if isinstance(config, cls.CONFIG_CLS):
             config = config
@@ -176,7 +174,7 @@ class DataBuilder:
         logger.debug(f"Initiate builder: ({cls.__name__}) with config: {ret_config}.")
         return cls(ret_config)
 
-    def save_config(self, path: Union[Path, str]):
+    def save_config(self, path: str):
         """
         save the configuration to a file.
 

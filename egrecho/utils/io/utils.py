@@ -76,6 +76,10 @@ def torchaudio_info_unfixed(path_or_fileobj: Union[Path, str, io.BytesIO]):
 
 
 class JsonMixin:
+    """
+    Loads/save json mixin.
+    """
+
     @staticmethod
     def load_json(path: Union[Path, str], **kwargs) -> Dict:
         data = load_json(path, **kwargs)
@@ -95,6 +99,10 @@ class JsonMixin:
 
 
 class YamlMixin:
+    """
+    Loads/save yaml mixin.
+    """
+
     yaml_inline_list: ClassVar[str] = True
 
     @staticmethod
@@ -164,6 +172,10 @@ class DictFileMixin(ConfigFileMixin):
 
 
 class SerializationFn:
+    """
+    Serialization fn mixin.
+    """
+
     @staticmethod
     def load_file(
         path: Union[Path, str], file_type: Optional[str] = None, **kwargs
@@ -190,7 +202,7 @@ class SerializationFn:
             raise ValueError(f"unsuport file type: {file_type}")
 
 
-class DefaultLoader(getattr(yaml, "CSafeLoader", yaml.SafeLoader)):  # type: ignore
+class _DefaultLoader(getattr(yaml, "CSafeLoader", yaml.SafeLoader)):  # type: ignore
     pass
 
 
@@ -205,11 +217,11 @@ def remove_implicit_resolver(cls, tag_to_remove):
         ]
 
 
-remove_implicit_resolver(DefaultLoader, "tag:yaml.org,2002:timestamp")
-remove_implicit_resolver(DefaultLoader, "tag:yaml.org,2002:float")
+remove_implicit_resolver(_DefaultLoader, "tag:yaml.org,2002:timestamp")
+remove_implicit_resolver(_DefaultLoader, "tag:yaml.org,2002:float")
 
 
-DefaultLoader.add_implicit_resolver(
+_DefaultLoader.add_implicit_resolver(
     "tag:yaml.org,2002:float",
     re.compile(
         """^(?:
@@ -238,7 +250,7 @@ _InlineListDumper.add_representer(tuple, _yaml_list_representer)
 _InlineListDumper.add_representer(list, _yaml_list_representer)
 
 
-def load_yaml(path: Union[Path, str], Loader=DefaultLoader) -> Dict:
+def load_yaml(path: Union[Path, str], Loader=_DefaultLoader) -> Dict:
     with auto_open(path, "r") as fin:
         return yaml.load(fin, Loader=Loader)
 
@@ -259,7 +271,7 @@ def yaml_load_string(stream):
     if stream.strip() == "-":
         value = stream
     else:
-        value = yaml.load(stream, Loader=DefaultLoader)
+        value = yaml.load(stream, Loader=_DefaultLoader)
     if isinstance(value, dict) and value and all(v is None for v in value.values()):
         if len(value) == 1 and stream.strip() == next(iter(value.keys())) + ":":
             value = stream

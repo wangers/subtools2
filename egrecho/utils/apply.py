@@ -23,9 +23,6 @@ def apply_to_collection(
 ) -> Any:
     """Recursively applies a function to all elements of a certain dtype.
 
-    Copied from `Lighting-AI`:
-        https://github.com/Lightning-AI/utilities/blob/main/src/lightning_utilities/core/apply_func.py
-
     Args:
         data: the collection to apply the function to
         dtype: the given function will be applied to all elements of this dtype

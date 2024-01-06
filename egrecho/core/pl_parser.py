@@ -19,8 +19,7 @@ from egrecho.utils.constants import DEFAULT_TRAIN_FILENAME
 
 class LightningParser(CommonParser):
     """
-    A convenient argument parser for pytorch lighting. referring:
-        https://github.com/Lightning-AI/lightning/blob/master/src/lightning/pytorch/cli.py#LightningArgumentParser
+    A convenient argument parser for pytorch lighting:
     """
 
     def __init__(self, *args, **kwargs):
@@ -41,7 +40,7 @@ class LightningParser(CommonParser):
         """Adds pl module {LightningModule, LightningDataModule, Callback} arguments.
 
         Args:
-            pl_class: Subclass of { LightningModule, LightningDataModule, Callback}.
+            pl_class: Subclass of {LightningModule, LightningDataModule, Callback}.
             nested_key: Name of the nested namespace to store arguments.
             subclass_mode: Whether allow any subclass of the given class.
         """
@@ -85,7 +84,7 @@ class LightningParser(CommonParser):
 
 
 class SaveConfigCallback(Callback):
-    """Modified from `Lightning-AI`. Saves a LightningCLI config to the log_dir when training starts.
+    """Saves a LightningCLI config to the log_dir when training starts.
 
     Args:
         parser: The parser object used to parse the configuration.

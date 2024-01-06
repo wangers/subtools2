@@ -59,7 +59,7 @@ def get_free_port():
     Select a free port for localhost.
 
     Useful in single-node training when we don't want to connect to a real main node but have to set the
-    `MASTER_PORT` environment variable.
+    ``MASTER_PORT`` environment variable.
     """
     import socket
 
@@ -94,7 +94,7 @@ class DistInfo:
         """Tries to automatically detect the pytorch distributed environment paramters.
 
         Note:
-            If `allow_env = True`, some other dist environment may be detected.
+            If ``allow_env = True``, some other dist environment may be detected.
             This detection may not work in processes spawned from the distributed processes (e.g. DataLoader workers)
             as the distributed framework won't be initialized there.
             It will default to 1 distributed process in this case.
@@ -130,7 +130,7 @@ class WorkerInfo:
         """Automatically detects the number of pytorch workers and the current rank.
 
         Note:
-            If `allow_env = True`, some other worker environment may be detected.
+            If ``allow_env = True``, some other worker environment may be detected.
             This only works reliably within a dataloader worker as otherwise the necessary information won't be present.
             In such a case it will default to 1 worker
         """
@@ -167,7 +167,7 @@ class EnvInfo:
 
         Args:
             world_size:
-                The worldsize used for distributed training (=total number of distributed processes)
+                The worldsize used for distributed training (equals total number of distributed processes)
             rank:
                 The distributed global rank of the current process
             num_workers:
@@ -214,10 +214,10 @@ class EnvInfo:
 class TorchMPLauncher:
     r"""Launches processes that run a given function in parallel, and joins them all at the end.
 
-    Worker processes gives a rank to os.envrion["LOCAL_RANK"] that ranges from 0 to N - 1.
+    Worker processes gives a rank to ``os.envrion["LOCAL_RANK"]`` that ranges from 0 to N - 1.
 
-    Referring to ``lightning/fabric``:
-        https://github.com/Lightning-AI/lightning/blob/master/src/lightning/fabric/strategies/launchers/multiprocessing.py
+    Referring to `lightning fabric
+    <https://github.com/Lightning-AI/lightning/blob/master/src/lightning/fabric/strategies/launchers/multiprocessing.py>`_.
 
     Note:
         - This launcher requires all objects to be pickleable.
@@ -230,7 +230,7 @@ class TorchMPLauncher:
         num_processes: number works.
         port: master port, if not set, will auto find in localhost.
         disable_mem_share: mem_share is the feature of torch.multiprocessing.
-            Required set True when running models on CPU, see: method::`_disable_module_memory_sharing`.
+            Required set True when running models on CPU, see :meth:`_disable_module_memory_sharing`.
         start_method: The method how to start the processes.
 
     Example::

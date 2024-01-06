@@ -34,8 +34,6 @@ from egrecho.utils.types import Split
 
 logger = get_logger()
 
-__all__ = []
-
 WILDCARD_CHARACTERS = "*[]"
 FILES_TO_IGNORE = [
     "README.md",
@@ -85,10 +83,12 @@ def get_filename(filepath):
 class DataFilesList(List[Union[Path, Url]]):
     """
     List of data files (absolute local paths or URLs).
+
     - ``from_local_or_remote``: resolve patterns from a local path
 
     Moreover DataFilesList has an additional attribute ``origin_metadata``.
     It can store:
+
     - the last modified time of local files.
     - Url metadata is not implemented currently.
     """
@@ -149,6 +149,7 @@ def sanitize_patterns(
 class DataFilesDict(Dict[str, DataFilesList]):
     """
     Dict of split_name -> list of data files (absolute local paths or URLs).
+
     - ``from_local_or_remote``: resolve patterns from a local path
 
     Moreover each list is a DataFilesList. For more info, see ``DataFilesList``.
@@ -185,28 +186,33 @@ def resolve_patterns_locally_or_by_urls(
     URLs are just returned as is.
 
     You can use patterns to resolve multiple local files. Here are a few examples:
-    - *.csv to match all the CSV files at the first level
-    - **.csv to match all the CSV files at any level
-    - data/* to match all the files inside "data"
-    - data/** to match all the files inside "data" and its subdirectories
+
+    - ``*.csv`` to match all the CSV files at the first level
+    - ``**.csv`` to match all the CSV files at any level
+    - ``data/*`` to match all the files inside "data"
+    - ``data/**`` to match all the files inside "data" and its subdirectories
 
     The patterns are resolved using the fsspec glob.
     Here are some behaviors specific to fsspec glob that are different from glob.glob, Path.glob, Path.match or fnmatch:
-    - '*' matches only first level items
-    - '**' matches all items
-    - '**/*' matches all at least second level items
+
+    - ``'*'`` matches only first level items
+    - ``'**'`` matches all items
+    - ``'**/*'`` matches all at least second level items
 
     More generally:
-    - '*' matches any character except a forward-slash (to match just the file or directory name)
-    - '**' matches any character including a forward-slash /
+
+    - ``'*'`` matches any character except a forward-slash (to match just the file or directory name)
+    - ``'**'`` matches any character including a forward-slash /
 
     Hidden files and directories (i.e. whose names start with a dot) are ignored, unless they are explicitly requested.
     The same applies to special directories that start with a double underscore like "__pycache__".
     You can still include one if the pattern explicilty mentions it:
-    - to include a hidden file: "*/.hidden.txt" or "*/.*"
-    - to include a hidden directory: ".hidden/*" or ".*/*"
-    - to include a special directory: "__special__/*" or "__*/*"
-        e.g., glob.glob('**/*', recursive=True), the last /* is invalid as greedy mode of first pattern '**'.
+
+    - to include a hidden file: ``"*/.hidden.txt"`` or ``"*/.*"``
+    - to include a hidden directory: ``".hidden/*"`` or ``".*/*"``
+    - to include a special directory: ``"__special__/*"`` or ``"__*/*"``
+
+        e.g., ``glob.glob('**/*', recursive=True)``, the last ``/*`` is invalid as greedy mode of first pattern ``'**'``.
 
     Args:
         base_path (str): Base path to use when resolving relative paths.
