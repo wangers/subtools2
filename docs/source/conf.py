@@ -6,13 +6,13 @@
 import os
 import sys
 
+# import git
+import lightning
+import sphinx_rtd_theme
+
 import egrecho
 
 # import typing
-
-# import git
-# import lightning
-# import sphinx_rtd_theme
 
 
 _PATH_HERE = os.path.abspath(os.path.dirname(__file__))
