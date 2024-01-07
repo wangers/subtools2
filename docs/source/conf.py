@@ -103,7 +103,7 @@ autodoc_default_options = {
     "show-inheritance": False,
 }
 # autodoc: Don't inherit docstrings (e.g. for nn.Module.forward)
-# autodoc_inherit_docstrings = False
+autodoc_inherit_docstrings = False
 # autosummary_generate = True
 typehints_fully_qualified = False
 
