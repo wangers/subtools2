@@ -77,6 +77,7 @@ if [ "$do_lm" == "true" ]; then
     log "stage 4: Large margin finetune."
     egrecho train-asv -c config/train_ecapa_lm_tune.yaml \
       --save_dir ${exp}_lm \
+      run \
       --init_weight_params.dirpath ${exp} \
       --init_weight_params.checkpoint ${ckpt}
   fi

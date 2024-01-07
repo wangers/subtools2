@@ -1,6 +1,30 @@
 ## Reports
 
-### Results of ECAPA-TDNN (NEW)
+### Results of CamPPlus (2024-01-07)
+
+The configuration is based on [3D-Speaker](https://github.com/alibaba-damo-academy/3D-Speaker/tree/main/egs/voxceleb/sv-cam%2B%2B), originally released in the [CAM++ paper](https://arxiv.org/abs/2303.00332), with the exception of the sampling strategy switch (from sequential chunk to random chunk).
+* Egs = Voxceleb2_dev(online random aug) + random chunk(**2s** or **3s**)
+* Optimization = [sgd (lr = 0.1 - 1e-5) + warm_cosine] x 4 GPUs (total batch-size=1024) + 120 epochs + average best 5
+* CamPPlus + AAM-Softmax (margin = 0.2)
+* Large-Margin Finetune: random chunk(up to 6s), close speed perturb, margin (up to **0.5**), see config file for details.
+
+| EER% | vox1-O | vox1-O-clean | vox1-E | vox1-E-clean | vox1-H | vox1-H-clean |
+|:-----|:------:|:------------:|:------:|:------------:|:------:|:------------:|
+| **Chunk-200**        |      |      |      |      |      |
+|  Submean   | 0.954 | 0.819 | 1.129 | 0.998 | 2.025 | 1.9   |
+|  Asnorm    | 0.822 | 0.691 | 1.079 | 0.948 | 1.906 | 1.773 |
+| LM-Submean | 0.769 | 0.638 | 0.975 | 0.85  | 1.722 | 1.585 |
+| LM-Asnorm  | 0.721 | 0.585 | 0.948 | 0.827 | 1.622 | 1.488 |
+| **Chunk-300**        |      |      |      |      |      |
+|  Submean   | 1.007 | 0.872 | 1.075 | 0.939 | 1.875 | 1.74  |
+|  Asnorm    | 0.859 | 0.718 | 1.004 | 0.875 | 1.693 | 1.562 |
+| LM-Submean | 0.891 | 0.739 | 1.008 | 0.876 | 1.739 | 1.607 |
+| LM-Asnorm  | 0.822 | 0.67  | 0.985 | 0.849 | 1.657 | 1.529 |
+<br/>
+
+> **Note**: The paper adopts 3s as chunk length, and the results indicate that training with a longer chunk length pretrained model can yields better performance in hard trials *(Vox1-H)*. However, it may diminish the performace gain from Large-Margin Finetune. After Large-Margin Finetune, models pretrained with chunks of either 2s or 3s demonstrate similar performance levels.
+
+### Results of ECAPA-TDNN (2023-12-27)
 * Egs = Voxceleb2_dev(online random aug) + random chunk(2s)
 * Optimization = [sgd (lr = 0.2 - 1e-6) + warm_cosine] x 4 GPUs (total batch-size=512) + AMP training 120 epochs + average best 5
 * ECAPA-TDNN (channels = 1024) + AAM-Softmax (margin = 0.2)
@@ -27,6 +51,8 @@ Adamw converges quiet fast in the early stage, but its final performance is slig
 |  Adamw-Submean | 1.071 |  0.941 | 1.248 | 1.129 | 2.355 | 2.219 |
 |  Adamw-Asnorm  | 0.901 |  0.771 | 1.163 | 1.041 | 2.129 | 2.004 |
 <br/>
+
+
 
 ### Results of ECAPA-TDNN (old version)
 * Egs = Voxceleb2_dev(online random aug) + random chunk(2s)
