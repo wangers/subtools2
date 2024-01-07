@@ -1,9 +1,3 @@
-# egrecho.utils.patch.google_doc
-```{eval-rst}
-.. automodule:: egrecho.utils.patch.google_doc
-    :members:
-
-```
 
 # egrecho.utils.patch.io_patch
 ```{eval-rst}
