@@ -5,13 +5,15 @@
 
 import os
 import sys
-import typing
-
-import git
-import lightning
-import sphinx_rtd_theme
 
 import egrecho
+
+# import typing
+
+# import git
+# import lightning
+# import sphinx_rtd_theme
+
 
 _PATH_HERE = os.path.abspath(os.path.dirname(__file__))
 _PATH_ROOT = os.path.join(_PATH_HERE, "..", "..")
