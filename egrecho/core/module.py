@@ -33,8 +33,8 @@ class TopVirtualModel(pl.LightningModule):
     """
 
     __jit_unused_properties__ = [
-        "teacher"
-    ] + pl.LightningModule.__jit_unused_properties__
+        "teacher",
+    ].extend(pl.LightningModule.__jit_unused_properties__)
 
     config_class = None
     main_input_name: str = None

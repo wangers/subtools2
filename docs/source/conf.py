@@ -6,18 +6,15 @@
 import os
 import sys
 
-# import git
-import lightning
-import sphinx_rtd_theme
-
-import egrecho
-
-# import typing
-
-
 _PATH_HERE = os.path.abspath(os.path.dirname(__file__))
 _PATH_ROOT = os.path.join(_PATH_HERE, "..", "..")
 sys.path.insert(0, _PATH_ROOT)
+
+try:
+    import egrecho
+except Exception:
+    raise ImportError
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
