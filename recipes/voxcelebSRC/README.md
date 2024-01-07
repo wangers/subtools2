@@ -24,6 +24,7 @@ The configuration is based on [3D-Speaker](https://github.com/alibaba-damo-acade
 
 > **Note**: The paper adopts 3s as chunk length, and the results indicate that training with a longer chunk length pretrained model can yields better performance in hard trials *(Vox1-H)*. However, it may diminish the performace gain from Large-Margin Finetune. After Large-Margin Finetune, models pretrained with chunks of either 2s or 3s demonstrate similar performance levels.
 
+*Conducted by Dexin Liao*
 ### Results of ECAPA-TDNN (2023-12-27)
 * Egs = Voxceleb2_dev(online random aug) + random chunk(2s)
 * Optimization = [sgd (lr = 0.2 - 1e-6) + warm_cosine] x 4 GPUs (total batch-size=512) + AMP training 120 epochs + average best 5
@@ -52,7 +53,7 @@ Adamw converges quiet fast in the early stage, but its final performance is slig
 |  Adamw-Asnorm  | 0.901 |  0.771 | 1.163 | 1.041 | 2.129 | 2.004 |
 <br/>
 
-
+*Conducted by Dexin Liao*
 
 ### Results of ECAPA-TDNN (old version)
 * Egs = Voxceleb2_dev(online random aug) + random chunk(2s)
@@ -86,6 +87,8 @@ Adamw converges quiet fast in the early stage, but its final performance is slig
 |                              |  AS-Norm | 0.949 |  0.792 |   -   |   -   |   -   |   -   |
 <br/>
 
+*Conducted by Dexin Liao*
+
 ### Results of RTF (old version)
 * RTF is evaluated on LibTorch-based runtime, see `subtools/runtime`
 * One thread is used for CPU threading and TorchScript inference.
@@ -100,6 +103,7 @@ Adamw converges quiet fast in the early stage, but its final performance is slig
 |            | 6L-256D-4H-2Sub  |  22.5M |   0.070   |
 <br/>
 
+*Conducted by Dexin Liao*
 ### Effects of some tricks (2022-12-29)
 * Egs = Voxceleb2_dev(online random aug) + random chunk(2s)
 * Optimization = [adamW (lr = 1e-6 - 2e-3) + 1cycle] x 4 GPUs (total batch-size=512)
@@ -117,3 +121,5 @@ Adamw converges quiet fast in the early stage, but its final performance is slig
 |  + mqmha(2q2h) | 0.832 |  0.713 |   1.103   |   0.978   |   1.925   |   1.796   |
 |  + AS-Norm | 0.758 |  0.654 |   -   |   -   |   -   |   -   |
 <br/>
+
+*Conducted by Dexin Liao*
