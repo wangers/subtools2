@@ -1,5 +1,8 @@
 Sphinx>=1.7.9
+sphinx-autobuild
 sphinx-rtd-theme>=1.2.2
 sphinx-autodoc-typehints>=1.19.5
-sphinx-autobuild
-recommonmark
+myst-parser
+sphinx_paramlinks
+sphinx_togglebutton
+sphinx_copybutton
