@@ -5,6 +5,7 @@ __pycache__
 *.egg-info
 *.pytest_cache
 
+
 # data & exp
 data
 !egrecho/data
@@ -15,6 +16,8 @@ exp*/
 *.bak
 *-bak
 *bak.py
+*.bk
+*-bk
 
 .nfs*
 

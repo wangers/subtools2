@@ -1,0 +1,59 @@
+# Copyright xmuspeech (Author: Leo 2024-01)
+
+# https://github.com/ammaraskar/sphinx-action-test/blob/master/.github/workflows/default.yml
+name: Make Document
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        python-version: ["3.8"]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip  # this is specific for Ubuntu
+        key: pip-${{ hashFiles('requirements/*.txt') }}
+        restore-keys: pip-
+
+    - name: Install
+      run: |
+        pip --version
+        pip install -r requirements/pre_base_cpu.txt
+        pip install -q -e . -r requirements/_doc.txt
+
+    - name: Build documentation
+      working-directory: docs/
+      run: |
+        make html --debug --jobs 2 SPHINXOPTS="-W --keep-going"
+        touch build/html/.nojekyll
+
+    - name: Deploy github pages
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html
+        publish_branch: gh-pages

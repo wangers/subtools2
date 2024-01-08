@@ -40,8 +40,8 @@ def vector_mean(
             spk_name utt_id1 utt_id2 utt_id3 ...
 
         output_file:
-            If not provide, will be saved in the same dir of `embed_scp`
-            with suffix `".mean.npy"` (e.g., `"spk_xvector.scp"`).
+            If not provide, will be saved in the same dir of ``embed_scp``
+            with suffix ``".mean.npy"`` (e.g., ``"spk_xvector.scp"``).
 
     Returns:
         The success saved vector path.
@@ -67,10 +67,10 @@ class CosineScore:
             A numpy array or file(.npy) as mean stats to be subtracted.
             Defaults to None, which means will be 0.0.
         cache_size (int or float):
-            If greater than 0, caches embed when reading `eval_scp`.
+            If greater than 0, caches embed when reading ``eval_scp``.
 
             If float, cache size is controlled  by
-            `cache_size * total_len`, where `total_len` is the size of `eval_scp`.
+            ``cache_size * total_len``, where ``total_len`` is the size of ``eval_scp``.
 
             If int, directly set cache size.
             Defaults to 1.0.
@@ -135,12 +135,12 @@ class CosineScore:
                 enroll_name test_name target/nontarget
 
             storage_dir:
-                Where stores score result, score file name will be the `trial_file`'s name with `".score"` suffix.
-                score number insert in the 3rd column of `trials_file`.
+                Where stores score result, score file name will be the ``trial_file``'s name with ``".score"`` suffix.
+                score number insert in the 3rd column of ``trials_file``.
             submean_vec:
                 A numpy array or file(.npy) as mean stats to be subtracted.
-                can overwrite the instance's `submean_vec` attribute.
-                Defaults to None, which means use `self.submean_vec`.
+                can overwrite the instance's ``submean_vec`` attribute.
+                Defaults to None, which means use ``self.submean_vec``.
 
         Returns:
             success saved score files path.

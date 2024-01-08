@@ -41,13 +41,13 @@ def spk_vector_mean(
         embed_scp:
             kaldi style xvector, i.e, xvector.scp.
         spk2utt:
-            spk2utt file, per line::
+            spk2utt file, per line:
 
             spk_name utt_id1 utt_id2 utt_id3 ...
 
         output_fname:
-            If not provide, will be saved in the same dir of `embed_scp`
-            as the `embed_scp`'s name with `"spk_"` preffix (e.g., `"spk_xvector.scp"`).
+            If not provide, will be saved in the same dir of ``embed_scp``
+            as the ``embed_scp``s name with ``"spk_"`` preffix (e.g., ``"spk_xvector.scp"``).
 
     Returns:
         The success saved vector path.
@@ -107,17 +107,17 @@ def compute_cohort_stats(
     Computes closest cohort stats (mean, std).
 
     This function calculates the cosine similarity of test/enroll embeddings to the cohort set embeddings.
-    It selects the top `n` scores of each sample to compute mean and standard deviation.
+    It selects the top ``n`` scores of each sample to compute mean and standard deviation.
 
     NOTE:
         Matrix calculating to speedup computes cosine similarity, too many cohort samples need to be subset
         to save memory.
 
     Args:
-        embed: ndarray of shape (n_samples, n_dim)
-            test/enroll embeddings.
-        cohort_embed: ndarray of shape (m_samples, n_dim)
-            embeddings of cohort set.
+        embed:
+            test/enroll embeddings, ndarray of shape (n_samples, n_dim).
+        cohort_embed:
+            embeddings of cohort set, ndarray of shape (m_samples, n_dim).
         top_n:
             Number of top positive scores to compute statistics.
 
@@ -159,7 +159,7 @@ class ScoreNorm:
             Number of top positive scores to compute statistics. Recommad to 200 ~ 400.
         output_prefix:
             output score file name is raw score trial file name with this prefix.
-            Defaults to `'cohort'`. (e.g., cohort_somset.trials.score)
+            Defaults to ``'cohort'``. (e.g., cohort_somset.trials.score)
         storage_dir:
             Where stores score result,if not set, defaults to the dir of trial files.
         cohort_sub:
@@ -180,7 +180,7 @@ class ScoreNorm:
 
         What's more, if test set is really huge, the trials file may need to be splitted and scores multi times manually.
 
-        Also, the given cohort_scp can be subset via parameter: `cohort_sub`
+        Also, the given cohort_scp can be subset via parameter: ``cohort_sub``
         and reduce the matrix row number, but the results may be slightly infulenced cause the top n score is related
         to sample number.
 
@@ -193,7 +193,7 @@ class ScoreNorm:
     Example::
 
         sn = ScoreNorm('./xvector.scp',cohort_scp='./spk_xvector.scp', top_n=100)
-        # score_file will be `"./cohort_some_set.trials.score"`.
+        # score_file will be ``"./cohort_some_set.trials.score"``.
         score_file = sn.norm('./some_set.trials.score')
 
         or
@@ -235,13 +235,13 @@ class ScoreNorm:
             raise FileExistsError(
                 f"Cohort xvecotr: ({self.eval_scp}) is not a valid file."
             )
-        if (
-            not isinstance(self.submean_vec, np.ndarray)
-            and not Path(self.submean_vec).is_file()
-        ):
-            raise FileExistsError(
-                f"submean np vector: ({self.submean_vec}) is not a valid file."
-            )
+        if self.submean_vec is not None:
+            if not isinstance(self.submean_vec, np.ndarray) and (
+                not Path(self.submean_vec).is_file()
+            ):
+                raise FileExistsError(
+                    f"submean np vector: ({self.submean_vec}) is not a valid file."
+                )
 
     @lru_cache
     def get_cohort_vectors(self, seed=42) -> np.ndarray:
@@ -289,11 +289,11 @@ class ScoreNorm:
             trial_score_file(s) (str or Path, positional):
                 cosine score trial file(s)
             storage_dir:
-                overwrite `self.storage_dir`.
+                overwrite ``self.storage_dir``.
             output_prefix:
-                overwrite `self.output_prefix`.
+                overwrite ``self.output_prefix``.
             submean_vec:
-                overwrite `self.submean_vec`.
+                overwrite ``self.submean_vec``.
 
         Returns:
             success saved score files path.
@@ -356,13 +356,13 @@ class ScoreNorm:
 
     def get_eval_vectors(self, utts: List[str]) -> np.ndarray:
         """
-        Get the corresponding embedding array for the utts in `eval_scp`.
+        Get the corresponding embedding array for the utts in ``eval_scp``.
 
         Args:
             utts (List[str]): List of utterance keys.
 
         Returns:
-            np.ndarray: Array of embeddings with shape `(nsamples, emb_dim)`.
+            np.ndarray: Array of embeddings with shape ``(nsamples, emb_dim)``.
         """
         return np.array([self.eval_reader.read(utt) for utt in utts])
 

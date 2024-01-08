@@ -6,6 +6,8 @@
 import os
 import sys
 
+import lightning  # import member need this
+
 _PATH_HERE = os.path.abspath(os.path.dirname(__file__))
 _PATH_ROOT = os.path.join(_PATH_HERE, "..", "..")
 sys.path.insert(0, _PATH_ROOT)

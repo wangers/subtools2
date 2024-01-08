@@ -9,6 +9,7 @@ import numpy as np
 
 
 def compute_mean_stats(data: Iterable[np.ndarray]):
+    """Computes mean vecs of input iterable data."""
     data_iter = iter(data)
     first = next(data_iter)
     total_utts = 0
