@@ -5,7 +5,8 @@ name: Make Document
 on:
   push:
     branches:
-      - master
+    - master
+    - doc
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref }}
