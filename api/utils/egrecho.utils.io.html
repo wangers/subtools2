@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>egrecho.utils.io.files &mdash; egrecho  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sphinx_paramlinks.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=4ea706d9"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="egrecho.utils.patch.io_patch" href="egrecho.utils.patch.html" />
+    <link rel="prev" title="egrecho.utils.dummy.generate" href="egrecho.utils.dummy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            egrecho
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api.html">egrecho.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core/config.html">egrecho.core.config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/config.html#egrecho.core.config.DataclassConfig"><code class="docutils literal notranslate"><span class="pre">DataclassConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/config.html#egrecho.core.config.DataclassConfig.from_config"><code class="docutils literal notranslate"><span class="pre">from_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/config.html#egrecho.core.config.DataclassConfig.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/data_builder.html">egrecho.core.data_builder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilderConfig"><code class="docutils literal notranslate"><span class="pre">DataBuilderConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilderConfig.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder"><code class="docutils literal notranslate"><span class="pre">DataBuilder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.from_config"><code class="docutils literal notranslate"><span class="pre">from_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.save_config"><code class="docutils literal notranslate"><span class="pre">save_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.dump_config"><code class="docutils literal notranslate"><span class="pre">dump_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.build_dataset"><code class="docutils literal notranslate"><span class="pre">build_dataset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.build_single_dataset"><code class="docutils literal notranslate"><span class="pre">build_single_dataset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.data_files"><code class="docutils literal notranslate"><span class="pre">data_files</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.estimate_length"><code class="docutils literal notranslate"><span class="pre">estimate_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.num_classes"><code class="docutils literal notranslate"><span class="pre">num_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.class_label"><code class="docutils literal notranslate"><span class="pre">class_label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.feature_extractor"><code class="docutils literal notranslate"><span class="pre">feature_extractor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.feature_size"><code class="docutils literal notranslate"><span class="pre">feature_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/data_builder.html#egrecho.core.data_builder.DataBuilder.inputs_dim"><code class="docutils literal notranslate"><span class="pre">inputs_dim</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/feature_extractor.html">egrecho.core.feature_extractor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature"><code class="docutils literal notranslate"><span class="pre">BaseFeature</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature.get_extractor_dict"><code class="docutils literal notranslate"><span class="pre">get_extractor_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature.from_dict"><code class="docutils literal notranslate"><span class="pre">from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature.to_dict"><code class="docutils literal notranslate"><span class="pre">to_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/loads.html">egrecho.core.loads</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.save_ckpt_conf_dir"><code class="docutils literal notranslate"><span class="pre">save_ckpt_conf_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.ResolveModelResult"><code class="docutils literal notranslate"><span class="pre">ResolveModelResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.ResolveModelResult.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.resolve_pretrained_model"><code class="docutils literal notranslate"><span class="pre">resolve_pretrained_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.load_module_class"><code class="docutils literal notranslate"><span class="pre">load_module_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.load_model_type"><code class="docutils literal notranslate"><span class="pre">load_model_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/loads.html#egrecho.core.loads.load_extractor_type"><code class="docutils literal notranslate"><span class="pre">load_extractor_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/module.html">egrecho.core.module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel"><code class="docutils literal notranslate"><span class="pre">TopVirtualModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.setup"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.training_step"><code class="docutils literal notranslate"><span class="pre">training_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.validation_step"><code class="docutils literal notranslate"><span class="pre">validation_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.pipeline_out"><code class="docutils literal notranslate"><span class="pre">pipeline_out()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.on_train_start"><code class="docutils literal notranslate"><span class="pre">on_train_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.on_train_end"><code class="docutils literal notranslate"><span class="pre">on_train_end()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.configure_teacher_callbacks"><code class="docutils literal notranslate"><span class="pre">configure_teacher_callbacks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.from_pretrained"><code class="docutils literal notranslate"><span class="pre">from_pretrained()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.auto"><code class="docutils literal notranslate"><span class="pre">auto()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.export_onnx"><code class="docutils literal notranslate"><span class="pre">export_onnx()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.TopVirtualModel.export_jit"><code class="docutils literal notranslate"><span class="pre">export_jit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle"><code class="docutils literal notranslate"><span class="pre">DataMoudle</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.prepare_data_per_node"><code class="docutils literal notranslate"><span class="pre">prepare_data_per_node</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.allow_zero_length_dataloader_with_multiple_devices"><code class="docutils literal notranslate"><span class="pre">allow_zero_length_dataloader_with_multiple_devices</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.setup"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.setup_data"><code class="docutils literal notranslate"><span class="pre">setup_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.train_dataset"><code class="docutils literal notranslate"><span class="pre">train_dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.val_dataset"><code class="docutils literal notranslate"><span class="pre">val_dataset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.module.DataMoudle.test_dataset"><code class="docutils literal notranslate"><span class="pre">test_dataset</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModuleConfig"><code class="docutils literal notranslate"><span class="pre">ModuleConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModuleConfig.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModelBase"><code class="docutils literal notranslate"><span class="pre">ModelBase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModelBase.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModelBase.post_init"><code class="docutils literal notranslate"><span class="pre">post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModelBase.dummy_inputs"><code class="docutils literal notranslate"><span class="pre">dummy_inputs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModelBase.export_onnx"><code class="docutils literal notranslate"><span class="pre">export_onnx()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/module.html#egrecho.core.model_base.ModelBase.export_jit"><code class="docutils literal notranslate"><span class="pre">export_jit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/optimization.html">egrecho.core.optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/optimization.html#module-egrecho.core.optimization.optims">optims</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../core/optimization.html#module-egrecho.core.optimization.schedulers">schedulers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/parser.html">egrecho.core.parser</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.CommonParser"><code class="docutils literal notranslate"><span class="pre">CommonParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.CommonParser.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.CommonParser.add_class_args"><code class="docutils literal notranslate"><span class="pre">add_class_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.JsnDefaultHelpFormatter"><code class="docutils literal notranslate"><span class="pre">JsnDefaultHelpFormatter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.JsnDefaultHelpFormatter.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.BaseCommand"><code class="docutils literal notranslate"><span class="pre">BaseCommand</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.BaseCommand.get_dummy_parser"><code class="docutils literal notranslate"><span class="pre">get_dummy_parser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.BaseCommand.setup_parser"><code class="docutils literal notranslate"><span class="pre">setup_parser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.parser.BaseCommand.run_from_args"><code class="docutils literal notranslate"><span class="pre">run_from_args()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/parser.html#module-egrecho.core.pl_parser">PL Parser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.pl_parser.LightningParser"><code class="docutils literal notranslate"><span class="pre">LightningParser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/parser.html#egrecho.core.pl_parser.SaveConfigCallback"><code class="docutils literal notranslate"><span class="pre">SaveConfigCallback</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../core/teacher.html">egrecho.core.teacher</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher"><code class="docutils literal notranslate"><span class="pre">Teacher</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.attach_model"><code class="docutils literal notranslate"><span class="pre">attach_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.setup"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.setup_model"><code class="docutils literal notranslate"><span class="pre">setup_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.setup_loss_fn_dict"><code class="docutils literal notranslate"><span class="pre">setup_loss_fn_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.setup_train_metrics"><code class="docutils literal notranslate"><span class="pre">setup_train_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.setup_val_metrics"><code class="docutils literal notranslate"><span class="pre">setup_val_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.training_step"><code class="docutils literal notranslate"><span class="pre">training_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.validation_step"><code class="docutils literal notranslate"><span class="pre">validation_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.on_train_start"><code class="docutils literal notranslate"><span class="pre">on_train_start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.on_train_end"><code class="docutils literal notranslate"><span class="pre">on_train_end()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.available_optimizers"><code class="docutils literal notranslate"><span class="pre">available_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.available_lr_schedulers"><code class="docutils literal notranslate"><span class="pre">available_lr_schedulers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.configure_single_optimizer"><code class="docutils literal notranslate"><span class="pre">configure_single_optimizer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.instantiate_lr_scheduler"><code class="docutils literal notranslate"><span class="pre">instantiate_lr_scheduler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.get_lr_scheduler_total_steps_name"><code class="docutils literal notranslate"><span class="pre">get_lr_scheduler_total_steps_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.configure_teacher_callbacks"><code class="docutils literal notranslate"><span class="pre">configure_teacher_callbacks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.estimated_num_steps_per_epoch"><code class="docutils literal notranslate"><span class="pre">estimated_num_steps_per_epoch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.Teacher.get_num_training_steps"><code class="docutils literal notranslate"><span class="pre">get_num_training_steps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../core/teacher.html#egrecho.core.teacher.normalize_callable_dict"><code class="docutils literal notranslate"><span class="pre">normalize_callable_dict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html#egrecho-utils">egrecho.utils</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html">egrecho.utils.apply</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.apply.apply_to_collection"><code class="docutils literal notranslate"><span class="pre">apply_to_collection()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.common">egrecho.utils.common</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.alt_none"><code class="docutils literal notranslate"><span class="pre">alt_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.is_in_range"><code class="docutils literal notranslate"><span class="pre">is_in_range()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.ObjectDict"><code class="docutils literal notranslate"><span class="pre">ObjectDict</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.DataclassSerialMixin"><code class="docutils literal notranslate"><span class="pre">DataclassSerialMixin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.common.DataclassSerialMixin.to_dict"><code class="docutils literal notranslate"><span class="pre">to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.common.DataclassSerialMixin.from_dict"><code class="docutils literal notranslate"><span class="pre">from_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.fields_init_var"><code class="docutils literal notranslate"><span class="pre">fields_init_var()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.batched"><code class="docutils literal notranslate"><span class="pre">batched()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.camelcase_to_snakecase"><code class="docutils literal notranslate"><span class="pre">camelcase_to_snakecase()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.snakecase_to_camelcase"><code class="docutils literal notranslate"><span class="pre">snakecase_to_camelcase()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.get_diff_dict"><code class="docutils literal notranslate"><span class="pre">get_diff_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.del_default_dict"><code class="docutils literal notranslate"><span class="pre">del_default_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.dict_union"><code class="docutils literal notranslate"><span class="pre">dict_union()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.common.list2tuple"><code class="docutils literal notranslate"><span class="pre">list2tuple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.constants">egrecho.utils.constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.cuda_utils">egrecho.utils.cuda_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.set_to_cuda"><code class="docutils literal notranslate"><span class="pre">set_to_cuda()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.get_current_device"><code class="docutils literal notranslate"><span class="pre">get_current_device()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.to_device"><code class="docutils literal notranslate"><span class="pre">to_device()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.parse_gpus"><code class="docutils literal notranslate"><span class="pre">parse_gpus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.parse_gpus_opt"><code class="docutils literal notranslate"><span class="pre">parse_gpus_opt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.synchronize"><code class="docutils literal notranslate"><span class="pre">synchronize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.peak_cuda_memory"><code class="docutils literal notranslate"><span class="pre">peak_cuda_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.release_memory"><code class="docutils literal notranslate"><span class="pre">release_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.AutoGPUMode"><code class="docutils literal notranslate"><span class="pre">AutoGPUMode</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.GPUManager"><code class="docutils literal notranslate"><span class="pre">GPUManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.GPUManager.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.GPUManager.new_query"><code class="docutils literal notranslate"><span class="pre">new_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.GPUManager.detect"><code class="docutils literal notranslate"><span class="pre">detect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.GPUManager.auto_choice"><code class="docutils literal notranslate"><span class="pre">auto_choice()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.device2gpu_id"><code class="docutils literal notranslate"><span class="pre">device2gpu_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.num_gpus"><code class="docutils literal notranslate"><span class="pre">num_gpus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.is_cuda_available"><code class="docutils literal notranslate"><span class="pre">is_cuda_available()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.patch_nvml_check_env"><code class="docutils literal notranslate"><span class="pre">patch_nvml_check_env()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.cuda_utils.NVMLDeviceCount"><code class="docutils literal notranslate"><span class="pre">NVMLDeviceCount</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.data_utils">egrecho.utils.data_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.split_sequence"><code class="docutils literal notranslate"><span class="pre">split_sequence()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.Dillable"><code class="docutils literal notranslate"><span class="pre">Dillable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.iflatmap_unordered"><code class="docutils literal notranslate"><span class="pre">iflatmap_unordered()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.buffer_shuffle"><code class="docutils literal notranslate"><span class="pre">buffer_shuffle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ichunk_size"><code class="docutils literal notranslate"><span class="pre">ichunk_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ilen"><code class="docutils literal notranslate"><span class="pre">ilen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.zip_dict"><code class="docutils literal notranslate"><span class="pre">zip_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ClassLabel"><code class="docutils literal notranslate"><span class="pre">ClassLabel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ClassLabel.str2int"><code class="docutils literal notranslate"><span class="pre">str2int()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ClassLabel.int2str"><code class="docutils literal notranslate"><span class="pre">int2str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ClassLabel.from_dict"><code class="docutils literal notranslate"><span class="pre">from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ClassLabel.to_file"><code class="docutils literal notranslate"><span class="pre">to_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.ClassLabel.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.SplitInfo"><code class="docutils literal notranslate"><span class="pre">SplitInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.SplitInfo.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.SplitInfoDict"><code class="docutils literal notranslate"><span class="pre">SplitInfoDict</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.data_utils.SplitInfoDict.total_num_examples"><code class="docutils literal notranslate"><span class="pre">total_num_examples</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.try_length"><code class="docutils literal notranslate"><span class="pre">try_length()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.data_utils.wavscp2dicts"><code class="docutils literal notranslate"><span class="pre">wavscp2dicts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.dist">egrecho.utils.dist</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.send_exit_ddp"><code class="docutils literal notranslate"><span class="pre">send_exit_ddp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.get_free_port"><code class="docutils literal notranslate"><span class="pre">get_free_port()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.is_port_in_use"><code class="docutils literal notranslate"><span class="pre">is_port_in_use()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.DistInfo"><code class="docutils literal notranslate"><span class="pre">DistInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.DistInfo.detect"><code class="docutils literal notranslate"><span class="pre">detect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.DistInfo.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.WorkerInfo"><code class="docutils literal notranslate"><span class="pre">WorkerInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.WorkerInfo.detect"><code class="docutils literal notranslate"><span class="pre">detect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.WorkerInfo.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.EnvInfo"><code class="docutils literal notranslate"><span class="pre">EnvInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.EnvInfo.from_args"><code class="docutils literal notranslate"><span class="pre">from_args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.EnvInfo.num_shards"><code class="docutils literal notranslate"><span class="pre">num_shards</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.EnvInfo.shard_rank"><code class="docutils literal notranslate"><span class="pre">shard_rank</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.EnvInfo.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.dist.TorchMPLauncher"><code class="docutils literal notranslate"><span class="pre">TorchMPLauncher</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.TorchMPLauncher.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.dist.TorchMPLauncher.launch"><code class="docutils literal notranslate"><span class="pre">launch()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.imports">egrecho.utils.imports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.imports.is_package_available"><code class="docutils literal notranslate"><span class="pre">is_package_available()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.imports.is_module_available"><code class="docutils literal notranslate"><span class="pre">is_module_available()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.imports.compare_version"><code class="docutils literal notranslate"><span class="pre">compare_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.imports.lazy_import"><code class="docutils literal notranslate"><span class="pre">lazy_import()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.imports.LazyModule"><code class="docutils literal notranslate"><span class="pre">LazyModule</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.imports.LazyModule.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.logging">egrecho.utils.logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.logging.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger"><code class="docutils literal notranslate"><span class="pre">Logger</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.info_once"><code class="docutils literal notranslate"><span class="pre">info_once()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.warning"><code class="docutils literal notranslate"><span class="pre">warning()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.warning_once"><code class="docutils literal notranslate"><span class="pre">warning_once()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.logging.Logger.error_once"><code class="docutils literal notranslate"><span class="pre">error_once()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.misc">egrecho.utils.misc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.ConfigurationException"><code class="docutils literal notranslate"><span class="pre">ConfigurationException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.NoneDataException"><code class="docutils literal notranslate"><span class="pre">NoneDataException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.parse_bytes"><code class="docutils literal notranslate"><span class="pre">parse_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.kill_name_proc"><code class="docutils literal notranslate"><span class="pre">kill_name_proc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.valid_import_clspath"><code class="docutils literal notranslate"><span class="pre">valid_import_clspath()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.class2str"><code class="docutils literal notranslate"><span class="pre">class2str()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.get_import_path"><code class="docutils literal notranslate"><span class="pre">get_import_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.misc.locate_"><code class="docutils literal notranslate"><span class="pre">locate_()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.register">egrecho.utils.register</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.register.Register"><code class="docutils literal notranslate"><span class="pre">Register</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.Register.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.Register.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.Register.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.Register.keys"><code class="docutils literal notranslate"><span class="pre">keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.register.ExternalRegister"><code class="docutils literal notranslate"><span class="pre">ExternalRegister</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatRegister"><code class="docutils literal notranslate"><span class="pre">ConcatRegister</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatRegister.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatRegister.get"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatRegister.keys"><code class="docutils literal notranslate"><span class="pre">keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.register.StrRegister"><code class="docutils literal notranslate"><span class="pre">StrRegister</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.StrRegister.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.StrRegister.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.StrRegister.keys"><code class="docutils literal notranslate"><span class="pre">keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatStrRegister"><code class="docutils literal notranslate"><span class="pre">ConcatStrRegister</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatStrRegister.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.register.ConcatStrRegister.keys"><code class="docutils literal notranslate"><span class="pre">keys()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.torch_utils">egrecho.utils.torch_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.torch_utils.RandomValue"><code class="docutils literal notranslate"><span class="pre">RandomValue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.torch_utils.RandomValue.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.torch_utils.batch_pad_right"><code class="docutils literal notranslate"><span class="pre">batch_pad_right()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.torch_utils.pad_right_to"><code class="docutils literal notranslate"><span class="pre">pad_right_to()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.torch_utils.audio_collate_fn"><code class="docutils literal notranslate"><span class="pre">audio_collate_fn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.torch_utils.to_numpy"><code class="docutils literal notranslate"><span class="pre">to_numpy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.types">egrecho.utils.types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.types.ModelOutput"><code class="docutils literal notranslate"><span class="pre">ModelOutput</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.ModelOutput.setdefault"><code class="docutils literal notranslate"><span class="pre">setdefault()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.ModelOutput.pop"><code class="docutils literal notranslate"><span class="pre">pop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.ModelOutput.update"><code class="docutils literal notranslate"><span class="pre">update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.ModelOutput.to_tuple"><code class="docutils literal notranslate"><span class="pre">to_tuple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.types.PipeOutput"><code class="docutils literal notranslate"><span class="pre">PipeOutput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.types.SingletonMeta"><code class="docutils literal notranslate"><span class="pre">SingletonMeta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.SingletonMeta.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.types.StrEnum"><code class="docutils literal notranslate"><span class="pre">StrEnum</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.StrEnum.from_str"><code class="docutils literal notranslate"><span class="pre">from_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#egrecho.utils.types.StrEnum.try_from_str"><code class="docutils literal notranslate"><span class="pre">try_from_str()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#egrecho.utils.types.Split"><code class="docutils literal notranslate"><span class="pre">Split</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#egrecho-utils-dummy">egrecho.utils.dummy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.dummy.html">egrecho.utils.dummy.generate</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#egrecho-utils-io">egrecho.utils.io</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">egrecho.utils.io.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.Url"><code class="docutils literal notranslate"><span class="pre">Url</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.is_remote_url"><code class="docutils literal notranslate"><span class="pre">is_remote_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.get_filename"><code class="docutils literal notranslate"><span class="pre">get_filename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.DataFilesList"><code class="docutils literal notranslate"><span class="pre">DataFilesList</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.sanitize_patterns"><code class="docutils literal notranslate"><span class="pre">sanitize_patterns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.DataFilesDict"><code class="docutils literal notranslate"><span class="pre">DataFilesDict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls"><code class="docutils literal notranslate"><span class="pre">resolve_patterns_locally_or_by_urls()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.resolve_patterns"><code class="docutils literal notranslate"><span class="pre">resolve_patterns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.files.resolve_file"><code class="docutils literal notranslate"><span class="pre">resolve_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-egrecho.utils.io.kaldi">egrecho.utils.io.kaldi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.valid_kaldi_storage_name"><code class="docutils literal notranslate"><span class="pre">valid_kaldi_storage_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.close_cached_kaldi_handles"><code class="docutils literal notranslate"><span class="pre">close_cached_kaldi_handles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.lookup_matrix_reader_cache_or_open"><code class="docutils literal notranslate"><span class="pre">lookup_matrix_reader_cache_or_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.lookup_vector_reader_cache_or_open"><code class="docutils literal notranslate"><span class="pre">lookup_vector_reader_cache_or_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.KaldiVectorReader"><code class="docutils literal notranslate"><span class="pre">KaldiVectorReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.KaldiVectorWriter"><code class="docutils literal notranslate"><span class="pre">KaldiVectorWriter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.KaldiMatrixReader"><code class="docutils literal notranslate"><span class="pre">KaldiMatrixReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.kaldi.KaldiMatrixWriter"><code class="docutils literal notranslate"><span class="pre">KaldiMatrixWriter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-egrecho.utils.io.reader">egrecho.utils.io.reader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.reader.JsonlIterable"><code class="docutils literal notranslate"><span class="pre">JsonlIterable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.reader.JsonIterable"><code class="docutils literal notranslate"><span class="pre">JsonIterable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.reader.CsvIterable"><code class="docutils literal notranslate"><span class="pre">CsvIterable</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-egrecho.utils.io.resolve_ckpt">egrecho.utils.io.resolve_ckpt</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt"><code class="docutils literal notranslate"><span class="pre">resolve_ckpt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt"><code class="docutils literal notranslate"><span class="pre">resolve_version_ckpt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt"><code class="docutils literal notranslate"><span class="pre">resolve_rel_ckpt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-egrecho.utils.io.utils">egrecho.utils.io.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.auto_open"><code class="docutils literal notranslate"><span class="pre">auto_open()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.JsonMixin"><code class="docutils literal notranslate"><span class="pre">JsonMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.YamlMixin"><code class="docutils literal notranslate"><span class="pre">YamlMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.ConfigFileMixin"><code class="docutils literal notranslate"><span class="pre">ConfigFileMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.DictFileMixin"><code class="docutils literal notranslate"><span class="pre">DictFileMixin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.SerializationFn"><code class="docutils literal notranslate"><span class="pre">SerializationFn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.load_jsonl_lazy"><code class="docutils literal notranslate"><span class="pre">load_jsonl_lazy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.save_jsonl"><code class="docutils literal notranslate"><span class="pre">save_jsonl()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.load_csv_lazy"><code class="docutils literal notranslate"><span class="pre">load_csv_lazy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.repr_dict"><code class="docutils literal notranslate"><span class="pre">repr_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.InvalidPathExtension"><code class="docutils literal notranslate"><span class="pre">InvalidPathExtension</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.buf_count_newlines"><code class="docutils literal notranslate"><span class="pre">buf_count_newlines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.read_key_first_lists"><code class="docutils literal notranslate"><span class="pre">read_key_first_lists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.read_lists"><code class="docutils literal notranslate"><span class="pre">read_lists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.read_key_first_lists_lazy"><code class="docutils literal notranslate"><span class="pre">read_key_first_lists_lazy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.utils.read_lists_lazy"><code class="docutils literal notranslate"><span class="pre">read_lists_lazy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-egrecho.utils.io.writer">egrecho.utils.io.writer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.writer.SequentialDewWriter"><code class="docutils literal notranslate"><span class="pre">SequentialDewWriter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egrecho.utils.io.writer.ShardWriter"><code class="docutils literal notranslate"><span class="pre">ShardWriter</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#egrecho-utils-patch">egrecho.utils.patch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.patch.html">egrecho.utils.patch.io_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.io_patch.gzip_open_patch"><code class="docutils literal notranslate"><span class="pre">gzip_open_patch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.io_patch.AltGzipFile"><code class="docutils literal notranslate"><span class="pre">AltGzipFile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.io_patch.FsspecLocalGlob"><code class="docutils literal notranslate"><span class="pre">FsspecLocalGlob</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.io_patch.make_path_posix"><code class="docutils literal notranslate"><span class="pre">make_path_posix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.io_patch.stringify_path"><code class="docutils literal notranslate"><span class="pre">stringify_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.patch.html#module-egrecho.utils.patch.torchdata_patch">egrecho.utils.patch.torchdata_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.torchdata_patch.validate_input_col"><code class="docutils literal notranslate"><span class="pre">validate_input_col()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.torchdata_patch.StreamWrapper"><code class="docutils literal notranslate"><span class="pre">StreamWrapper</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.html#egrecho.utils.patch.torchdata_patch.DataChunk"><code class="docutils literal notranslate"><span class="pre">DataChunk</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.patch.html#egrecho-utils-patch-simple-parse-patch">egrecho.utils.patch.simple_parse_patch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html">egrecho.utils.patch.simple_parse_patch._utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#module-egrecho.utils.patch.simple_parse_patch.decoding">egrecho.utils.patch.simple_parse_patch.decoding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#module-egrecho.utils.patch.simple_parse_patch.serializable">egrecho.utils.patch.simple_parse_patch.serializable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#egrecho-utils-patch-simple-parse-patch-annotation-utils">egrecho.utils.patch.simple_parse_patch.annotation_utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#egrecho-utils-seeder">egrecho.utils.seeder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.seeder.html">egrecho.utils.seeder.seed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.seeder.html#egrecho.utils.seeder.seed.SeedWorkers"><code class="docutils literal notranslate"><span class="pre">SeedWorkers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="egrecho.utils.seeder.html#egrecho.utils.seeder.seed.isolate_rng"><code class="docutils literal notranslate"><span class="pre">isolate_rng()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/index.html">egrecho.pipeline.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.DeviceMode"><code class="docutils literal notranslate"><span class="pre">DeviceMode</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine"><code class="docutils literal notranslate"><span class="pre">PipeLine</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.resolve_pretrained_model"><code class="docutils literal notranslate"><span class="pre">resolve_pretrained_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.from_pretrained"><code class="docutils literal notranslate"><span class="pre">from_pretrained()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.preprocess"><code class="docutils literal notranslate"><span class="pre">preprocess()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.postprocess"><code class="docutils literal notranslate"><span class="pre">postprocess()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipeLine.to"><code class="docutils literal notranslate"><span class="pre">to()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipelineDataset"><code class="docutils literal notranslate"><span class="pre">PipelineDataset</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipelineDataset.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipelineIterator"><code class="docutils literal notranslate"><span class="pre">PipelineIterator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipelineIterator.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.base.PipelineIterator.loader_batch_item"><code class="docutils literal notranslate"><span class="pre">loader_batch_item()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/index.html#module-egrecho.pipeline.speaker_embedding">egrecho.pipeline.speaker_embedding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.speaker_embedding.SpeakerEmbedding"><code class="docutils literal notranslate"><span class="pre">SpeakerEmbedding</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.speaker_embedding.SpeakerEmbedding.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.speaker_embedding.SpeakerEmbedding.from_pretrained"><code class="docutils literal notranslate"><span class="pre">from_pretrained()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.speaker_embedding.SpeakerEmbedding.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.speaker_embedding.SpeakerEmbedding.preprocess"><code class="docutils literal notranslate"><span class="pre">preprocess()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html#egrecho.pipeline.speaker_embedding.SpeakerEmbedding.postprocess"><code class="docutils literal notranslate"><span class="pre">postprocess()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">egrecho</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">egrecho.core</a></li>
+          <li class="breadcrumb-item"><a href="index.html">egrecho.utils.apply</a></li>
+      <li class="breadcrumb-item active">egrecho.utils.io.files</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-egrecho.utils.io.files">
+<span id="egrecho-utils-io-files"></span><h1>egrecho.utils.io.files<a class="headerlink" href="#module-egrecho.utils.io.files" title="Permalink to this heading"></a></h1>
+<p>Utilites to parse file paths.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.Url">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">Url</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L44-L45"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.Url" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.is_remote_url">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">is_remote_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_or_filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L67-L70"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.is_remote_url" title="Permalink to this definition"></a></dt>
+<dd><p>Whether a path is remote.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.get_filename">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">get_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L73-L80"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.get_filename" title="Permalink to this definition"></a></dt>
+<dd><p>get file’s name from remote or local.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.DataFilesList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFilesList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L83-L122"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesList" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <a class="reference internal" href="#egrecho.utils.io.files.Url" title="egrecho.utils.io.files.Url"><code class="xref py py-class docutils literal notranslate"><span class="pre">Url</span></code></a>]]</p>
+<p>List of data files (absolute local paths or URLs).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_local_or_remote</span></code>: resolve patterns from a local path</p></li>
+</ul>
+<p>Moreover DataFilesList has an additional attribute <code class="docutils literal notranslate"><span class="pre">origin_metadata</span></code>.
+It can store:</p>
+<ul class="simple">
+<li><p>the last modified time of local files.</p></li>
+<li><p>Url metadata is not implemented currently.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.DataFilesList.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L96-L100"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesList.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.sanitize_patterns">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">sanitize_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L125-L146"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.sanitize_patterns" title="Permalink to this definition"></a></dt>
+<dd><p>Take the data_files patterns from the user, and format them into a dictionary.
+Each key is the name of the split, and each value is a list of data files patterns (paths or urls).
+The default split is “train”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary of split_name -&gt; list of file_patterns</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>patterns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.DataFilesDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFilesDict</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L149-L178"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesDict" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="#egrecho.utils.io.files.DataFilesList" title="egrecho.utils.io.files.DataFilesList"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFilesList</span></code></a>]</p>
+<p>Dict of split_name -&gt; list of data files (absolute local paths or URLs).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_local_or_remote</span></code>: resolve patterns from a local path</p></li>
+</ul>
+<p>Moreover each list is a DataFilesList. For more info, see <code class="docutils literal notranslate"><span class="pre">DataFilesList</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_patterns_locally_or_by_urls">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_patterns_locally_or_by_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L181-L244"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls" title="Permalink to this definition"></a></dt>
+<dd><p>Resolve the paths and URLs of the data files from the patterns passed by the user.
+URLs are just returned as is.</p>
+<p>You can use patterns to resolve multiple local files. Here are a few examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*.csv</span></code> to match all the CSV files at the first level</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">**.csv</span></code> to match all the CSV files at any level</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data/*</span></code> to match all the files inside “data”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data/**</span></code> to match all the files inside “data” and its subdirectories</p></li>
+</ul>
+<p>The patterns are resolved using the fsspec glob.
+Here are some behaviors specific to fsspec glob that are different from glob.glob, Path.glob, Path.match or fnmatch:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'*'</span></code> matches only first level items</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'**'</span></code> matches all items</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'**/*'</span></code> matches all at least second level items</p></li>
+</ul>
+<p>More generally:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'*'</span></code> matches any character except a forward-slash (to match just the file or directory name)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'**'</span></code> matches any character including a forward-slash /</p></li>
+</ul>
+<p>Hidden files and directories (i.e. whose names start with a dot) are ignored, unless they are explicitly requested.
+The same applies to special directories that start with a double underscore like “__pycache__”.
+You can still include one if the pattern explicilty mentions it:</p>
+<ul>
+<li><p>to include a hidden file: <code class="docutils literal notranslate"><span class="pre">&quot;*/.hidden.txt&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;*/.*&quot;</span></code></p></li>
+<li><p>to include a hidden directory: <code class="docutils literal notranslate"><span class="pre">&quot;.hidden/*&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;.*/*&quot;</span></code></p></li>
+<li><p>to include a special directory: <code class="docutils literal notranslate"><span class="pre">&quot;__special__/*&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;__*/*&quot;</span></code></p>
+<blockquote>
+<div><p>e.g., <code class="docutils literal notranslate"><span class="pre">glob.glob('**/*',</span> <span class="pre">recursive=True)</span></code>, the last <code class="docutils literal notranslate"><span class="pre">/*</span></code> is invalid as greedy mode of first pattern <code class="docutils literal notranslate"><span class="pre">'**'</span></code>.</p>
+</div></blockquote>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.files.resolve_patterns_locally_or_by_urls.params.base_path"></span><strong>base_path</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls.params.base_path">¶</a> (<em>str</em>) – Base path to use when resolving relative paths.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.files.resolve_patterns_locally_or_by_urls.params.patterns"></span><strong>patterns</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls.params.patterns">¶</a> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Unix patterns or paths or URLs of the data files to resolve.
+The paths can be absolute or relative to base_path.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.files.resolve_patterns_locally_or_by_urls.params.allowed_extensions"></span><strong>allowed_extensions</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls.params.allowed_extensions">¶</a> (<em>Optional</em><em>[</em><em>list</em><em>]</em><em>, </em><em>optional</em>) – White-list of file extensions to use. Defaults to None (all extensions).
+For example: allowed_extensions=[“csv”, “json”, “txt”, “parquet”]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of paths or URLs to the local or remote files that match the patterns.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Union[Path, <a class="reference internal" href="#egrecho.utils.io.files.Url" title="egrecho.utils.io.files.Url">Url</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_patterns">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L181-L244"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_patterns" title="Permalink to this definition"></a></dt>
+<dd><p>Resolve the paths and URLs of the data files from the patterns passed by the user.
+URLs are just returned as is.</p>
+<p>You can use patterns to resolve multiple local files. Here are a few examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*.csv</span></code> to match all the CSV files at the first level</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">**.csv</span></code> to match all the CSV files at any level</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data/*</span></code> to match all the files inside “data”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data/**</span></code> to match all the files inside “data” and its subdirectories</p></li>
+</ul>
+<p>The patterns are resolved using the fsspec glob.
+Here are some behaviors specific to fsspec glob that are different from glob.glob, Path.glob, Path.match or fnmatch:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'*'</span></code> matches only first level items</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'**'</span></code> matches all items</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'**/*'</span></code> matches all at least second level items</p></li>
+</ul>
+<p>More generally:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'*'</span></code> matches any character except a forward-slash (to match just the file or directory name)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'**'</span></code> matches any character including a forward-slash /</p></li>
+</ul>
+<p>Hidden files and directories (i.e. whose names start with a dot) are ignored, unless they are explicitly requested.
+The same applies to special directories that start with a double underscore like “__pycache__”.
+You can still include one if the pattern explicilty mentions it:</p>
+<ul>
+<li><p>to include a hidden file: <code class="docutils literal notranslate"><span class="pre">&quot;*/.hidden.txt&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;*/.*&quot;</span></code></p></li>
+<li><p>to include a hidden directory: <code class="docutils literal notranslate"><span class="pre">&quot;.hidden/*&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;.*/*&quot;</span></code></p></li>
+<li><p>to include a special directory: <code class="docutils literal notranslate"><span class="pre">&quot;__special__/*&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;__*/*&quot;</span></code></p>
+<blockquote>
+<div><p>e.g., <code class="docutils literal notranslate"><span class="pre">glob.glob('**/*',</span> <span class="pre">recursive=True)</span></code>, the last <code class="docutils literal notranslate"><span class="pre">/*</span></code> is invalid as greedy mode of first pattern <code class="docutils literal notranslate"><span class="pre">'**'</span></code>.</p>
+</div></blockquote>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.files.resolve_patterns.params.base_path"></span><strong>base_path</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.files.resolve_patterns.params.base_path">¶</a> (<em>str</em>) – Base path to use when resolving relative paths.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.files.resolve_patterns.params.patterns"></span><strong>patterns</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.files.resolve_patterns.params.patterns">¶</a> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Unix patterns or paths or URLs of the data files to resolve.
+The paths can be absolute or relative to base_path.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.files.resolve_patterns.params.allowed_extensions"></span><strong>allowed_extensions</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.files.resolve_patterns.params.allowed_extensions">¶</a> (<em>Optional</em><em>[</em><em>list</em><em>]</em><em>, </em><em>optional</em>) – White-list of file extensions to use. Defaults to None (all extensions).
+For example: allowed_extensions=[“csv”, “json”, “txt”, “parquet”]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of paths or URLs to the local or remote files that match the patterns.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Union[Path, <a class="reference internal" href="#egrecho.utils.io.files.Url" title="egrecho.utils.io.files.Url">Url</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_file">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L304-L319"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_file" title="Permalink to this definition"></a></dt>
+<dd><p>Resolve a single file</p>
+<p>if given base_path and rel fname, get the file subject the base_path.</p>
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.io.kaldi">
+<span id="egrecho-utils-io-kaldi"></span><h1>egrecho.utils.io.kaldi<a class="headerlink" href="#module-egrecho.utils.io.kaldi" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.valid_kaldi_storage_name">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">valid_kaldi_storage_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L16-L23"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.valid_kaldi_storage_name" title="Permalink to this definition"></a></dt>
+<dd><p>As we will add <code class="docutils literal notranslate"><span class="pre">.scp</span></code>, <code class="docutils literal notranslate"><span class="pre">.ark</span></code> suffix in writer, suffix should not contains them.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.close_cached_kaldi_handles">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">close_cached_kaldi_handles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L26-L32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.close_cached_kaldi_handles" title="Permalink to this definition"></a></dt>
+<dd><p>Closes the cached file handles in <code class="docutils literal notranslate"><span class="pre">lookup_cache_or_open</span></code> and
+<code class="docutils literal notranslate"><span class="pre">lookup_reader_cache_or_open</span></code> (see respective docs for more details).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.lookup_matrix_reader_cache_or_open">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">lookup_matrix_reader_cache_or_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#egrecho.utils.io.kaldi.lookup_matrix_reader_cache_or_open" title="Permalink to this definition"></a></dt>
+<dd><p>Helper internal function used in <a class="reference internal" href="#egrecho.utils.io.kaldi.KaldiMatrixReader" title="egrecho.utils.io.kaldi.KaldiMatrixReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">KaldiMatrixReader</span></code></a>.
+It opens kaldi scp files and keeps their handles open in a global program cache
+to avoid excessive amount of syscalls when the Reader class is instantiated
+and destroyed in a loop repeatedly (frequent use-case).</p>
+<p>The file handles can be freed at any time by calling :meth`close_cached_file_handles`.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.lookup_vector_reader_cache_or_open">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">lookup_vector_reader_cache_or_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#egrecho.utils.io.kaldi.lookup_vector_reader_cache_or_open" title="Permalink to this definition"></a></dt>
+<dd><p>Helper internal function used in <a class="reference internal" href="#egrecho.utils.io.kaldi.KaldiVectorReader" title="egrecho.utils.io.kaldi.KaldiVectorReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">KaldiVectorReader</span></code></a>.
+It opens kaldi scp files and keeps their handles open in a global program cache
+to avoid excessive amount of syscalls when the Reader class is instantiated
+and destroyed in a loop repeatedly (frequent use-case).</p>
+<p>The file handles can be freed at any time by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">close_cached_file_handles()</span></code>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiVectorReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">KaldiVectorReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L73-L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiVectorReader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Reads Kaldi’s vector (<code class="docutils literal notranslate"><span class="pre">1-D</span> <span class="pre">float32</span></code>) file (e.g., “xvector.scp”) using kaldi_native_io.
+<code class="docutils literal notranslate"><span class="pre">storage_path</span></code> corresponds to the path to file with suffix <code class="docutils literal notranslate"><span class="pre">.scp</span></code>.
+<code class="docutils literal notranslate"><span class="pre">storage_key</span></code> corresponds to the utterance-id in Kaldi.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Requires <code class="docutils literal notranslate"><span class="pre">kaldi_native_io</span></code> to be installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">kaldi_native_io</span></code>).</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiVectorReader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L83-L96"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiVectorReader.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiVectorWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">KaldiVectorWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xvector'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L110-L169"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiVectorWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Write vector data (<code class="docutils literal notranslate"><span class="pre">1-D</span> <span class="pre">float32</span></code>) to Kaldi’s “.scp” and “.ark” files using kaldi_native_io.
+<code class="docutils literal notranslate"><span class="pre">storage_path</span></code> corresponds to a directory where we’ll create “xvector.scp”
+and “xvector.ark” files.
+<code class="docutils literal notranslate"><span class="pre">storage_key</span></code> corresponds to the utterance-id in Kaldi.
+<code class="docutils literal notranslate"><span class="pre">storage_name</span></code> specified the stem name, i.e., “xvector”.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">192</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">KaldiVectorWriter</span><span class="p">(</span><span class="s1">&#39;xvectordir&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;utt1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">KaldiVectorReader</span><span class="p">(</span><span class="s1">&#39;xvectordir/xvector.scp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;utt1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">read_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Requires <code class="docutils literal notranslate"><span class="pre">kaldi_native_io</span></code> to be installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">kaldi_native_io</span></code>).</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiVectorWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xvector'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L131-L152"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiVectorWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiMatrixReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">KaldiMatrixReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L172-L211"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiMatrixReader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Reads Kaldi’s “feats.scp” file using kaldi_native_io.
+<code class="docutils literal notranslate"><span class="pre">storage_path</span></code> corresponds to the path to <code class="docutils literal notranslate"><span class="pre">feats.scp</span></code>.
+<code class="docutils literal notranslate"><span class="pre">storage_key</span></code> corresponds to the utterance-id in Kaldi.</p>
+<dl class="simple">
+<dt>referring:</dt><dd><p><a class="reference external" href="https://github.com/lhotse-speech/lhotse/blob/master/lhotse/features/io.py">https://github.com/lhotse-speech/lhotse/blob/master/lhotse/features/io.py</a></p>
+</dd>
+</dl>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Requires <code class="docutils literal notranslate"><span class="pre">kaldi_native_io</span></code> to be installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">kaldi_native_io</span></code>).</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiMatrixReader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L185-L198"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiMatrixReader.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiMatrixWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.kaldi.</span></span><span class="sig-name descname"><span class="pre">KaldiMatrixWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'feats'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compression_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L214-L290"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiMatrixWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Write data to Kaldi’s “feats.scp” and “feats.ark” files using kaldi_native_io.
+<code class="docutils literal notranslate"><span class="pre">storage_path</span></code> corresponds to a directory where we’ll create “feats.scp”
+and “feats.ark” files.
+<code class="docutils literal notranslate"><span class="pre">storage_key</span></code> corresponds to the utterance-id in Kaldi.
+<code class="docutils literal notranslate"><span class="pre">storage_name</span></code> specified the stem name, i.e., “feats”.</p>
+<dl class="simple">
+<dt>referring:</dt><dd><p><a class="reference external" href="https://github.com/lhotse-speech/lhotse/blob/master/lhotse/features/io.py">https://github.com/lhotse-speech/lhotse/blob/master/lhotse/features/io.py</a></p>
+</dd>
+</dl>
+<p>The following <code class="docutils literal notranslate"><span class="pre">compression_method</span></code> values are supported by kaldi_native_io:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kAutomaticMethod</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">kSpeechFeature</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">kTwoByteAuto</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">kTwoByteSignedInteger</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">kOneByteAuto</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">kOneByteUnsignedInteger</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">kOneByteZeroOne</span> <span class="o">=</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Setting compression_method works only with 2D arrays.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">131</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">KaldiMatrixWriter</span><span class="p">(</span><span class="s1">&#39;featdir&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;utt1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">KaldiMatrixReader</span><span class="p">(</span><span class="s1">&#39;featdir/feats.scp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;utt1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_equal</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">read_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Requires <code class="docutils literal notranslate"><span class="pre">kaldi_native_io</span></code> to be installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">kaldi_native_io</span></code>).</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.kaldi.KaldiMatrixWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'feats'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compression_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/kaldi.py#L250-L273"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.kaldi.KaldiMatrixWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.io.reader">
+<span id="egrecho-utils-io-reader"></span><h1>egrecho.utils.io.reader<a class="headerlink" href="#module-egrecho.utils.io.reader" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.reader.JsonlIterable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.reader.</span></span><span class="sig-name descname"><span class="pre">JsonlIterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/reader.py#L17-L32"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.reader.JsonlIterable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Get example iterator from json lines file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.reader.JsonlIterable.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/reader.py#L22-L24"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.reader.JsonlIterable.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.reader.JsonIterable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.reader.</span></span><span class="sig-name descname"><span class="pre">JsonIterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/reader.py#L35-L49"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.reader.JsonIterable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Get example iterator from json file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.reader.JsonIterable.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/reader.py#L40-L43"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.reader.JsonIterable.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.reader.CsvIterable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.reader.</span></span><span class="sig-name descname"><span class="pre">CsvIterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">csv_reader_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/reader.py#L52-L72"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.reader.CsvIterable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Get example iterator from csv file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.reader.CsvIterable.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">csv_reader_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/reader.py#L57-L60"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.reader.CsvIterable.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.io.resolve_ckpt">
+<span id="egrecho-utils-io-resolve-ckpt"></span><h1>egrecho.utils.io.resolve_ckpt<a class="headerlink" href="#module-egrecho.utils.io.resolve_ckpt" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.resolve_ckpt.</span></span><span class="sig-name descname"><span class="pre">resolve_ckpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last.ckpt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'version'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best_k_models.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ckpt_subdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'checkpoints'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/resolve_ckpt.py#L12-L115"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt" title="Permalink to this definition"></a></dt>
+<dd><p>Resolve checkpoint path from local or remote.</p>
+<p>Automatically search checkpoint, parameters except <code class="docutils literal notranslate"><span class="pre">checkpoint</span></code> is for local fs,
+checkpoint can be either:</p>
+<ul class="simple">
+<li><p>remote url (e.g., startwith “http”): return it directly, otherwise change to local mode.</p></li>
+<li><p>absolute file path: return it if exists, otherwise raise a FileExistError.</p></li>
+<li><p>relative file name: rel to <code class="docutils literal notranslate"><span class="pre">dirpath</span></code>, return it if exist, otherwise change mode to auto-matching.</p></li>
+<li><p>auto-matching: <code class="docutils literal notranslate"><span class="pre">checkpoint</span></code> must a parameter of one level rel path (recommand one file name)</p></li>
+</ul>
+<p>to avoid messing:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dirpath</span></code>: base dir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ckpt_subdir</span></code>: defaults to name as “checkpoints”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: version subdir, if specified will check it otherwise find the max version number (means latest training).</p></li>
+<li><p>See <a class="reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt" title="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve_version_ckpt()</span></code></a> and <a class="reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt" title="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve_rel_ckpt()</span></code></a> for details.</p></li>
+</ul>
+<p>The minist matching unit is like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./dirpath/
+├── best_k_models.yaml
+├── last.ckpt
+└── abc.ckpt
+
+or
+
+./dirpath/
+├── hparams.yaml
+└── checkpoints
+    ├── best_k_models.yaml
+    ├── last.ckpt
+    └── abc.ckpt
+</pre></div>
+</div>
+<p>With version subdir structure can be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./dirpath/version_1
+        ├── hparams.yaml
+        └── checkpoints
+            ├── best_k_models.yaml
+            ├── last.ckpt
+            └── abc.ckpt
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.checkpoint"></span><strong>checkpoint</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.checkpoint">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The file name of checkpoint to resolve, local file needs a suffix like “.ckpt” / “.pt”,
+While <code class="docutils literal notranslate"><span class="pre">checkpoint=&quot;best&quot;</span></code> is a preseved key means it will find <code class="docutils literal notranslate"><span class="pre">best_k_fname</span></code> which is
+a file contains <strong>Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]</strong>, and sort by its score to
+match a best ckpt. Defaults to “last.ckpt”.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.dirpath"></span><strong>dirpath</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.dirpath">¶</a> (<em>Path</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – The root path. Defaults to None, which means the current directory.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.version"></span><strong>version</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.version">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The versioned subdir name. Conmmonly subdir is named as “version_0/version_1”, if you specify
+the version name with a version num, it will search that version dir, otherwise choose the max number
+of version (above “version_1”). Defaults to “version”.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.best_k_fname"></span><strong>best_k_fname</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.best_k_fname">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The filename for the best_k map file. Note that the best model path in best map file may
+not in this directory since it is stored in training stage, so we assume that its basename
+can matching ckpts in the same level. Defaults to best_k_models.yaml.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.best_k_mode"></span><strong>best_k_mode</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.best_k_mode">¶</a> (<em>Literal</em><em>[</em><em>&quot;max&quot;</em><em>, </em><em>&quot;min&quot;</em><em>]</em><em>, </em><em>optional</em>) – The mode for selecting the best_k checkpoint. Defaults to “min”.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.ckpt_subdir"></span><strong>ckpt_subdir</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_ckpt.params.ckpt_subdir">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The name of the checkpoints subdir. Defaults to “checkpoints”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.resolve_ckpt.</span></span><span class="sig-name descname"><span class="pre">resolve_version_ckpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last.ckpt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'version'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best_k_models.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ckpt_subdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'checkpoints'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/resolve_ckpt.py#L118-L195"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt" title="Permalink to this definition"></a></dt>
+<dd><p>Search for a local version directory.</p>
+<p>Cares about structure like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./dirpath/version_1
+        ├── hparams.yaml
+        └── checkpoints
+            ├── best_k_models.yaml
+            ├── last.ckpt
+            └── abc.ckpt
+</pre></div>
+</div>
+<p>Note: Truly matching see <a class="reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt" title="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt"><code class="xref py py-func docutils literal notranslate"><span class="pre">resolve_rel_ckpt()</span></code></a> for more details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.version"></span><strong>version</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.version">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The versioned subdir name. Conmmonly subdir is named as “version_0/version_1”, if you specify
+the version name with a version num, it will search that version dir, otherwise choose the max number
+of version (above “version_1”). Defaults to “version”.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.dirpath"></span><strong>dirpath</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.dirpath">¶</a> (<em>Path</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – The root path. Defaults to None, which means the current directory.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.checkpoint"></span><strong>checkpoint</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.checkpoint">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The file name of checkpoint to resolve, needs a suffix like “.ckpt” / “.pt”,
+While <code class="docutils literal notranslate"><span class="pre">checkpoint=&quot;best&quot;</span></code> is a preseved key means it will find <code class="docutils literal notranslate"><span class="pre">best_k_fname</span></code> which is
+a file contains <strong>Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]</strong>, and sort by its score to
+match a best ckpt. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;last.ckpt&quot;</span></code>.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.best_k_fname"></span><strong>best_k_fname</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.best_k_fname">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The filename for the best_k map file. Note that the best model path in best map file may
+not in this directory since it is stored in training stage, so we assume that its basename
+can matching ckpts in the same level. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;best_k_models.yaml&quot;</span></code>.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.best_k_mode"></span><strong>best_k_mode</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.best_k_mode">¶</a> (<em>Literal</em><em>[</em><em>&quot;max&quot;</em><em>, </em><em>&quot;min&quot;</em><em>]</em><em>, </em><em>optional</em>) – The mode for selecting the best_k checkpoint. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;min&quot;</span></code>.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.ckpt_subdir"></span><strong>ckpt_subdir</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_version_ckpt.params.ckpt_subdir">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The name of the checkpoints subdir. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;checkpoints&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.resolve_ckpt.</span></span><span class="sig-name descname"><span class="pre">resolve_rel_ckpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'last.ckpt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best_k_models.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ckpt_subdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'checkpoints'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/resolve_ckpt.py#L198-L305"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt" title="Permalink to this definition"></a></dt>
+<dd><p>Resolve checkpoint path rel to dirpath.</p>
+<p>Automatically search checkpoint in a directory’s checkpoints subdir, normally names as <code class="docutils literal notranslate"><span class="pre">&quot;checkpoints&quot;</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">dirpath</span></code> may has such default structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./dirpath/
+├── best_k_models.yaml
+├── last.ckpt
+└── abc.ckpt
+
+or
+
+./dirpath/
+├── hparams.yaml
+└── checkpoints
+    ├── best_k_models.yaml
+    ├── last.ckpt
+    └── abc.ckpt
+</pre></div>
+</div>
+<p>First search dirpath , then fallback to its <code class="docutils literal notranslate"><span class="pre">ckpt_subdir</span></code> (checkpoints) subdir match the valid checpoint path
+. If all failed, return None.</p>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">checkpoint</span></code> must a parameter of one level rel path to avoid mess matching. and deep rel path matching
+should in top level function but not here.</p>
+<ul class="simple">
+<li><p>valid: (last.ckpt, best, ./last.ckpt)</p></li>
+<li><p>invalid: (/last.ckpt, mypath/last.ckpt)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.dirpath"></span><strong>dirpath</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.dirpath">¶</a> (<em>Path</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – The root path. Defaults to None, which means the current directory.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.checkpoint"></span><strong>checkpoint</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.checkpoint">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The file name of checkpoint to resolve, needs a suffix like “.ckpt” / “.pt”,
+While checkpoint=”best” is a preseved key means it will find <cite>best_k_fname</cite> which is
+a file contains <cite>Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]</cite>, and sort by its score to
+match a best ckpt. Defaults to “last.ckpt”.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.best_k_fname"></span><strong>best_k_fname</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.best_k_fname">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The filename for the best_k map file. Note that the best model path in best map file may
+not in this directory since it is stored in training stage, so we assume that its basename
+can matching ckpts in the same level. Defaults to best_k_models.yaml.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.best_k_mode"></span><strong>best_k_mode</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.best_k_mode">¶</a> (<em>Literal</em><em>[</em><em>&quot;max&quot;</em><em>, </em><em>&quot;min&quot;</em><em>]</em><em>, </em><em>optional</em>) – The mode for selecting the best_k checkpoint. Defaults to “min”.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.ckpt_subdir"></span><strong>ckpt_subdir</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.resolve_ckpt.resolve_rel_ckpt.params.ckpt_subdir">¶</a> (<em>str</em><em>, </em><em>optional</em>) – The name of the checkpoints subdir. Defaults to “checkpoints”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resolved checkpoint path or None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">resolve_rel_ckpt</span><span class="p">(</span><span class="s1">&#39;./dirpath&#39;</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="go">&#39;/path/to/xxxl.ckpt&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.io.utils">
+<span id="egrecho-utils-io-utils"></span><h1>egrecho.utils.io.utils<a class="headerlink" href="#module-egrecho.utils.io.utils" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.auto_open">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">auto_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L43-L58"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.auto_open" title="Permalink to this definition"></a></dt>
+<dd><p>Open a Path, if it is end with ‘gz’, will call gzip.open first.</p>
+<p>Note: just support local path now.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.JsonMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">JsonMixin</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L78-L98"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.JsonMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Loads/save json mixin.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.YamlMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">YamlMixin</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L101-L124"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.YamlMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Loads/save yaml mixin.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.ConfigFileMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">ConfigFileMixin</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L127-L167"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.ConfigFileMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#egrecho.utils.io.utils.JsonMixin" title="egrecho.utils.io.utils.JsonMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">JsonMixin</span></code></a>, <a class="reference internal" href="#egrecho.utils.io.utils.YamlMixin" title="egrecho.utils.io.utils.YamlMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">YamlMixin</span></code></a></p>
+<p>To serialize/deserialize config files in local, support json and yaml.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.DictFileMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">DictFileMixin</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L170-L171"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.DictFileMixin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#egrecho.utils.io.utils.ConfigFileMixin" title="egrecho.utils.io.utils.ConfigFileMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigFileMixin</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.SerializationFn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">SerializationFn</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L174-L202"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.SerializationFn" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Serialization fn mixin.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.load_jsonl_lazy">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">load_jsonl_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L296-L303"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.load_jsonl_lazy" title="Permalink to this definition"></a></dt>
+<dd><p>Load json lines in a lazy way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.save_jsonl">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">save_jsonl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L306-L314"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.save_jsonl" title="Permalink to this definition"></a></dt>
+<dd><p>Save json lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.load_csv_lazy">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">load_csv_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fmtparams</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L317-L323"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.load_csv_lazy" title="Permalink to this definition"></a></dt>
+<dd><p>Load csv lines in a lazy way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.repr_dict">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">repr_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inline_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L326-L343"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.repr_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Make dict more readable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.InvalidPathExtension">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">InvalidPathExtension</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L346-L347"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.InvalidPathExtension" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.buf_count_newlines">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">buf_count_newlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L354-L367"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.buf_count_newlines" title="Permalink to this definition"></a></dt>
+<dd><p>Count the number of lines in a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.read_key_first_lists">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_key_first_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L370-L398"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_key_first_lists" title="Permalink to this definition"></a></dt>
+<dd><p>Reads txt line by line, and items sep with blank in one line.</p>
+<p>Returns a list of tuples contains two item, the first column and
+the second formated other columns. (the second can be a list of strings when <cite>vector=True</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.read_lists">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L401-L425"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_lists" title="Permalink to this definition"></a></dt>
+<dd><p>Reads txt line by line, and items sep with blank in one line.</p>
+<p>Returns a list of strings
+(or a list of lists contains all strings splitted when <cite>vector=True</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.read_key_first_lists_lazy">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_key_first_lists_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L428-L449"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_key_first_lists_lazy" title="Permalink to this definition"></a></dt>
+<dd><p>Reads txt line by line lazy, and items sep with blank in one line.</p>
+<p>Generates tuples contains two item, the first column and
+the second formated other columns. (the second can be a list of strings when <cite>vector=True</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.read_lists_lazy">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_lists_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L452-L469"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_lists_lazy" title="Permalink to this definition"></a></dt>
+<dd><p>Reads txt line by line lazy, and items sep with blank in one line.</p>
+<p>Returns a list of strings
+(or a list of lists contains all strings splitted when <cite>vector=True</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.io.writer">
+<span id="egrecho-utils-io-writer"></span><h1>egrecho.utils.io.writer<a class="headerlink" href="#module-egrecho.utils.io.writer" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.SequentialDewWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.writer.</span></span><span class="sig-name descname"><span class="pre">SequentialDewWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L19-L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.SequentialDewWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sequently store dews (manifest), support json lines (jsonl).</p>
+<p>This implementation is mostly based on lhotse:
+<a class="reference external" href="https://github.com/lhotse-speech/lhotse/blob/master/lhotse/serialization.py#SequentialJsonlWriter">https://github.com/lhotse-speech/lhotse/blob/master/lhotse/serialization.py#SequentialJsonlWriter</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.SequentialDewWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L27-L44"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.SequentialDewWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.SequentialDewWriter.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">manifest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flush</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L74-L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.SequentialDewWriter.write" title="Permalink to this definition"></a></dt>
+<dd><p>Serializes a manifest item (e.g. <code class="xref py py-class docutils literal notranslate"></code>) to JSON and stores it in a JSONL file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.writer.SequentialDewWriter.write.params.manifest"></span><strong>manifest</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.writer.SequentialDewWriter.write.params.manifest">¶</a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – the manifest to be written.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.writer.SequentialDewWriter.write.params.flush"></span><strong>flush</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.writer.SequentialDewWriter.write.params.flush">¶</a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – should we flush the file after writing (ensures the changes
+are synced with the disk and not just buffered for later writing).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.ShardWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.writer.</span></span><span class="sig-name descname"><span class="pre">ShardWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shard_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L98-L222"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.ShardWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Create a ShardWriter, data should be of webdataset format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="egrecho.utils.io.writer.ShardWriter.params.pattern"></span><strong>pattern</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.writer.ShardWriter.params.pattern">¶</a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]</span>) – output file pattern.</p></li>
+<li><p><span class="target" id="egrecho.utils.io.writer.ShardWriter.params.shard_size"></span><strong>shard_size</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.writer.ShardWriter.params.shard_size">¶</a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – maximum number of records per shard, if None, means infinite.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If <cite>pattern</cite> is a specify filepath, it will write to one tarfile.</p></li>
+<li><p>If given shard_size, it will streamly write items to many tarfiles with a max size <cite>shard_size</cite>,
+in this case, the pattern must be specified such as ‘%06d’ for str matching.</p></li>
+</ul>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="p">{</span><span class="s1">&#39;__key__&#39;</span><span class="p">:</span> <span class="s1">&#39;tom&#39;</span><span class="p">,</span> <span class="s1">&#39;txt&#39;</span><span class="p">:</span> <span class="s1">&#39;i want eat.&#39;</span><span class="p">},</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="p">{</span><span class="s1">&#39;__key__&#39;</span><span class="p">:</span> <span class="s1">&#39;jimmy&#39;</span><span class="p">,</span> <span class="s1">&#39;txt&#39;</span><span class="p">:</span> <span class="s1">&#39;i want sleep.&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">ShardWriter</span><span class="p">(</span><span class="s1">&#39;./test_fake.tar&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.ShardWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shard_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L122-L145"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.ShardWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.ShardWriter.next_stream">
+<span class="sig-name descname"><span class="pre">next_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L151-L161"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.ShardWriter.next_stream" title="Permalink to this definition"></a></dt>
+<dd><p>Close the current stream and move to the next.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.ShardWriter.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L163-L180"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.ShardWriter.write" title="Permalink to this definition"></a></dt>
+<dd><p>Write a sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="egrecho.utils.io.writer.ShardWriter.write.params.obj"></span><strong>obj</strong><a class="paramlink headerlink reference internal" href="#egrecho.utils.io.writer.ShardWriter.write.params.obj">¶</a> – sample to be written</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.ShardWriter.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L203-L208"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.ShardWriter.close" title="Permalink to this definition"></a></dt>
+<dd><p>Finish all writing.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="egrecho.utils.dummy.html" class="btn btn-neutral float-left" title="egrecho.utils.dummy.generate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="egrecho.utils.patch.html" class="btn btn-neutral float-right" title="egrecho.utils.patch.io_patch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Dexin Liao.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
