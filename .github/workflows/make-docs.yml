@@ -40,6 +40,7 @@ jobs:
 
     - name: Install
       run: |
+        pip install -U pip
         pip --version
         pip install -r requirements/pre_base_cpu.txt
         pip install -q -e . -r requirements/_doc.txt
