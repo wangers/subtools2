@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Any, Dict, Generator, Optional, Union
 
 import lightning.pytorch as pl
 import torch
-from lightning.pytorch.utilities.types import OptimizerLRScheduler
 from torch import ScriptModule
 from torch.utils.data.dataloader import DataLoader
 
@@ -151,7 +150,7 @@ class TopVirtualModel(pl.LightningModule):
             )
         self.teacher.on_train_end()
 
-    def configure_optimizers(self) -> OptimizerLRScheduler:
+    def configure_optimizers(self):
         """
         Redirection to :meth:`configure_optimizers` in teacher.
         """
