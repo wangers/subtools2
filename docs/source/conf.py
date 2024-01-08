@@ -150,7 +150,7 @@ def package_list_from_file(file):
 
 
 # define mapping from PyPI names to python imports
-PACKAGE_MAPPING = {"pytorch": "torch"}
+PACKAGE_MAPPING = {"torch": "torch"}
 MOCK_PACKAGES = []
 
 _path_require = lambda fname: os.path.join(_PATH_ROOT, "requirements", fname)  # noqa

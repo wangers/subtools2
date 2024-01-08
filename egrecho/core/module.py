@@ -32,9 +32,9 @@ class TopVirtualModel(pl.LightningModule):
     step logics, dataloaders, criterion, etc.
     """
 
-    __jit_unused_properties__ = [
+    __jit_unused_properties__ = pl.LightningModule.__jit_unused_properties__ + [
         "teacher",
-    ].extend(pl.LightningModule.__jit_unused_properties__)
+    ]
 
     config_class = None
     main_input_name: str = None
