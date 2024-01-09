@@ -12,7 +12,7 @@ This repository is currently tested on Python 3.8+ and Linux OS.
 
 ### 1. Virtual Environment
 
-It is *strongly* recommended to install repo in a virtual environment using [conda](https://www.anaconda.com/).
+It is **strongly** recommended to install repo in a virtual environment using [conda](https://www.anaconda.com/).
 ```bash
 conda create -n egrecho python=3.8
 conda activate egrecho
@@ -52,9 +52,19 @@ Installation package without modifications:
 ```bash
 pip install https://github.com/wangers/subtools2.git
 ```
+
+## Documentation
+ - [Home page](https://wangers.github.io/subtools2)
+ - [Installation](https://wangers.github.io/subtools2/tutorial_installation.html)
+ - [How to develop dynamic project](https://wangers.github.io/subtools2/tutorial_dynamic_project.html)
+ - [API Reference](https://wangers.github.io/subtools2/api/api.html)
+
 ## Code Structure
 Egrecho is organized into the following **main directories**:
 + **egrecho**: Source python package.
+    <details>
+    <summary>Package list</summary>
+    <!-- following section will be skipped from PyPI description -->
 
     + **core**: Primary code for the framework, defines the base data builder, model, fit teacher, optimizer, scheduler, etc.
     + **data**: Code related to building datasets.
@@ -64,6 +74,8 @@ Egrecho is organized into the following **main directories**:
     + **score**: Metrics the performance.
     + **training**: Training-related code, including optimizations, callbacks, etc.
     + **utils**: Contains a number of frequently used utility methods.
+    </details>
+    <!-- end skipping PyPI description -->
 
 + **egrecho_cli**: Includes a number of useful one-step command line scripts, interactive with user directly for training, extract embedding, scores, etc.
 + **recipes**: Provides examples of projects.
