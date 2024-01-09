@@ -6,6 +6,7 @@
 
 
 tutorial_installation
+tutorial_dynamic_project
 ```
 
 ```{toctree}
