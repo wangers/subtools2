@@ -1,12 +1,13 @@
-# Documentation
+# Welcome to Subtools2
 
-<!-- ```{toctree}
+```{toctree}
 :maxdepth: 1
 :caption: Content
 
 
-api/api.md
-``` -->
+tutorial_installation
+tutorial_dynamic_project
+```
 
 ```{toctree}
 :maxdepth: 2

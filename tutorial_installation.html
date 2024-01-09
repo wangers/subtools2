@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; egrecho  documentation</title>
+  <title>Installation &mdash; egrecho  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=649a27d8" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/sphinx_paramlinks.css" />
 
   
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -23,10 +23,10 @@
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="_static/copybutton.js?v=4ea706d9"></script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dynamic Project" href="tutorial_dynamic_project.html" />
+    <link rel="prev" title="Welcome to Subtools2" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,7 +41,7 @@
             egrecho
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -49,13 +49,13 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Content</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_installation.html#virtual-environment">1. Virtual Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_installation.html#pre-requirement">2. Pre-requirement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_installation.html#install-repo">3. Install Repo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="tutorial_installation.html#developer-installation">Developer Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tutorial_installation.html#python-package-installation">Python package Installation</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-environment">1. Virtual Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-requirement">2. Pre-requirement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-repo">3. Install Repo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#developer-installation">Developer Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-package-installation">Python package Installation</a></li>
 </ul>
 </li>
 </ul>
@@ -573,7 +573,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Search</li>
+      <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -582,22 +582,62 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<p>This repository is currently tested on Python 3.8+ and Linux OS.</p>
+<section id="virtual-environment">
+<h2>1. Virtual Environment<a class="headerlink" href="#virtual-environment" title="Permalink to this heading"></a></h2>
+<p>It is <strong>strongly</strong> recommended to install repo in a virtual environment using <a class="reference external" href="https://www.anaconda.com/">conda</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>egrecho<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
+conda<span class="w"> </span>activate<span class="w"> </span>egrecho
+</pre></div>
+</div>
+</section>
+<section id="pre-requirement">
+<h2>2. Pre-requirement<a class="headerlink" href="#pre-requirement" title="Permalink to this heading"></a></h2>
+<p>Refer <a class="reference external" href="https://pytorch.org/">pytorch</a> to install torch and torchaudio. An example could be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install torch which is cuda available</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="nv">torch</span><span class="o">==</span><span class="m">1</span>.13.1+cu116<span class="w"> </span><span class="nv">torchaudio</span><span class="o">==</span><span class="m">0</span>.13.1<span class="w"> </span>--extra-index-url<span class="w"> </span>https://download.pytorch.org/whl/cu116
+</pre></div>
+</div>
+<p>Additionally, we recommond to install
+lightning manually refer to <a class="reference external" href="https://github.com/Lightning-AI/pytorch-lightning">Pytorch Lightning</a>.</p>
+</section>
+<section id="install-repo">
+<h2>3. Install Repo<a class="headerlink" href="#install-repo" title="Permalink to this heading"></a></h2>
+<section id="developer-installation">
+<h3>Developer Installation<a class="headerlink" href="#developer-installation" title="Permalink to this heading"></a></h3>
+<p>To set up a development environment, run the following commands to clone and install:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/wangers/subtools2.git<span class="w"> </span>subtools2
+<span class="nb">cd</span><span class="w"> </span>subtools2
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 
-  
-  <div id="search-results">
-  
-  </div>
+or
+
+<span class="c1"># Format code tidy</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev<span class="o">]</span>
+pre-commit<span class="w"> </span>install
+</pre></div>
+</div>
+<p>After installation, use <code class="docutils literal notranslate"><span class="pre">egrecho</span> <span class="pre">-h</span></code> to show some commands.</p>
+</section>
+<section id="python-package-installation">
+<h3>Python package Installation<a class="headerlink" href="#python-package-installation" title="Permalink to this heading"></a></h3>
+<p>Installation package without modifications:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/wangers/subtools2.git
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Subtools2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_dynamic_project.html" class="btn btn-neutral float-right" title="Dynamic Project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
@@ -619,14 +659,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>
