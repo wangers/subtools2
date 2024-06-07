@@ -1149,10 +1149,11 @@ class KaldiDataset:
         )
 
 
+TYPE_FUNC = {'str': str, 'float': float, 'int': int}
 # Function
 def to(to_type: str, value):
     if to_type == "str" or to_type == "float" or to_type == "int":
-        return eval("{0}('{1}')".format(to_type, value))
+        return TYPE_FUNC[to_type](value)
     else:
         raise ValueError(f"Do not support convert type:{to_type}.")
 

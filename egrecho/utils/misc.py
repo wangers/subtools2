@@ -3,12 +3,10 @@
 
 import functools
 import importlib
-import os
 import textwrap
 import types
 import warnings
-from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from egrecho.utils.logging import get_logger
 
@@ -302,29 +300,3 @@ def locate_(path: str):
                 + f"\nAre you sure that '{part}' is an attribute of '{parent_dotpath}'?"
             ) from exc_attr
     return obj
-
-
-def imports_local(local_file: Optional[Union[str, Path]] = None):
-    from egrecho.utils.constants import LOCAL_EGRECHO
-
-    local_file = LOCAL_EGRECHO if local_file is None else local_file
-    local_module_file = Path(local_file)
-    if local_module_file.exists() and local_module_file.is_file():
-        # DO WE NEED __init__.py?
-        # local_module_parent = local_module_file.parent
-        # init_path = local_module_parent / "__init__.py"
-        # if not init_path.exists():
-        #     init_path.touch()
-
-        local_module = (
-            str(local_module_file).replace(os.path.sep, ".").replace(".py", "")
-        )
-
-        try:
-            impted = importlib.import_module(local_module)
-            logger.info(
-                f"Detected local file {local_file} exists, success import {impted.__name__}.\n",
-                ranks=0,
-            )
-        except Exception as e:
-            warnings.warn(f"{e}\nFailed imports local file {local_file}.")

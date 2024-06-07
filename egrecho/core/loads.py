@@ -59,7 +59,7 @@ def save_ckpt_conf_dir(
     if model_conf:
         if not isinstance(model_conf, dict):
             raise TypeError(
-                f"The provided extractor shuold be a dict, but got {type(model_conf)}."
+                f"The provided extractor should be a dict, but got {type(model_conf)}."
             )
 
     if extractor:

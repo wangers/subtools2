@@ -250,6 +250,12 @@ class StrEnum(str, Enum):
             return vals
         return keys + vals
 
+    @classmethod
+    def _missing_(cls, value):
+        raise ValueError(
+            f"{value} is not a valid {cls.__name__}, please select one of {list(cls._value2member_map_.keys())}"
+        )
+
     def __eq__(self, other: object) -> bool:
         """Compare two instances."""
         if isinstance(other, Enum):
@@ -279,6 +285,17 @@ class Split(StrEnum):
     @staticmethod
     def names():
         return list(Split._member_map_.values())
+
+
+class PaddingStrategy(StrEnum):
+    """
+    Possible values for the `padding` argument in. Useful for tab-completion in an
+    IDE.
+    """
+
+    LONGEST = "longest"
+    MAX_LENGTH = "max_length"
+    DO_NOT_PAD = "do_not_pad"
 
 
 def is_tensor(x):

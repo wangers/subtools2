@@ -75,10 +75,18 @@ class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
                 The new config instance.
         """
         config = config or {}
-        if isinstance(config, cls):
+        if isinstance(config, DataclassConfig):
             config_kwargs = config.to_dict(filt_type="orig")
+        elif (is_dataclass(config) and not isinstance(config, type)) or isinstance(
+            config, dict
+        ):
+            config_kwargs = asdict_filt(config, filt_type="orig")
+        elif isinstance(config, collections.abc.Mapping):
+            config_kwargs = {key: config[key] for key in copy.deepcopy(config)}
         else:
-            config_kwargs = copy.deepcopy(config)
+            raise TypeError(
+                f'config param of {cls}.from_config should be DataclassConfig/dataclass/dict/mapping, but got invalid type {type(config)}.'
+            )
 
         config_kwargs.update(kwargs)
         valid_keys = field_init_dict(cls).keys()

@@ -6,13 +6,13 @@ import os
 import sys
 import traceback
 import warnings
-from typing import Dict, Type
+from pathlib import Path
+from typing import Dict, Optional, Type, Union
 
 from egrecho.core.parser import BaseCommand, CommonParser
 from egrecho.utils.imports import _PL_AVAILABLE
 from egrecho.utils.io import DataFilesList
 from egrecho.utils.logging import get_logger
-from egrecho.utils.misc import imports_local
 from egrecho_cli.register import COMMAND_REGISTRY
 
 logger = get_logger()
@@ -20,10 +20,43 @@ CONMMANDS_NAMESPACE = "egrecho_cli"
 SCRIPT_PATTERNS = "commands" + os.path.sep + "**.py"
 
 
+def source_import(file_path):
+    """This function imports python module directly from source code using importlib"""
+    spec = importlib.util.spec_from_file_location('', file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def imports_local(localdir: Optional[Union[str, Path]] = None):
+    from egrecho.utils.constants import LOCAL_EGRECHO
+
+    localdir = LOCAL_EGRECHO if localdir is None else localdir
+
+    local_module_path = Path(localdir)
+
+    if local_module_path.exists() and local_module_path.is_dir():
+        local_module_path = local_module_path.absolute()
+
+        init_path = local_module_path / "__init__.py"
+
+        if not init_path.exists():
+            init_path.touch()
+        import sys
+
+        try:
+            sys.path.append(str(local_module_path))
+            impted = source_import(str(init_path))
+            logger.info(
+                f"Detected local package {localdir} exists, success exec {impted}.\n",
+                ranks=0,
+            )
+        except ImportError as e:
+            warnings.warn(f"{e}\nFailed imports local source {localdir}.")
+
+
 def setup_registry():
     """Register available commands."""
-    # imports 'dynamic_egrecho'
-    imports_local()
 
     cli_module = importlib.import_module(CONMMANDS_NAMESPACE)
     cli_base_path = cli_module.__file__.replace("__init__.py", "")
@@ -52,6 +85,9 @@ def setup_registry():
         #         continue
         else:
             importlib.import_module(script_module)
+
+    # imports 'egrecho_inner'
+    imports_local()
 
 
 def main():

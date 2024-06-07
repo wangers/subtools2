@@ -10,7 +10,7 @@ tutorial_dynamic_project
 ```
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 1
 :caption: API Reference
 
 

@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 class TopVirtualModel(pl.LightningModule):
     """
-    A lightning module is related to training, val, test.
+    A lightning module which is related to training, val, test.
 
     In fit (train + validate) stage, you need to set ``self.teacher``, where configures
     step logics, dataloaders, criterion, etc.

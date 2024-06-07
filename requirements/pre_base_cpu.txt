@@ -1,4 +1,4 @@
 # base ci env
-torch==1.13.0
-torchaudio==0.13.0
+torch==1.13.1
+torchaudio==0.13.1
 lightning == 2.0.1

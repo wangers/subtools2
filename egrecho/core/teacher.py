@@ -187,7 +187,7 @@ class Teacher(ABC):
         self.model.val_metrics = ModuleDict(
             {} if metrics is None else normalize_callable_dict(metrics)
         )
-        self.model.train_metrics.to(self.model.device)
+        self.model.val_metrics.to(self.model.device)
 
     @property
     def loss_fn_dict(self) -> Dict:
