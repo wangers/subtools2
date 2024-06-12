@@ -201,13 +201,13 @@ class EgrechoDistSampler(BaseDistSampler):
         return self.data_source.is_lazy
 
 
-class MapDistSampler(BaseDistSampler):
+class IndexDistSampler(BaseDistSampler):
     r"""
-    Provide map-stype data source.
+    Provide eager-stype data source.
 
     Args:
         data_source:
-            map-stype data source.
+            eager-stype data source.
         shuffle (bool, optional):
             If ``True`` (default), sampler will shuffle the
             indices.
@@ -241,12 +241,10 @@ class MapDistSampler(BaseDistSampler):
         if isinstance(data_source, DewSamples):
             if data_source.is_lazy:
                 raise RuntimeError(
-                    f"{self.__class__.__name__} is used for map-style data source, "
+                    f"{self.__class__.__name__} is used for eager-style data source, "
                     f"but got lazy {type(data_source)}, change to `IterDistSampler`/`EgrechoDistSampler` instead."
                 )
-            self._indices = list(data_source.ids)
-        else:
-            self._indices = list(range(len(data_source)))
+        self._indices = list(range(len(data_source)))
 
     def _maybe_shuffle(self):
         if self.shuffle:

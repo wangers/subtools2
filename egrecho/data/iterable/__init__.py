@@ -4,6 +4,6 @@ from egrecho.data.iterable.dataset import IterabelDatasetWrapper, Processor, add
 from egrecho.data.iterable.sampler import (
     BaseDistSampler,
     EgrechoDistSampler,
+    IndexDistSampler,
     IterDistSampler,
-    MapDistSampler,
 )
