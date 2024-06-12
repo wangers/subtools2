@@ -14,7 +14,7 @@ import numpy as np
 from tqdm.contrib import tqdm
 
 from egrecho.data.dew.lazy import LazyChainIterable, LazyDictReader, LazyShuffler
-from egrecho.utils.common import ObjectDict, Timer, alt_none
+from egrecho.utils.common import ObjectDict, Timer, alt_none, asdict_filt
 from egrecho.utils.data_utils import (
     ichunk_size,
     iflatmap_unordered,
@@ -96,7 +96,10 @@ class DictDew(ObjectDict, Dew):
         """
         Recommend to override it in subclass.
         """
-        return self
+        data = asdict_filt(data)
+        if id_ := data.pop('id', None) is not None:
+            data['id'] = id_
+        return data
 
 
 class DewSamples:
