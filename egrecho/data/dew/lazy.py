@@ -12,7 +12,6 @@ import numpy as np
 from egrecho.data.processors import concat_columns_id, rename_columns
 from egrecho.utils.data_utils import Dillable, buffer_shuffle
 from egrecho.utils.io.reader import get_lazy_iterable
-from egrecho.utils.misc import ConfigurationException
 
 
 class LazyDict(Dillable):
@@ -29,7 +28,7 @@ class LazyDict(Dillable):
         return ((item.id, item) for item in self)
 
 
-class LazyChainIterable(LazyDict):
+class LazyChainIterable(Dillable):
     """
     Iterates all underlying iterables sequentially.
 
@@ -59,7 +58,7 @@ class LazyChainIterable(LazyDict):
         return LazyChainIterable(self, other)
 
 
-class LazyShuffler(LazyDict):
+class LazyShuffler(Dillable):
     """
     Shuffle in lazy mode.
 
@@ -102,13 +101,13 @@ class LazyShuffler(LazyDict):
 
 
 # FIXME: add random id -> add index id.
-class LazyDictReader(LazyDict):
+class LazyDictReader(Dillable):
     """
     Read data file(s) lazily into dicts.
 
     This class is a simple wrapper that loads jsonl/json/csv files lazily into dictionaries.
     Note that json is a dict so it not really lazy and will load it into memory for all.
-    It allows you to rename column names and checks for the existence of a key: 'id'.
+    It allows you to rename column names or format a key: 'id'.
 
     Args:
         path_or_paths (Union[str, Path, List[Union[str, Path]]]):
@@ -171,17 +170,17 @@ class LazyDictReader(LazyDict):
             has_id = False
             warn_msg = (
                 f"It seems the samples lack an 'id' key in {self.files}, "
-                f"the picked one is {first} in file:{self.files[0]}."
+                f"the picked one is {first} in file:{self.files[0]}. If not intend to ignore this: "
+                "HINT: Provide it in manifest or or choose strategy. "
+                "via `rename_col_map`/`concat_col_id`/`random_id_ifneed`."
             )
+
             if self.random_id_ifneed:
                 warnings.warn(
-                    f"{warn_msg} You seem use random uuuid to generate ids, please notice your seed."
+                    f"{warn_msg}\n It seems you seem use random uuuid to generate ids, please notice your seed."
                 )
             else:
-                raise ConfigurationException(
-                    f"{warn_msg} Please provide it in manifest or or choose strategy "
-                    f"via `rename_col_map`/`concat_col_id`/`random_id_ifneed`."
-                )
+                warnings.warn(f"{warn_msg}\n It seems you ignore this.")
         except StopIteration:
             return
         for item in chain([first], iterator):

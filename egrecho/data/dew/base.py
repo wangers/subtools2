@@ -2,23 +2,13 @@
 # Copyright xmuspeech (Author: Leo 2023-07)
 
 import io
+import random
 import shutil
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from itertools import chain, islice, repeat
 from pathlib import Path
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Type, Union
 
 import numpy as np
 from tqdm.contrib import tqdm
@@ -91,13 +81,9 @@ class DictDew(ObjectDict, Dew):
 
     def __init__(self, id=None, **kwargs):
         """
-        Validate an 'id' key.
+        Maybe an 'id' key.
         """
         super().__init__(id=id, **kwargs)
-        if self["id"] is None:
-            raise KeyError(
-                'A key name "id" should be provided to `DictDew` to identity this sample.'
-            )
 
     @staticmethod
     def from_dict(data: dict):
@@ -120,8 +106,8 @@ class DewSamples:
 
     _dew_cls: Type[Dew] = DictDew
 
-    def __init__(self, dews: Optional[Mapping[str, Dew]] = None):
-        self.dews = alt_none(dews, {})
+    def __init__(self, dews: Optional[Iterable[Dew]] = None):
+        self.dews = alt_none(dews, [])
 
     @classmethod
     def from_dicts(cls, data: Iterable[dict]) -> "DewSamples":
@@ -140,18 +126,10 @@ class DewSamples:
             return cls()  # empty
         if not isinstance(first, cls._dew_cls):
             raise ValueError(
-                f"Fast failed, the first item type is not an instance of {cls._dew_cls}"
+                f"Fast failed, the first item is not an instance of {cls._dew_cls}"
             )
         dews = chain([first], dews)
-        return cls(dews=DewSamples.index_with_id(dews))
-
-    @staticmethod
-    def index_with_id(dew_samples: Iterable[Dew]) -> Dict[str, Dew]:
-        id2dew = {}
-        for dew in dew_samples:
-            assert dew.id not in id2dew, f"Duplicated sample ID: {dew.id}"
-            id2dew[dew.id] = dew
-        return id2dew
+        return cls(dews=list(dews))
 
     @classmethod
     def from_files(
@@ -527,22 +505,27 @@ class DewSamples:
         lazy: bool = False,
         **kwargs,
     ):
+        random_id_ifneed = kwargs.pop('random_id_ifneed', True)
         if lazy:
             return DewSamples(
-                LazyDewIterator(path_or_paths, random_id_ifneed=True, **kwargs)
+                LazyDewIterator(
+                    path_or_paths, random_id_ifneed=random_id_ifneed, **kwargs
+                )
             )
         else:
             return DewSamples(
-                LazyDewIterator(path_or_paths, random_id_ifneed=True, **kwargs)
+                LazyDewIterator(
+                    path_or_paths, random_id_ifneed=random_id_ifneed, **kwargs
+                )
             ).to_eager()
 
     @property
-    def data(self):
+    def data(self) -> List[Dew]:
         return self.dews
 
     @property
     def ids(self) -> Iterable[str]:
-        return self.keys()
+        return (c.id for c in self.data)
 
     @property
     def is_lazy(self) -> bool:
@@ -565,6 +548,19 @@ class DewSamples:
 
     def take(self, n: int):
         return islice(iter(self), n)
+
+    def sample(self, n: int = 1) -> Union[Dew, "DewSamples"]:
+        """
+        Randomly sample.
+        When ``n`` is 1, will return a single Dew; otherwise will return a ``DewSamples``.
+        """
+        assert n > 0
+        indices = random.sample(range(len(self)), min(n, len(self)))
+        dews = [self[idx] for idx in indices]
+        if n == 1:
+            return dews[0]
+        cls_ = type(self)
+        return cls_(dews)
 
     def map(self, fn: Callable):
         """TODO
@@ -610,9 +606,9 @@ class DewSamples:
         if self.is_lazy:
             return cls(LazyShuffler(self.dews, buffer_size=buffer_size, rng=rng))
         else:
-            ids = list(self.ids)
-            rng.shuffle(ids)
-            return cls({id_: self[id_] for id_ in ids})
+            new: List = self.data.copy()
+            rng.shuffle(new)
+            return cls(new)
 
     def split(
         self, split_num: int, shuffle: bool = False, drop_last: bool = False
@@ -631,8 +627,9 @@ class DewSamples:
         Returns:
             List of smaller squences.
         """
+        cls_ = type(self)
         return [
-            DewSamples.from_dews(subset)
+            cls_(subset)
             for subset in split_sequence(
                 self, split_num=split_num, shuffle=shuffle, drop_last=drop_last
             )
@@ -646,35 +643,35 @@ class DewSamples:
         return f"<class {type(self).__name__}> (len={len_val}) [data type: {type(self.data).__name__}]\n"
         #    f"Head: {self.head()}."
 
-    def __contains__(self, item: Union[str, Dew]) -> bool:
-        if isinstance(item, str):
-            return item in self.data
+    def __contains__(self, other: Union[str, Dew]) -> bool:
+        if isinstance(other, str):
+            return any(other == item.id for item in self)
         else:
-            return item.id in self.data
+            return any((other.id == item.id and other == item) for item in self)
 
     def __getitem__(self, key: Union[int, str]) -> "Dew":
-        if isinstance(key, str):
-            return self.data[key]
-        return next(val for idx, val in enumerate(self.data.values()) if idx == key)
+        try:
+            return self.dews[key]  # int passed, eager manifest, fast
+        except TypeError:
+            # either lazy manifest or str passed, both are slow
+            if self.is_lazy:
+                return next(item for idx, item in enumerate(self) if idx == key)
+            else:
+                # string id passed, support just for backward compatibility, not recommended
+                return next(item for item in self if item.id == key)
+
+    def __iter__(self) -> Iterable[Dew]:
+        yield from self.data
 
     def __len__(self) -> int:
         return len(self.data)
 
-    def __iter__(self) -> Iterable[Dew]:
-        return iter(self.data.values())
-
-    def values(self):
-        return self.data.values()
-
-    def keys(self):
-        return self.data.keys()
-
-    def items(self):
-        return self.data.items()
-
     def __add__(self, other):
         cls = type(self)
         return cls(LazyChainIterable(self.data, other.data))
+
+    def __eq__(self, other: "DewSamples") -> bool:
+        return self.data == other.data
 
 
 # FIXME: add random id -> add index id.
