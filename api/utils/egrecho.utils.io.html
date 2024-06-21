@@ -994,7 +994,7 @@ the second formated other columns. (the second can be a list of strings when <ci
 <span id="egrecho-utils-io-writer"></span><h1>egrecho.utils.io.writer<a class="headerlink" href="#module-egrecho.utils.io.writer" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.io.writer.SequentialDewWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.writer.</span></span><span class="sig-name descname"><span class="pre">SequentialDewWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L19-L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.SequentialDewWriter" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.writer.</span></span><span class="sig-name descname"><span class="pre">SequentialDewWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L20-L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.SequentialDewWriter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Sequently store dews (manifest), support json lines (jsonl).</p>
 <p>This implementation is mostly based on lhotse:
@@ -1074,6 +1074,65 @@ in this case, the pattern must be specified such as ‘%06d’ for str matching.
 <dt class="sig sig-object py" id="egrecho.utils.io.writer.ShardWriter.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L203-L208"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.ShardWriter.close" title="Permalink to this definition">#</a></dt>
 <dd><p>Finish all writing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.TextBoxWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.writer.</span></span><span class="sig-name descname"><span class="pre">TextBoxWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\\n--------------------|boxend|--------------------\\n'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L225-L304"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.TextBoxWriter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sequently store tex boxes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>]</span>) -- output file path.</p></li>
+<li><p><strong>overwrite</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) -- set False for <code class="docutils literal notranslate"><span class="pre">a</span></code> mode.</p></li>
+<li><p><strong>box_end</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) -- the string that marks the end of a text box.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">egrecho.utils.io.writer</span> <span class="kn">import</span> <span class="n">TextBoxWriter</span><span class="p">,</span> <span class="n">TXT_BOXEND</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;REF:    # short one here</span>
+<span class="s1">HYP: shoe order one    *</span>
+<span class="s1">        I     S        D</span>
+<span class="si">{</span><span class="n">TXT_BOXEND</span><span class="si">}</span>
+<span class="s1">REF: quite a bit of  #    #  longer sentence    #</span>
+<span class="s1">HYP: quite * bit of an even longest sentence here</span>
+<span class="s1">           D         I    I       S             I</span>
+<span class="si">{</span><span class="n">TXT_BOXEND</span><span class="si">}</span>
+<span class="s1">REF: there is ** another    one</span>
+<span class="s1">HYP: there is an   other sample</span>
+<span class="s1">            I       S      S</span>
+<span class="si">{</span><span class="n">TXT_BOXEND</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">TXT_BOXEND</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">with</span> <span class="n">TextBoxWriter</span><span class="p">(</span><span class="s1">&#39;text.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;text.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+    <span class="n">rs</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">text</span> <span class="o">==</span> <span class="n">rs</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="egrecho.utils.io.writer.TextBoxWriter.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flush</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/writer.py#L290-L304"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.writer.TextBoxWriter.write" title="Permalink to this definition">#</a></dt>
+<dd><p>Write a text box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>box</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) -- the string to be written.</p></li>
+<li><p><strong>flush</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) -- should we flush the file after writing (ensures the changes
+are synced with the disk and not just buffered for later writing).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1195,6 +1254,10 @@ in this case, the pattern must be specified such as ‘%06d’ for str matching.
 <li><a class="reference internal" href="#egrecho.utils.io.writer.ShardWriter.next_stream"><code class="docutils literal notranslate"><span class="pre">ShardWriter.next_stream()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.writer.ShardWriter.write"><code class="docutils literal notranslate"><span class="pre">ShardWriter.write()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.writer.ShardWriter.close"><code class="docutils literal notranslate"><span class="pre">ShardWriter.close()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#egrecho.utils.io.writer.TextBoxWriter"><code class="docutils literal notranslate"><span class="pre">TextBoxWriter</span></code></a><ul>
+<li><a class="reference internal" href="#egrecho.utils.io.writer.TextBoxWriter.write"><code class="docutils literal notranslate"><span class="pre">TextBoxWriter.write()</span></code></a></li>
 </ul>
 </li>
 </ul>
