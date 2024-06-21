@@ -28,3 +28,6 @@ TYPE_FILENAME = "types.yaml"
 MODEL_TYPE_KEY = "model_type"
 EXTRACTOR_KEY = "feature_extractor_type"
 TOKENIZER_KEY = "tokenizer_type"
+
+
+TXT_BOXEND = "\n" + "-" * 20 + "|boxend|" + "-" * 20 + "\n"

@@ -171,9 +171,13 @@ _PL_AVAILABLE = is_package_available("lightning")
 _TRANSFORMERS_AVAILABLE = is_package_available("transformers")
 _H5PY_AVAILABLE = is_package_available("h5py")
 _KALDI_NATIVE_IO_AVAILABLE = is_package_available("kaldi_native_io")
+_JIWER_AVAILABLE = is_package_available("jiwer")
+_ONNX_AVAILABLE = is_package_available("onnx")
+_ONNXRUNTIME_AVAILABLE = is_package_available("onnxruntime") and _ONNX_AVAILABLE
 
 _TORCH_GREATER_EQUAL_2_0 = RequirementCache("torch>=2.0")
 _TORCH_GREATER_EQUAL_1_9 = RequirementCache("torch>=1.9")
+_ONNXRUNTIME_GREATER_EQUAL_1_4 = RequirementCache("onnxruntime>=1.4")
 
 
 @functools.lru_cache

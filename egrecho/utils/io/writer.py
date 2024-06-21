@@ -6,8 +6,9 @@ import json
 import tarfile
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, List, Optional, Union
+from typing import Any, List, Optional, Union
 
+from egrecho.utils.constants import TXT_BOXEND
 from egrecho.utils.io.utils import (
     InvalidPathExtension,
     auto_open,
@@ -29,8 +30,7 @@ class SequentialDewWriter:
         self.file = None
         if not extension_contains(".jsonl", self.path):
             raise InvalidPathExtension(
-                f"SequentialWriter supports only json lines format."
-                f"but path='{path}'."
+                f"SequentialWriter supports only json lines format, but path='{path}'."
             )
         self.mode = "w"
         self.ignore_ids = set()
@@ -220,3 +220,87 @@ class ShardWriter:
     def __exit__(self, *args, **kw):
         """Exit context."""
         self.close()
+
+
+class TextBoxWriter:
+    """
+    Sequently store tex boxes.
+
+    Args:
+        path:
+            output file path.
+        overwrite:
+            set False for ``a`` mode.
+        box_end:
+            the string that marks the end of a text box.
+
+    Example:
+        ```python
+        from egrecho.utils.io.writer import TextBoxWriter, TXT_BOXEND
+
+        text = f'''REF:    # short one here
+        HYP: shoe order one    *
+                I     S        D
+        {TXT_BOXEND}
+        REF: quite a bit of  #    #  longer sentence    #
+        HYP: quite * bit of an even longest sentence here
+                   D         I    I       S             I
+        {TXT_BOXEND}
+        REF: there is ** another    one
+        HYP: there is an   other sample
+                       I       S      S
+        {TXT_BOXEND}'''
+
+        texts = text.split(TXT_BOXEND)[:-1]
+        with TextBoxWriter('text.txt') as writer:
+            for box in texts:
+                writer.write(box)
+        with open('text.txt') as fr:
+            rs = fr.read()
+
+        assert text == rs
+        ```
+    """
+
+    def __init__(
+        self, path: Union[str, Path], overwrite: bool = True, box_end: str = TXT_BOXEND
+    ) -> None:
+        self.path = path
+        self.file = None
+        self.box_end = box_end
+
+        self.mode = "w"
+        if Path(self.path).is_file() and not overwrite:
+            self.mode = "a"
+
+    def __enter__(self) -> "TextBoxWriter":
+        self._maybe_open()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        self.close()
+
+    def _maybe_open(self):
+        if self.file is None:
+            self.file = auto_open(self.path, self.mode)
+
+    def close(self):
+        if self.file is not None:
+            self.file.close()
+            self.file = None
+
+    def write(self, box: str, flush: bool = False) -> bool:
+        """
+        Write a text box.
+
+        :param box: the string to be written.
+        :param flush: should we flush the file after writing (ensures the changes
+            are synced with the disk and not just buffered for later writing).
+        """
+
+        self._maybe_open()
+
+        print(box, file=self.file, end=self.box_end)
+        if flush:
+            self.file.flush()
+        return True

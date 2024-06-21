@@ -52,4 +52,4 @@ from egrecho.utils.io.utils import (
     torchaudio_info_unfixed,
     yaml_load_string,
 )
-from egrecho.utils.io.writer import SequentialDewWriter, ShardWriter
+from egrecho.utils.io.writer import SequentialDewWriter, ShardWriter, TextBoxWriter
