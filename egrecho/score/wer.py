@@ -28,7 +28,7 @@ _SENTENCE_RE = re.compile(r'^sentence \d+\nREF', re.MULTILINE)
 
 
 @dataclass
-class TXTMetricOutput(ModelOutput):
+class TxtMetricOutput(ModelOutput):
     """Container holds outputs of text (wer/cer related) metrics.
 
     Args:
@@ -442,10 +442,10 @@ class SimpleWER(WERMixin):
         self.total += outputs.total
         return outputs
 
-    def compute(self) -> TXTMetricOutput:
+    def compute(self) -> TxtMetricOutput:
         errors, total = to_py_obj(self.errors), to_py_obj(self.total)
         wer = 0.0 if errors == 0 else errors / total
-        return TXTMetricOutput(error_rate=wer, total=total)
+        return TxtMetricOutput(error_rate=wer, total=total)
 
 
 class DetailWER(WERMixin):
@@ -479,19 +479,19 @@ class DetailWER(WERMixin):
 
     def compute(
         self,
-    ) -> TXTMetricOutput:
+    ) -> TxtMetricOutput:
 
         detail_cnts = list(
             map(to_py_obj, [self.errors, self.ins, self.dels, self.subs, self.total])
         )
         errors, total = detail_cnts[0], detail_cnts[-1]
         if errors == 0:
-            return TXTMetricOutput(
+            return TxtMetricOutput(
                 error_rate=0.0, ins_rate=0.0, del_rate=0.0, sub_rate=0.0, total=total
             )
 
         wer, ins_rate, del_rate, sub_rate = (n / total for n in detail_cnts[:-1])
-        return TXTMetricOutput(
+        return TxtMetricOutput(
             error_rate=wer,
             ins_rate=ins_rate,
             del_rate=del_rate,
