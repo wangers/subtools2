@@ -223,7 +223,7 @@ class ShardWriter:
 
 
 class TextBoxWriter:
-    """
+    r"""
     Sequently store tex boxes.
 
     Args:
@@ -234,8 +234,8 @@ class TextBoxWriter:
         box_end:
             the string that marks the end of a text box.
 
-    Example:
-        ```python
+    Example::
+
         from egrecho.utils.io.writer import TextBoxWriter, TXT_BOXEND
 
         text = f'''REF:    # short one here
@@ -248,7 +248,7 @@ class TextBoxWriter:
         {TXT_BOXEND}
         REF: there is ** another    one
         HYP: there is an   other sample
-                       I       S      S
+                    I       S      S
         {TXT_BOXEND}'''
 
         texts = text.split(TXT_BOXEND)[:-1]
@@ -257,9 +257,7 @@ class TextBoxWriter:
                 writer.write(box)
         with open('text.txt') as fr:
             rs = fr.read()
-
         assert text == rs
-        ```
     """
 
     def __init__(

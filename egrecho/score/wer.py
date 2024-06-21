@@ -101,20 +101,19 @@ class WERCountOutput(ModelOutput):
         Returns:
             (str): The visualization as a string
 
-        Example:
-            This code snippet
-            ```python
+        Example::
+
             import jiwer
 
             out = jiwer.process_words(
                 ["short one here", "quite a bit of longer sentence"],
                 ["shoe order one", "quite bit of an even longest sentence here"],
             )
-
             print(jiwer.visualize_alignment(out))
-            ```
+
+        .. code-block:: text
+
             will produce this visualization:
-            ```txt
             sentence 1
             REF:    # short one here
             HYP: shoe order one    *
@@ -132,11 +131,10 @@ class WERCountOutput(ModelOutput):
             wil=74.75%
             wip=25.25%
             wer=88.89%
-            ```
 
-            When `show_measures=False`, only the alignment will be printed:
+        .. code-block:: text
 
-            ```txt
+            When ``show_measures=False``, only the alignment will be printed:
             sentence 1
             REF:    # short one here
             HYP: shoe order one    *
@@ -146,7 +144,6 @@ class WERCountOutput(ModelOutput):
             REF: quite a bit of  #    #  longer sentence    #
             HYP: quite * bit of an even longest sentence here
                        D         I    I       S             I
-            ```
         """
         if self.jiwer_out is None:
             warnings.warn(
@@ -213,7 +210,8 @@ def wer_update(
         >>> w = wer_update(predictions,references,details='all')
         >>> print(w.visualize_alignment())
 
-        ```txt
+    .. code-block:: text
+
         sentence 1
         REF: this is the  reference
         HYP: this is the prediction
@@ -231,7 +229,7 @@ def wer_update(
         wil=65.28%
         wip=34.72%
         wer=50.00%
-        ```
+
     """
 
     if use_cer:
@@ -281,20 +279,21 @@ def wer_compute(errors, total):
     return errors / total
 
 
-class WER(ABC):
-    """Base class for text cer/wer metric. Core methods:
+class WERMixin(ABC):
+    r"""Base class for text cer/wer metric. Core methods:
 
     - :meth:`update` (**must be implemented**):
         Accumulates metric-related statics (errors, total words, etc.).
     - :meth:`compute` (**must be implemented**):
         Computes cer/wer here.
 
-    Args:
-        use_cer: set True to enable cer
-        details: defautls to ``WerDetail.SUBCOUNTS``
+    Class attributes (overridden by derived classes):
 
-    Example:
-        ```python
+        - **use_cer** (``bool``) -- True to enable cer.
+        - **details** (``str``) -- :class:``WerDetail.SUBCOUNTS``.
+
+    Example::
+
         from egrecho.score.wer import DetailWER
 
         # organize 2 batches
@@ -319,19 +318,19 @@ class WER(ABC):
         metric_rs = metric.compute()
         print(metric_rs.to_dict())
         print(recogs)
-        ```
+
+    .. code-block:: text
 
         Here is the metrics:
-        ```txt
+
         {'error_rate': 0.429,
         'ins_rate': 0.071,
         'del_rate': 0.071,
         'sub_rate': 0.286,
         'total': 14}
-        ```
 
         Here is the writed contents:
-        ```txt
+
         REF: this is the  reference
         HYP: this is the prediction
                                   S
@@ -348,16 +347,11 @@ class WER(ABC):
         HYP: i like ****** python
                          D
         --------------------|boxend|--------------------
-        ```
+
     """
 
-    def __init__(
-        self,
-        use_cer: bool = False,
-        details: Union[str, WerDetail] = WerDetail.SUBCOUNTS,
-    ) -> None:
-        self.use_cer = use_cer
-        self.details = details
+    use_cer: bool
+    details: Union[str, WerDetail]
 
     @abstractmethod
     def update(self):
@@ -395,8 +389,8 @@ class WER(ABC):
         """
         Get file handler of text file to write wer alignment. Use it in ``with`` context like ``open``.
 
-        Example:
-            ```python
+        Example::
+
             from egrecho.score.wer import SimpleWER
             predictions = ["this is the prediction", "there is an other sample"]
             references = ["this is the reference", "there is another one"]
@@ -408,10 +402,11 @@ class WER(ABC):
             with open('recogs.txt') as fr:
                 rs = fr.read()
             print(rs)
-            ```
+
+        .. code-block:: text
 
             Here is the writed contents:
-            ```txt
+
             REF: this is the  reference
             HYP: this is the prediction
                                       S
@@ -420,20 +415,21 @@ class WER(ABC):
             HYP: there is an   other sample
                            I       S      S
             --------------------|boxend|--------------------
-            ```
+
         """
         from egrecho.utils.io.writer import TextBoxWriter
 
         return TextBoxWriter(path, overwrite=overwrite, **kwargs)
 
 
-class SimpleWER(WER):
+class SimpleWER(WERMixin):
     def __init__(
         self,
         use_cer: bool = False,
         details: Union[str, WerDetail] = WerDetail.SUBCOUNTS,
     ) -> None:
-        super().__init__(use_cer=use_cer, details=details)
+        self.use_cer = use_cer
+        self.details = details
 
         self.errors = 0
         self.total = 0
@@ -452,14 +448,16 @@ class SimpleWER(WER):
         return TXTMetricOutput(error_rate=wer, total=total)
 
 
-class DetailWER(WER):
+class DetailWER(WERMixin):
     def __init__(
         self,
         use_cer: bool = False,
         details: Union[str, WerDetail] = WerDetail.SUBCOUNTS,
     ) -> None:
         self.check_detail_lvl(details)
-        super().__init__(use_cer=use_cer, details=details)
+        self.use_cer = use_cer
+        self.details = details
+
         self.errors = 0
         self.total = 0
         self.ins = 0
