@@ -1,0 +1,33 @@
+manifest_dir: data/fbank_whisper80
+prefix_name: aishell_vi
+suffix: jsonl.gz
+max_cuts: 4
+bucketing_sampler: false
+num_buckets: 30
+concatenate_cuts: false
+duration_factor: 1.0
+gap: 1.0
+on_the_fly_feats: false
+shuffle: true
+num_workers: 2
+enable_spec_aug: true
+spec_aug_time_warp_factor: 80
+enable_musan: true
+model_path: exp/whisper-small/full/checkpoint-final
+outdir: exp/whisper-small/full/checkpoint-final
+gpu_id: auto
+use_fast_tokenizer: true
+local_files_only: true
+remove_whisper_encoder_input_length_restriction: false
+log_internal: 10
+gen_args:
+  return_timestamps: false
+  language: vi
+  task: transcribe
+  num_beams: 10
+  no_speech_threshold: 0.6
+  compression_ratio_threshold: 1.35
+  temperature_fallback: true
+  logprob_threshold: 1.0
+  prompt_text: null
+  long_gen_kwargs_plus: null

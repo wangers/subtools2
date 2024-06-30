@@ -1,0 +1,8 @@
+lhotse
+transformers
+peft>=0.4.0
+jiwer>=2.5.1
+accelerate>=0.21.0
+zhconv>=1.4.2
+tqdm>=4.62.1
+uvicorn>=0.21.1

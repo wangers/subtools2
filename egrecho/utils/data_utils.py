@@ -29,7 +29,7 @@ from typing import (
 import numpy as np
 
 from egrecho.utils.common import asdict_filt
-from egrecho.utils.io.utils import DictFileMixin
+from egrecho.utils.io import DictFileMixin, save_json
 from egrecho.utils.types import Split
 
 
@@ -535,7 +535,7 @@ class ClassLabel(DictFileMixin):
         field_names = {f.name for f in fields(cls)}
         return cls(**{k: v for k, v in data.items() if k in field_names})
 
-    def to_file(self, path: Union[Path, str]):
+    def to_file(self, path: Union[Path, str], save_vocab: bool = False):
         """
         Serialize to a dict file.
 
@@ -543,11 +543,29 @@ class ClassLabel(DictFileMixin):
 
         - negative              ->                  '0': negative
         - positive              ->                  '1': positive
+
+        Args:
+            path: file path
+            save_vocab: also saves a clean vocab json, i.e., str2int:
+
+            {'negative':0, 'positive':1}
+
         """
         path = Path(path)
         if not path.suffix:
             path = path.with_suffix(".yaml")
+
         super().to_file(path)
+        if save_vocab:
+            vocab = self._str2int
+            v_file = path.with_suffix('.json')
+            if v_file.name == path.name:
+                v_file = path.with_suffix('.clean.json')
+                warnings.warn(
+                    f'You are save a classlable file as {path}, which is same as vocab json file name,'
+                    f'Auto change json as {v_file.name}.'
+                )
+            save_json(vocab, v_file, sort_keys=True)
         return path
 
     @classmethod
