@@ -35,7 +35,7 @@ if [ $stage -le 0 ] && [ $stop_stage -ge 0 ]; then
     --output_dir exp/${model_name}/${train_prefix} \
     --max_cuts 4 \
     --gradient_accumulation_steps 4 \
-    --max_steps 200_000 \
+    --max_steps 100_000 \
     --use_compile false
 
   if [ ${is_lora} == true ]; then

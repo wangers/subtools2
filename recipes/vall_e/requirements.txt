@@ -1,0 +1,4 @@
+lhotse
+encodec        # 2.1.0
+phonemizer     # 3.2.0
+pypinyin       # 0.50.0

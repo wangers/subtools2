@@ -186,7 +186,7 @@ The wer on test set, which have 4096 samples, counts to about 6.5 hours is:
   "RTF": 0.11016
 }
 ```
-We are about to full fine-tune about 3 epochs whit 2 * v100 gpus, totally couts to about 3*3 (speeds) epochs:
+We are about to full fine-tune about 3 epochs with 2 * v100 gpus, totally couts to about 3*3 (speeds) epochs:
 ```shell
 # This takes about 24 hours
 bash finetune.sh --is_lora false
