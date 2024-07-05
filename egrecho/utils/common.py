@@ -414,3 +414,14 @@ def list2tuple(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def is_picklable(obj: object) -> bool:
+    """Tests if an object can be pickled."""
+    import pickle
+
+    try:
+        pickle.dumps(obj)
+        return True
+    except (pickle.PickleError, AttributeError, RuntimeError, TypeError):
+        return False

@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2024-03-11)
 
+import itertools
 import os
 import warnings
 from abc import ABC, abstractmethod
@@ -340,14 +341,13 @@ class BaseTokenizer(ABC):
         )
 
     @abstractmethod
-    def text2ids(self, line: TextInput) -> List[int]:
+    def text2ids(self, line: TextInput, **kwargs) -> List[int]:
         raise NotImplementedError("abstract method")
 
-    @abstractmethod
     def ids2text(self, ids: EncodedInput) -> str:
         raise NotImplementedError("abstract method")
 
-    def text2tokens(self, line: TextInput) -> List[str]:
+    def text2tokens(self, line: TextInput, **kwargs) -> List[str]:
         raise NotImplementedError("abstract method")
 
     def tokens2text(self, tokens: PreTokenizedInput) -> str:
@@ -462,7 +462,7 @@ class BaseTokenizer(ABC):
 ENCODE_KWARGS_DOCSTRING = r"""
             add_special_tokens (``bool``, *optional*, defaults to ``True``):
                 Whether or not to add special tokens when encoding the sequences. This will use the underlying
-                :meth:`PretrainedTokenizerBase.build_inputs_with_special_tokens` function, which defines which tokens are
+                :meth:`Tokenizer.build_inputs_with_special_tokens` function, which defines which tokens are
                 automatically added to the input ids. This is usefull if you want to add ``bos`` or ``eos`` tokens
                 automatically.
             padding (``bool``, ``str`` or :class:``~egrecho.utils.types.PaddingStrategy``, *optional*, defaults to ``False``):
@@ -540,19 +540,10 @@ ENCODE_ADDITIONAL_KWARGS_DOCSTRING = r"""
             [``BatchEncoding``]: A [``BatchEncoding``] with the following fields:
 
             - **input_ids** -- List of token ids to be fed to a model.
-
-              [What are input IDs?](../glossary#input-ids)
-
             - **token_type_ids** -- List of token type ids to be fed to a model (when ``return_token_type_ids=True`` or
               if *"token_type_ids"* is in ``self.model_input_names``).
-
-              [What are token type IDs?](../glossary#token-type-ids)
-
             - **attention_mask** -- List of indices specifying which tokens should be attended to by the model (when
               ``return_attention_mask=True`` or if *"attention_mask"* is in ``self.model_input_names``).
-
-              [What are attention masks?](../glossary#attention-mask)
-
             - **overflowing_tokens** -- List of overflowing tokens sequences (when a ``max_length`` is specified and
               ``return_overflowing_tokens=True``).
             - **num_truncated_tokens** -- Number of tokens truncated (when a ``max_length`` is specified and
@@ -572,6 +563,7 @@ class Tokenizer(BaseTokenizer):
     - :meth:`prepare_for_model` (**one sample**):
       Prepares a sequence of input id (tokenized by the :meth:`text2ids`), or a pair of sequences of inputs ids so
       that it can be used by the model. Workflows typically follows:
+
         - Pre-define settings: Get truncate/pad strategy. Computes the total size of the returned encodings
           via :meth:``num_special_tokens_to_add``. Which default hacks building
           empty input ids through :meth:``build_inputs_with_special_tokens``.
@@ -710,6 +702,7 @@ class Tokenizer(BaseTokenizer):
                 TextInput, PreTokenizedInput, List[TextInput], List[PreTokenizedInput]
             ]
         ] = None,
+        add_special_tokens: bool = True,
         padding: Union[bool, str, PaddingStrategy] = False,
         truncation: Union[bool, str, TruncationStrategy] = None,
         max_length: Optional[int] = None,
@@ -720,6 +713,18 @@ class Tokenizer(BaseTokenizer):
         Main abstract method to tokenize and prepare for the model one or several sequence(s) or one or several pair(s) of
         sequences. Below lists a possible format of inputs.
 
+        Tip:
+            A preferred paradigm of inputs:
+
+            - ``is_split_into_words=False``, input text as follows:
+                - List[List[str]]: list with a list of strings, **batch** of tokenized tokens, i.e., need tokens2ids.
+                - List[str]: list of strings, **batch** of strings, i.e., need text2ids.
+                - str: **single** string, i.e., need directly text2ids.
+            - ``is_split_into_words=True``, input text as follows:
+                - List[List[str]]: list with a list of strings, **batch** of pretokenized (not tokenized but splited), i.e., need text2ids in inner list.
+                - List[str]: list of strings, **single** pretokenized, i.e., need text2ids one by one.
+                - str: **single** string, auto fallback to is_split_into_words=False.
+
         Args:
             text (``str``, ``List[str]``, ``List[List[str]]``, *optional*):
                 The sequence or batch of sequences to be encoded. Each sequence can be a string or a list of strings
@@ -729,6 +734,11 @@ class Tokenizer(BaseTokenizer):
                 The sequence or batch of sequences to be encoded. Each sequence can be a string or a list of strings
                 (pretokenized string). If the sequences are provided as list of strings (pretokenized), you must set
                 ``is_split_into_words=True`` (to lift the ambiguity with a batch of sequences).
+            add_special_tokens (``bool``, *optional*, defaults to ``True``):
+                Whether or not to add special tokens when encoding the sequences. This will use the underlying
+                :meth:`Tokenizer.build_inputs_with_special_tokens` function, which defines which tokens are
+                automatically added to the input ids. This is usefull if you want to add ``bos`` or ``eos`` tokens
+                automatically.
             padding (``bool``, ``str`` or :class:`~egrecho.utils.types.PaddingStrategy`, *optional*, defaults to ``False``):
                 Activates and controls padding. Accepts the following values:
 
@@ -769,6 +779,38 @@ class Tokenizer(BaseTokenizer):
                 Additional keyword arguments.
         """
         raise NotImplementedError
+
+    def get_input_ids(self, text, is_split_into_words: bool = False, **kwargs):
+        if isinstance(text, str):
+            tokens = self.text2tokens(text, **kwargs)
+            return self.tokens2ids(tokens)
+        elif (
+            isinstance(text, (list, tuple))
+            and len(text) > 0
+            and isinstance(text[0], str)
+        ):
+            if is_split_into_words:
+                tokens = list(
+                    itertools.chain(
+                        *(
+                            self.text2tokens(t, is_split_into_words=True, **kwargs)
+                            for t in text
+                        )
+                    )
+                )
+                return self.tokens2ids(tokens)
+            else:
+                return self.text2tokens(text)
+        elif (
+            isinstance(text, (list, tuple))
+            and len(text) > 0
+            and isinstance(text[0], int)
+        ):
+            return text
+        else:
+            raise ValueError(
+                "Input is not valid. Should be a string, a list/tuple of strings or a list/tuple of integers."
+            )
 
     def _get_padding_truncation_strategies(
         self,
@@ -888,6 +930,74 @@ class Tokenizer(BaseTokenizer):
                 token_ids_0, token_ids_1 if pair else None
             )
         )
+
+    @add_end_docstrings(ENCODE_KWARGS_DOCSTRING, ENCODE_ADDITIONAL_KWARGS_DOCSTRING)
+    def _batch_prepare_for_model(
+        self,
+        batch_ids_pairs: List[Union[PreTokenizedInputPair, Tuple[List[int], None]]],
+        add_special_tokens: bool = True,
+        padding_strategy: PaddingStrategy = PaddingStrategy.DO_NOT_PAD,
+        truncation_strategy: TruncationStrategy = TruncationStrategy.DO_NOT_TRUNCATE,
+        max_length: Optional[int] = None,
+        stride: int = 0,
+        pad_to_multiple_of: Optional[int] = None,
+        return_tensors: Optional[str] = None,
+        return_token_type_ids: Optional[bool] = None,
+        return_attention_mask: Optional[bool] = None,
+        return_overflowing_tokens: bool = False,
+        return_special_tokens_mask: bool = False,
+        return_length: bool = False,
+        verbose: bool = True,
+        split_special_tokens: bool = False,
+    ) -> Mapping:
+        """
+        Prepares a sequence of input id, or a pair of sequences of inputs ids so that it can be used by the model. It
+        adds special tokens, truncates sequences if overflowing while taking into account the special tokens and
+        manages a moving window (with user defined stride) for overflowing tokens
+
+        Args:
+            batch_ids_pairs: list of tokenized input ids or input ids pairs
+        """
+
+        batch_outputs = {}
+        for first_ids, second_ids in batch_ids_pairs:
+            outputs = self.prepare_for_model(
+                first_ids,
+                second_ids,
+                add_special_tokens=add_special_tokens,
+                padding=PaddingStrategy.DO_NOT_PAD.value,  # we pad in batch afterward
+                truncation=truncation_strategy.value,
+                max_length=max_length,
+                stride=stride,
+                pad_to_multiple_of=None,  # we pad in batch afterward
+                return_attention_mask=False,  # we pad in batch afterward
+                return_token_type_ids=return_token_type_ids,
+                return_overflowing_tokens=return_overflowing_tokens,
+                return_special_tokens_mask=return_special_tokens_mask,
+                return_length=return_length,
+                return_tensors=None,  # We convert the whole batch to tensors at the end
+                prepend_batch_axis=False,
+                verbose=verbose,
+                split_special_tokens=split_special_tokens,
+            )
+
+            for key, value in outputs.items():
+                if key not in batch_outputs:
+                    batch_outputs[key] = []
+                batch_outputs[key].append(value)
+
+        batch_outputs = self.pad(
+            batch_outputs,
+            padding=padding_strategy.value,
+            max_length=max_length,
+            pad_to_multiple_of=pad_to_multiple_of,
+            return_attention_mask=return_attention_mask,
+        )
+
+        tensor_converter = get_converter()
+        batch_outputs = tensor_converter(batch_outputs, tensor_type=return_tensors)
+
+        return
 
     @add_end_docstrings(ENCODE_KWARGS_DOCSTRING, ENCODE_ADDITIONAL_KWARGS_DOCSTRING)
     def prepare_for_model(

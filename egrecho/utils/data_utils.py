@@ -6,7 +6,7 @@ import copy
 import queue
 import random
 import warnings
-from collections import deque
+from collections import Counter, OrderedDict, deque
 from dataclasses import InitVar, dataclass, fields
 from itertools import accumulate, chain, count
 from pathlib import Path
@@ -29,8 +29,8 @@ from typing import (
 import numpy as np
 
 from egrecho.utils.common import asdict_filt
-from egrecho.utils.io import DictFileMixin, save_json
-from egrecho.utils.types import Split
+from egrecho.utils.io import DictFileMixin, load_csv_lazy, save_csv, save_json
+from egrecho.utils.types import Split, StrEnum
 
 
 def split_sequence(
@@ -576,6 +576,270 @@ class ClassLabel(DictFileMixin):
             return cast(cls, super().from_file(path))
         warnings.warn(f"{str(path)} is treated as a normal text file.")
         return cls(names_file=path)
+
+    def __len__(self):
+        return len(self.names)
+
+
+VOCAB_CNT_COL = ("|<units>|", "|<counts>|")
+
+
+class VSORT(StrEnum):
+    UNITS = 'units'
+    COUNT = 'count'
+
+
+class VocabCounter(Counter):
+    @staticmethod
+    def from_file(path_or_paths) -> "VocabCounter":
+        """Load a vocab counter from csv file.
+
+        Every line in the vocab counter file has two fields separated by
+        space as csv format, count for 'abcdeabcdabcaba':
+
+        .. code-block::
+
+            |<units>| |<counts>|
+            a 5
+            b 4
+            c 3
+            d 2
+            e 1
+
+        Args:
+            path: Path(s) of the vocab counter file. If given multi files, merge them.
+
+        Returns:
+            An instance of :class:`VocabCounter`.
+
+        Example::
+
+            units = 'sdfsdafsafsa'
+            vc = VocabCounter(tst)
+            vc.to_file('vc.count')
+            v = VocabCounter.from_file('vc.count')
+            assert v == {'a': 5, 'b': 4, 'c': 3, 'd': 2, 'e': 1}
+        """
+
+        if not isinstance(path_or_paths, (list, tuple)):
+            path_or_paths = [path_or_paths]
+        if not all(Path(path).is_file() for path in path_or_paths):
+            raise ValueError(f'Ilegal path(s) {path_or_paths}')
+        counter = VocabCounter()
+        for path in path_or_paths:
+            counter += VocabCounter._from_file(path)
+        return counter
+
+    @staticmethod
+    def _from_file(path):
+        counter = VocabCounter()
+        it = (
+            {d[VOCAB_CNT_COL[0]]: int(d[VOCAB_CNT_COL[1]])}
+            for d in load_csv_lazy(path, delimiter=" ")
+        )
+        for d_line in it:
+            counter.update(d_line)
+        return counter
+
+    def to_file(self, path: Union[Path, str]):
+        """Serialize the counter to a file.
+
+        Every line in the vocab counter file has two fields separated by
+        space as csv format. count for 'abcdeabcdabcaba':
+
+        .. code-block::
+
+            |<units>| |<counts>|
+            a 5
+            b 4
+            c 3
+            d 2
+            e 1
+
+        Args:
+            path: Path of the vocab counter file.
+
+        Example::
+
+            units = 'sdfsdafsafsa'
+            vc = VocabCounter(tst)
+            vc.to_file('vc.count')
+            v = VocabCounter.from_file('vc.count')
+            assert v == {'a': 5, 'b': 4, 'c': 3, 'd': 2, 'e': 1}
+        """
+        it = (
+            {VOCAB_CNT_COL[0]: _name, VOCAB_CNT_COL[1]: _count}
+            for _name, _count in self.items()
+        )
+        save_csv(
+            it, path=path, fieldnames=VOCAB_CNT_COL, lineterminator='\n', delimiter=" "
+        )
+        return path
+
+    def sorted(
+        self,
+        by: VSORT = VSORT.COUNT,
+        reverse: bool = True,
+        top_k: int = -1,
+        min_count: Optional[int] = None,
+    ) -> "VocabCounter":
+        """Get a new dict sorting by unint or count
+
+        Args:
+            by: sort by units or count
+            reverse: whether reverse order
+            top_k: if greater than 0, remain this max number of units
+            min_count: If given, discard units whose counts less than this number.
+        """
+        filter_data = (
+            self.items()
+            if min_count is None
+            else ((k, v) for k, v in self.items() if v >= min_count)
+        )
+        key_lam = (
+            lambda x: (x[1], x[0]) if by == VSORT.COUNT else lambda x: (x[0], x[1])
+        )
+        sorted_tups = sorted(filter_data, key=key_lam, reverse=reverse)
+        if top_k > 0:
+            sorted_tups = sorted_tups[:top_k]
+        return VocabCounter(**OrderedDict(sorted_tups))
+
+    def build_vocab(
+        self,
+        savedir: Optional[Union[Path, str]] = None,
+        fname: str = 'vocab',
+        specials: Optional[List[str]] = None,
+        special_first: bool = True,
+        max_tokens: int = -1,
+        min_freq: Optional[int] = None,
+    ) -> ClassLabel:
+        """Build vocab symbol table, If ``savedir`` is provided, defautls generates vocab files.
+
+        Args:
+            savedir: Path directory to save the vocab files. if None, will skip save.
+            fname: filename
+            min_freq: The minimum frequency needed to include a token in the vocabulary.
+            specials: Special symbols to add. The order of supplied tokens will be preserved.
+            special_first: Indicates whether to insert symbols at the beginning or at the end.
+            min_freq: If provided , defines the minimum frequency needed to include a token in the vocabulary.
+            max_tokens: If provided > 0 creates the vocab from the `max_tokens - len(specials)` most frequent tokens.
+
+        Returns:
+            Obj of :class:`ClassLabel`.
+        """
+        if savedir is not None:
+            savedir = Path(savedir)
+            savedir.mkdir(exist_ok=True, parents=True)
+
+        specials = specials or []
+        if isinstance(specials, str):
+            specials = [specials]
+        elif isinstance(specials, (list, tuple)):
+            specials = list(specials)
+        else:
+            raise ValueError(f'Got invalid special symbol list {specials}.')
+        top_k = max_tokens
+        if max_tokens >= 0:
+            assert (
+                len(specials) < max_tokens
+            ), "len(specials) >= max_tokens, so the vocab is ilegal entirely special tokens."
+            top_k = max_tokens - len(specials)
+        sorted_data = self.sorted(
+            VSORT.COUNT, reverse=True, top_k=top_k, min_count=min_freq
+        )
+        units = sorted(sorted_data.keys())
+        if specials:
+            units = specials + units if special_first else units + specials
+        vocab = ClassLabel(names=units)
+        extra_msg = ''
+        if savedir is not None:
+            path = savedir / fname
+            org_cnt_file = (savedir / fname).with_suffix('.org.count.csv')
+            new_cnt_file = (savedir / fname).with_suffix('.count.csv')
+            self.to_file(org_cnt_file)
+            sorted_data.to_file(new_cnt_file)
+            vocab.to_file(path, save_vocab=True)
+            extra_msg = f"vocab files saves to {savedir} | {fname} "
+        print(
+            f"#### Build vocab done. {extra_msg}(vocab_size={len(vocab)} specials={specials})"
+        )
+        return vocab
+
+
+def count_vocab_from_iterator(
+    iterator: Iterable,
+) -> VocabCounter:
+    """
+    Build a Vocab counter from an iterator.
+
+    Args:
+        iterator: Iterator used to count vocab. Must yield list or iterator of tokens.
+
+    Returns:
+        Obj of :class:`VocabCounter`.
+
+    Examples:
+        >>> #generating vocab from text file
+        >>> from egrecho.utils.data_utils import build_vocab_from_iterator
+        >>> def yield_tokens(file_path):
+        >>>     with io.open(file_path, encoding = 'utf-8') as f:
+        >>>         for line in f:
+        >>>             yield line.strip().split()
+        >>> vocab_counter = count_vocab_from_iterator(yield_tokens(file_path))
+    """
+
+    counter = VocabCounter()
+    for tokens in iterator:
+        counter.update(tokens)
+    return counter
+
+
+def build_vocab_from_iterator(
+    iterator: Iterable,
+    savedir: Optional[Union[Path, str]] = None,
+    fname: str = 'vocab',
+    min_freq: int = 1,
+    specials: Optional[List[str]] = None,
+    special_first: bool = True,
+    max_tokens: int = -1,
+) -> ClassLabel:
+    """
+    Build a Vocab from an iterator.
+
+    Args:
+        iterator: Iterator used to build Vocab. Must yield list or iterator of tokens.
+        savedir: Path directory to save the vocab file. if None, will skip save.
+        fname: filename
+        specials: Special symbols to add. The order of supplied tokens will be preserved.
+        special_first: Indicates whether to insert symbols at the beginning or at the end.
+        min_freq: If provided , defines the minimum frequency needed to include a token in the vocabulary.
+        max_tokens: If provided > 0 creates the vocab from the `max_tokens - len(specials)` most frequent tokens.
+
+    Returns:
+        Obj of :class:`ClassLabel`.
+
+    Examples:
+        >>> #generating vocab from text file
+        >>> from egrecho.utils.data_utils import build_vocab_from_iterator
+        >>> def yield_tokens(file_path):
+        >>>     with io.open(file_path, encoding = 'utf-8') as f:
+        >>>         for line in f:
+        >>>             yield line.strip().split()
+        >>> vocab = build_vocab_from_iterator(yield_tokens(file_path), specials=["<unk>"])
+        ... # or save files
+        >>> vocab = build_vocab_from_iterator(yield_tokens(file_path), savedir='./', specials=["<unk>"])
+    """
+
+    counter = count_vocab_from_iterator(iterator)
+
+    return counter.build_vocab(
+        savedir=savedir,
+        fname=fname,
+        min_freq=min_freq,
+        specials=specials,
+        special_first=special_first,
+        max_tokens=max_tokens,
+    )
 
 
 @dataclass

@@ -50,7 +50,7 @@
 - **量化载入**: 如qlora，以4bit量化载入模型状态，实际训练过程为混合精度。
 
 ## 前向传播
-激活值与batch size ($b$)，序列长度($s$)强相关,  隐藏层维度($h$)与模型相关，假设纯transformer结构(atte+mlp)，注意力多头数量 $head\_num$ 记作 $n$ 对其缓存(激活值)及计算量(矩阵乘法包括一次相乘与一次相加 $(m,n),(n,s)$ 将产生 $2*m*n*s$ 计算量)分析，**attention block**如下:
+激活值与batch size ($b$)，序列长度($s$)强相关,  隐藏层维度($h$)与模型相关，假设纯transformer结构(atte+mlp)，注意力多头数量 $head\_{num}$ 记作 $n$ 对其缓存(激活值)及计算量(矩阵乘法包括一次相乘与一次相加 $(m,n),(n,s)$ 将产生 $2*m*n*s$ 计算量)分析，**attention block**如下:
 ```math
 Q = xW_Q,  K = xW_K,  V = xW_V
 

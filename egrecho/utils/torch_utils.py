@@ -258,3 +258,12 @@ def tensor_has_nan(tensor: torch.Tensor):
     if torch.any((torch.isnan(tensor))):
         return True
     return False
+
+
+def single_torch_nj():
+    # Torch's multithreaded behavior needs to be disabled or
+    # it wastes a lot of CPU and slow things down.
+    # Do this outside of main() in case it needs to take effect
+    # even when we are not invoking the main (e.g. when spawning subprocesses).
+    torch.set_num_threads(1)
+    torch.set_num_interop_threads(1)

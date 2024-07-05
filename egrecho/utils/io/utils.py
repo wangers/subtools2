@@ -323,6 +323,23 @@ def load_csv_lazy(path: Union[Path, str], **fmtparams) -> Generator:
         yield d
 
 
+def save_csv(
+    data: Iterable[Dict[str, Any]],
+    path: Union[Path, str],
+    fieldnames: List[str],
+    **fmtparams,
+) -> None:
+    """
+    Save csv lines.
+    """
+    encoding = fmtparams.pop("encoding", "utf-8")
+    with auto_open(path, "w", encoding=encoding) as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, **fmtparams)
+        writer.writeheader()
+        for d in data:
+            writer.writerow(d)
+
+
 def repr_dict(
     data: Dict[str, Any], sort_keys: bool = False, inline_list=True, **kwds
 ) -> str:

@@ -46,6 +46,7 @@ from egrecho.utils.io.utils import (
     read_lists,
     read_lists_lazy,
     repr_dict,
+    save_csv,
     save_json,
     save_jsonl,
     save_yaml,

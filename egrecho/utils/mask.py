@@ -152,7 +152,6 @@ def make_causal_mask(
         4d attention mask (batch_size, 1, query_length, key_value_length) that can be multiplied with attention scores.
 
     Examples:
-        ```python
         >>> make_causal_mask(torch.arange(3).view(1,3),torch.float)
         tensor([[[[ 0.0000e+00, -3.4028e+38, -3.4028e+38],
                 [ 0.0000e+00,  0.0000e+00, -3.4028e+38],
@@ -165,7 +164,6 @@ def make_causal_mask(
         tensor([[[[ 0.0000e+00,  0.0000e+00,  0.0000e+00, -3.4028e+38, -3.4028e+38],
                 [-3.4028e+38,  0.0000e+00,  0.0000e+00,  0.0000e+00, -3.4028e+38],
                 [-3.4028e+38, -3.4028e+38,  0.0000e+00,  0.0000e+00,  0.0000e+00]]]])
-        ```
     """
 
     input_ids_shape = inputs.shape[:2]  # bsz, seq_len
