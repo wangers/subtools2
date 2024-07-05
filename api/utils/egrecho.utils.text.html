@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="egrecho.utils.seeder.seed" href="egrecho.utils.seeder.html" /><link rel="prev" title="egrecho.utils.patch.simple_parse_patch._utils" href="egrecho.utils.patch.simple_parse_patch.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="egrecho.pipeline.base" href="../pipeline/index.html" /><link rel="prev" title="egrecho.utils.seeder.seed" href="egrecho.utils.seeder.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
-        <title>egrecho.utils.patch.simple_parse_patch.annotation_utils - Documentation</title>
+        <title>egrecho.utils.text.cleaners - Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -201,7 +201,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -267,16 +267,16 @@
 <li class="toctree-l3"><a class="reference internal" href="egrecho.utils.io.html#module-egrecho.utils.io.writer">egrecho.utils.io.writer</a></li>
 </ul>
 </li>
-<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html#egrecho-utils-patch">egrecho.utils.patch</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of egrecho.utils.patch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="index.html#egrecho-utils-patch">egrecho.utils.patch</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of egrecho.utils.patch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="egrecho.utils.patch.html">egrecho.utils.patch.io_patch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="egrecho.utils.patch.html#module-egrecho.utils.patch.torchdata_patch">egrecho.utils.patch.torchdata_patch</a></li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="egrecho.utils.patch.html#egrecho-utils-patch-simple-parse-patch">egrecho.utils.patch.simple_parse_patch</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of egrecho.utils.patch.simple_parse_patch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="egrecho.utils.patch.html#egrecho-utils-patch-simple-parse-patch">egrecho.utils.patch.simple_parse_patch</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of egrecho.utils.patch.simple_parse_patch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html">egrecho.utils.patch.simple_parse_patch._utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#module-egrecho.utils.patch.simple_parse_patch.decoding">egrecho.utils.patch.simple_parse_patch.decoding</a></li>
 <li class="toctree-l4"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#module-egrecho.utils.patch.simple_parse_patch.serializable">egrecho.utils.patch.simple_parse_patch.serializable</a></li>
-<li class="toctree-l4 current has-children"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#egrecho-utils-patch-simple-parse-patch-annotation-utils">egrecho.utils.patch.simple_parse_patch.annotation_utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of egrecho.utils.patch.simple_parse_patch.annotation_utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l5 current current-page"><a class="current reference internal" href="#">egrecho.utils.patch.simple_parse_patch.annotation_utils</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#module-egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations">egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.html#egrecho-utils-patch-simple-parse-patch-annotation-utils">egrecho.utils.patch.simple_parse_patch.annotation_utils</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of egrecho.utils.patch.simple_parse_patch.annotation_utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.annotation_utils.html">egrecho.utils.patch.simple_parse_patch.annotation_utils</a></li>
+<li class="toctree-l5"><a class="reference internal" href="egrecho.utils.patch.simple_parse_patch.annotation_utils.html#module-egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations">egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations</a></li>
 </ul>
 </li>
 </ul>
@@ -287,9 +287,9 @@
 <li class="toctree-l3"><a class="reference internal" href="egrecho.utils.seeder.html">egrecho.utils.seeder.seed</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="index.html#egrecho-utils-text">egrecho.utils.text</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.utils.text</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.text.html">egrecho.utils.text.cleaners</a></li>
-<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="index.html#egrecho-utils-text">egrecho.utils.text</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.utils.text</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">egrecho.utils.text.cleaners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
 </ul>
 </li>
 </ul>
@@ -319,12 +319,12 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="https://github.com/wangers/subtools2/blob/master/docs/source/api/utils/egrecho.utils.patch.simple_parse_patch.annotation_utils.md?plain=true" title="View this page">
+  <a class="muted-link" href="https://github.com/wangers/subtools2/blob/master/docs/source/api/utils/egrecho.utils.text.md?plain=true" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
 </div><div class="edit-this-page">
-  <a class="muted-link" href="https://github.com/wangers/subtools2/edit/master/docs/source/api/utils/egrecho.utils.patch.simple_parse_patch.annotation_utils.md" title="Edit this page">
+  <a class="muted-link" href="https://github.com/wangers/subtools2/edit/master/docs/source/api/utils/egrecho.utils.text.md" title="Edit this page">
     <svg><use href="#svg-pencil"></use></svg>
     <span class="visually-hidden">Edit this page</span>
   </a>
@@ -337,46 +337,98 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-egrecho.utils.patch.simple_parse_patch.annotation_utils">
-<span id="egrecho-utils-patch-simple-parse-patch-annotation-utils"></span><h1>egrecho.utils.patch.simple_parse_patch.annotation_utils<a class="headerlink" href="#module-egrecho.utils.patch.simple_parse_patch.annotation_utils" title="Permalink to this heading">#</a></h1>
-</section>
-<section id="module-egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations">
-<span id="egrecho-utils-patch-simple-parse-patch-annotation-utils-get-field-annotations"></span><h1>egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations<a class="headerlink" href="#module-egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations" title="Permalink to this heading">#</a></h1>
+          <section id="module-egrecho.utils.text.cleaners">
+<span id="egrecho-utils-text-cleaners"></span><h1>egrecho.utils.text.cleaners<a class="headerlink" href="#module-egrecho.utils.text.cleaners" title="Permalink to this heading">#</a></h1>
+<p>This code is modified from Nemo and coqui.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.evaluate_string_annotation">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.</span></span><span class="sig-name descname"><span class="pre">evaluate_string_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">containing_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/patch/simple_parse_patch/annotation_utils/get_field_annotations.py#L44-L68"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.evaluate_string_annotation" title="Permalink to this definition">#</a></dt>
-<dd><p>Attempts to evaluate the given annotation string, to get a ‘live’ type annotation back.</p>
-<p>Any exceptions that are raised when evaluating are raised directly as-is.</p>
-<p>NOTE: This is probably not 100% safe. I mean, if the user code puts urls and stuff in their
-type annotations, and then uses simple-parsing, then sure, that code might get executed. But
-I don’t think it’s my job to prevent them from shooting themselves in the foot, you know what I
-mean?</p>
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.basic_cleaners">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">basic_cleaners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L149-L153"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.basic_cleaners" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic pipeline that lowercases and collapses whitespace without transliteration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.english_cleaners">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">english_cleaners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L156-L166"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.english_cleaners" title="Permalink to this definition">#</a></dt>
+<dd><p>Pipeline for English text, including number and abbreviation expansion.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.chinese_mandarin_cleaners">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">chinese_mandarin_cleaners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L169-L172"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.chinese_mandarin_cleaners" title="Permalink to this definition">#</a></dt>
+<dd><p>Basic pipeline for chinese</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.get_field_type_from_annotations">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.</span></span><span class="sig-name descname"><span class="pre">get_field_type_from_annotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">some_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/patch/simple_parse_patch/annotation_utils/get_field_annotations.py#L168-L271"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.get_field_type_from_annotations" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the annotation for the given field, in the ‘old-style’ format with types from
-typing.List, typing.Union, etc.</p>
-<p>If the script uses <cite>from __future__ import annotations</cite>, and we are in python&lt;3.9,
-Then we need to actually first make this forward-compatibility ‘patch’ so that we
-don’t run into a “<cite>type</cite> object is not subscriptable” error.</p>
-<p>NOTE: If you get errors of this kind from the function below, then you might want to add an
-entry to the <cite>forward_refs_to_types</cite> dict above.</p>
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.multilingual_cleaners">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">multilingual_cleaners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L175-L181"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.multilingual_cleaners" title="Permalink to this definition">#</a></dt>
+<dd><p>Pipeline for multilingual text</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.transliteration_cleaners">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">transliteration_cleaners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L184-L189"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.transliteration_cleaners" title="Permalink to this definition">#</a></dt>
+<dd><p>Pipeline for non-English text that transliterates to ASCII.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.phoneme_cleaners">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">phoneme_cleaners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L192-L199"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.phoneme_cleaners" title="Permalink to this definition">#</a></dt>
+<dd><p>Pipeline for phonemes mode, including number and abbreviation expansion.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.text.cleaners.replace_symbols">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.cleaners.</span></span><span class="sig-name descname"><span class="pre">replace_symbols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/cleaners.py#L248-L278"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.cleaners.replace_symbols" title="Permalink to this definition">#</a></dt>
+<dd><p>Replace symbols based on the lenguage tag.</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> -- Input text.</p></li>
+<li><p><strong>lang</strong> -- Lenguage identifier. ex: “en”, “fr”, “pt”, “ca”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>The modified string
+.. rubric:: Example</p>
+<dl class="simple">
+<dt>input args:</dt><dd><p>string: “si l’avi cau, diguem-ho”
+lang: “ca”</p>
+</dd>
+<dt>Output:</dt><dd><p>string: “si lavi cau, diguemho”</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.text.number_cn">
+<span id="egrecho-utils-text-number-cn"></span><h1>egrecho.utils.text.number_cn<a class="headerlink" href="#module-egrecho.utils.text.number_cn" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.text.number_cn.replace_numbers_to_characters_in_text">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.text.number_cn.</span></span><span class="sig-name descname"><span class="pre">replace_numbers_to_characters_in_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/text/number_cn.py#L118-L128"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.text.number_cn.replace_numbers_to_characters_in_text" title="Permalink to this definition">#</a></dt>
+<dd><p>Replace all arabic numbers in a text by their equivalent in chinese characters (simplified)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) -- input text to transform</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>output text</p>
+</dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></span></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -388,23 +440,23 @@ entry to the <cite>forward_refs_to_types</cite> dict above.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="egrecho.utils.seeder.html">
+          <a class="next-page" href="../pipeline/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">egrecho.utils.seeder.seed</div>
+                <div class="title">egrecho.pipeline.base</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="egrecho.utils.patch.simple_parse_patch.html">
+          <a class="prev-page" href="egrecho.utils.seeder.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">egrecho.utils.patch.simple_parse_patch._utils</div>
+                <div class="title">egrecho.utils.seeder.seed</div>
                 
               </div>
             </a>
@@ -426,8 +478,37 @@ entry to the <cite>forward_refs_to_types</cite> dict above.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">egrecho.utils.text.cleaners</a><ul>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.basic_cleaners"><code class="docutils literal notranslate"><span class="pre">basic_cleaners()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.english_cleaners"><code class="docutils literal notranslate"><span class="pre">english_cleaners()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.chinese_mandarin_cleaners"><code class="docutils literal notranslate"><span class="pre">chinese_mandarin_cleaners()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.multilingual_cleaners"><code class="docutils literal notranslate"><span class="pre">multilingual_cleaners()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.transliteration_cleaners"><code class="docutils literal notranslate"><span class="pre">transliteration_cleaners()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.phoneme_cleaners"><code class="docutils literal notranslate"><span class="pre">phoneme_cleaners()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.text.cleaners.replace_symbols"><code class="docutils literal notranslate"><span class="pre">replace_symbols()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a><ul>
+<li><a class="reference internal" href="#egrecho.utils.text.number_cn.replace_numbers_to_characters_in_text"><code class="docutils literal notranslate"><span class="pre">replace_numbers_to_characters_in_text()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

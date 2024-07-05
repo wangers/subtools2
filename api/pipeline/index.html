@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="prev" title="egrecho.utils.seeder.seed" href="../utils/egrecho.utils.seeder.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="prev" title="egrecho.utils.text.cleaners" href="../utils/egrecho.utils.text.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
         <title>egrecho.pipeline.base - Documentation</title>
@@ -237,6 +237,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/optimization.html">egrecho.core.optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/parser.html">egrecho.core.parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/teacher.html">egrecho.core.teacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/tokenizer.html">egrecho.core.tokenizer</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api.html#egrecho-utils">egrecho.utils</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of egrecho.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -248,6 +249,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.dist">egrecho.utils.dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.imports">egrecho.utils.imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.logging">egrecho.utils.logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.mask">egrecho.utils.mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.misc">egrecho.utils.misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.register">egrecho.utils.register</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils/index.html#module-egrecho.utils.torch_utils">egrecho.utils.torch_utils</a></li>
@@ -285,9 +287,14 @@
 <li class="toctree-l3"><a class="reference internal" href="../utils/egrecho.utils.seeder.html">egrecho.utils.seeder.seed</a></li>
 </ul>
 </li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html#egrecho-utils-text">egrecho.utils.text</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.utils.text</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/egrecho.utils.text.html">egrecho.utils.text.cleaners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">egrecho.pipeline.base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.pipeline.speaker_embedding">egrecho.pipeline.speaker_embedding</a></li>
 </ul>
@@ -480,14 +487,14 @@ After forward: move model output to cpu.</p>
         
         <div class="related-pages">
           
-          <a class="prev-page" href="../utils/egrecho.utils.seeder.html">
+          <a class="prev-page" href="../utils/egrecho.utils.text.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">egrecho.utils.seeder.seed</div>
+                <div class="title">egrecho.utils.text.cleaners</div>
                 
               </div>
             </a>

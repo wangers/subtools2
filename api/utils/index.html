@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="egrecho.utils.dummy.generate" href="egrecho.utils.dummy.html" /><link rel="prev" title="egrecho.core.teacher" href="../core/teacher.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="egrecho.utils.dummy.generate" href="egrecho.utils.dummy.html" /><link rel="prev" title="egrecho.core.tokenizer" href="../core/tokenizer.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
         <title>egrecho.utils.apply - Documentation</title>
@@ -237,6 +237,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/optimization.html">egrecho.core.optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/parser.html">egrecho.core.parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/teacher.html">egrecho.core.teacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/tokenizer.html">egrecho.core.tokenizer</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html#egrecho-utils">egrecho.utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of egrecho.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -248,6 +249,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.dist">egrecho.utils.dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.imports">egrecho.utils.imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.logging">egrecho.utils.logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.mask">egrecho.utils.mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.misc">egrecho.utils.misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.register">egrecho.utils.register</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-egrecho.utils.torch_utils">egrecho.utils.torch_utils</a></li>
@@ -285,9 +287,14 @@
 <li class="toctree-l3"><a class="reference internal" href="egrecho.utils.seeder.html">egrecho.utils.seeder.seed</a></li>
 </ul>
 </li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="#egrecho-utils-text">egrecho.utils.text</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.utils.text</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.text.html">egrecho.utils.text.cleaners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pipeline/index.html">egrecho.pipeline.base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pipeline/index.html#module-egrecho.pipeline.speaker_embedding">egrecho.pipeline.speaker_embedding</a></li>
 </ul>
@@ -628,6 +635,17 @@ type Field.</p>
 <span class="go">&#39;action1&#39;: (&#39;buy&#39;, [&#39;sell&#39;, &#39;argue&#39;])})</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.common.is_picklable">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.common.</span></span><span class="sig-name descname"><span class="pre">is_picklable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/common.py#L419-L427"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.common.is_picklable" title="Permalink to this definition">#</a></dt>
+<dd><p>Tests if an object can be pickled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -1029,7 +1047,7 @@ This operation don’t keep the original order in async way.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.data_utils.ClassLabel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">ClassLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L317-L578"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.ClassLabel" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">ClassLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L317-L581"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.ClassLabel" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DictFileMixin</span></code></p>
 <p>The instance of this class stores the string names of labels,
 can be used for mapping str2label or label2str.</p>
@@ -1144,15 +1162,86 @@ The order in which the names are provided is kept.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.data_utils.VSORT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">VSORT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L587-L589"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.VSORT" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#egrecho.utils.types.StrEnum" title="egrecho.utils.types.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></a></p>
+<p>An enumeration.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.data_utils.count_vocab_from_iterator">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">count_vocab_from_iterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L769-L794"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.count_vocab_from_iterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Build a Vocab counter from an iterator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>iterator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></span>) -- Iterator used to count vocab. Must yield list or iterator of tokens.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">VocabCounter</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Obj of <code class="xref py py-class docutils literal notranslate"><span class="pre">VocabCounter</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#generating vocab from text file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">egrecho.utils.data_utils</span> <span class="kn">import</span> <span class="n">build_vocab_from_iterator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="k">yield</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vocab_counter</span> <span class="o">=</span> <span class="n">count_vocab_from_iterator</span><span class="p">(</span><span class="n">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.data_utils.build_vocab_from_iterator">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">build_vocab_from_iterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savedir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vocab'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">special_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L797-L842"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.build_vocab_from_iterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Build a Vocab from an iterator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iterator</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></span>) -- Iterator used to build Vocab. Must yield list or iterator of tokens.</p></li>
+<li><p><strong>savedir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) -- Path directory to save the vocab file. if None, will skip save.</p></li>
+<li><p><strong>fname</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) -- filename</p></li>
+<li><p><strong>specials</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>) -- Special symbols to add. The order of supplied tokens will be preserved.</p></li>
+<li><p><strong>special_first</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) -- Indicates whether to insert symbols at the beginning or at the end.</p></li>
+<li><p><strong>min_freq</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) -- If provided , defines the minimum frequency needed to include a token in the vocabulary.</p></li>
+<li><p><strong>max_tokens</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) -- If provided &gt; 0 creates the vocab from the <cite>max_tokens - len(specials)</cite> most frequent tokens.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#egrecho.utils.data_utils.ClassLabel" title="egrecho.utils.data_utils.ClassLabel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassLabel</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Obj of <a class="reference internal" href="#egrecho.utils.data_utils.ClassLabel" title="egrecho.utils.data_utils.ClassLabel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassLabel</span></code></a>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#generating vocab from text file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">egrecho.utils.data_utils</span> <span class="kn">import</span> <span class="n">build_vocab_from_iterator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="k">yield</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vocab</span> <span class="o">=</span> <span class="n">build_vocab_from_iterator</span><span class="p">(</span><span class="n">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="n">specials</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">])</span>
+<span class="gp">... </span><span class="c1"># or save files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vocab</span> <span class="o">=</span> <span class="n">build_vocab_from_iterator</span><span class="p">(</span><span class="n">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="n">savedir</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="p">,</span> <span class="n">specials</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;&lt;unk&gt;&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.data_utils.SplitInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">SplitInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_examples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L582-L594"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.SplitInfo" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">SplitInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_examples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L846-L858"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.SplitInfo" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A container of split dataset info.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.data_utils.try_length">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">try_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L643-L650"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.try_length" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">try_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L907-L914"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.try_length" title="Permalink to this definition">#</a></dt>
 <dd><p>Try to get the length of an object, fallback to return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1163,7 +1252,7 @@ The order in which the names are provided is kept.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.data_utils.wavscp2dicts">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">wavscp2dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wav_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_utt_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_path_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'audio_path'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L653-L668"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.wavscp2dicts" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.data_utils.</span></span><span class="sig-name descname"><span class="pre">wavscp2dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wav_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_utt_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_path_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'audio_path'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/data_utils.py#L917-L932"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.data_utils.wavscp2dicts" title="Permalink to this definition">#</a></dt>
 <dd><p>Read wav.scp to a list of dict</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1592,6 +1681,149 @@ module</p></li>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="module-egrecho.utils.mask">
+<span id="egrecho-utils-mask"></span><h1>egrecho.utils.mask<a class="headerlink" href="#module-egrecho.utils.mask" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.mask.subsequent_chunk_mask">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.mask.</span></span><span class="sig-name descname"><span class="pre">subsequent_chunk_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_left_chunks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">device(type='cpu')</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/mask.py#L9-L43"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.mask.subsequent_chunk_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Create mask for subsequent steps (size, size) with chunk size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>int</em>) -- size of mask</p></li>
+<li><p><strong>chunk_size</strong> (<em>int</em>) -- size of chunk</p></li>
+<li><p><strong>num_left_chunks</strong> (<em>int</em>) -- number of left chunks
+&lt;0: use full chunk
+&gt;=0: use num_left_chunks</p></li>
+<li><p><strong>device</strong> (<em>torch.device</em>) -- “cpu” or “cuda” or torch.Tensor.device</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mask</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">subsequent_chunk_mask</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">[[1, 1, 0, 0],</span>
+<span class="go"> [1, 1, 0, 0],</span>
+<span class="go"> [1, 1, 1, 1],</span>
+<span class="go"> [1, 1, 1, 1]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.mask.make_pad_mask">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.mask.</span></span><span class="sig-name descname"><span class="pre">make_pad_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/mask.py#L46-L71"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.mask.make_pad_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Make mask tensor containing indices of padded part.</p>
+<p>See description of make_non_pad_mask.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lengths</strong> (<em>torch.Tensor</em>) -- Batch of lengths (B,).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mask tensor containing indices of padded part.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.BoolTensor</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_pad_mask</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span>
+<span class="go">masks = [[0, 0, 0, 0 ,0],</span>
+<span class="go">         [0, 0, 0, 1, 1],</span>
+<span class="go">         [0, 0, 1, 1, 1]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.mask.make_non_pad_mask">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.mask.</span></span><span class="sig-name descname"><span class="pre">make_non_pad_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/mask.py#L74-L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.mask.make_non_pad_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Make mask tensor containing indices of non-padded part.</p>
+<p>The sequences in a batch may have different lengths. To enable
+batch computing, padding is need to make all sequence in same
+size. To avoid the padding part pass value to context dependent
+block such as attention or convolution , this padding part is
+masked.</p>
+<p>This pad_mask is used in both encoder and decoder.</p>
+<p>1 for non-padded part and 0 for padded part.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lengths</strong> (<em>torch.Tensor</em>) -- Batch of lengths (B,).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mask tensor containing indices of no padded part.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.BoolTensor</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_non_pad_mask</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span>
+<span class="go">masks = [[1, 1, 1, 1 ,1],</span>
+<span class="go">         [1, 1, 1, 0, 0],</span>
+<span class="go">         [1, 1, 0, 0, 0]]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.mask.prepare_4d_attention_mask">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.mask.</span></span><span class="sig-name descname"><span class="pre">prepare_4d_attention_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tgt_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/mask.py#L102-L117"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.mask.prepare_4d_attention_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a non-causal 4D mask of shape <cite>(batch_size, 1, query_length, key_value_length)</cite> from a 2D mask of shape
+<cite>(batch_size, key_value_length)</cite>. The values in org 2D mask is 0 (no-padded) or 1 (padded).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mask</strong> (<cite>torch.Tensor</cite> or <cite>None</cite>) -- A 2D attention mask of shape <cite>(batch_size, key_value_length)</cite></p></li>
+<li><p><strong>dtype</strong> (<cite>torch.dtype</cite>) -- The torch dtype the created mask shall have.</p></li>
+<li><p><strong>tgt_len</strong> (<cite>int</cite>) -- The target length or query length the created mask shall have.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.mask.make_causal_mask">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.mask.</span></span><span class="sig-name descname"><span class="pre">make_causal_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">past_key_values_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliding_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/mask.py#L136-L173"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.mask.make_causal_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a causal 4d mask from given querys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) -- inputs query of shape <cite>[bsz, seq_len, …]</cite>.</p></li>
+<li><p><strong>dtype</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></span>) -- the torch dtype the created mask shall have.</p></li>
+<li><p><strong>past_key_values_length</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) -- cached past kv length</p></li>
+<li><p><strong>sliding_window</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) -- left chunk size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>4d attention mask (batch_size, 1, query_length, key_value_length) that can be multiplied with attention scores.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_causal_mask</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<span class="go">tensor([[[[ 0.0000e+00, -3.4028e+38, -3.4028e+38],</span>
+<span class="go">        [ 0.0000e+00,  0.0000e+00, -3.4028e+38],</span>
+<span class="go">        [ 0.0000e+00,  0.0000e+00,  0.0000e+00]]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_causal_mask</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">past_key_values_length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">tensor([[[[ 0.0000e+00,  0.0000e+00,  0.0000e+00, -3.4028e+38, -3.4028e+38],</span>
+<span class="go">        [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00, -3.4028e+38],</span>
+<span class="go">        [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00]]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_causal_mask</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">past_key_values_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sliding_window</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">tensor([[[[ 0.0000e+00,  0.0000e+00,  0.0000e+00, -3.4028e+38, -3.4028e+38],</span>
+<span class="go">        [-3.4028e+38,  0.0000e+00,  0.0000e+00,  0.0000e+00, -3.4028e+38],</span>
+<span class="go">        [-3.4028e+38, -3.4028e+38,  0.0000e+00,  0.0000e+00,  0.0000e+00]]]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -2067,6 +2299,15 @@ IDE.</p>
 </ul>
 </div>
 </section>
+<section id="egrecho-utils-text">
+<h1>egrecho.utils.text<a class="headerlink" href="#egrecho-utils-text" title="Permalink to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="egrecho.utils.text.html">egrecho.utils.text.cleaners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
+</ul>
+</div>
+</section>
 
         </article>
       </div>
@@ -2082,14 +2323,14 @@ IDE.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../core/teacher.html">
+          <a class="prev-page" href="../core/tokenizer.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">egrecho.core.teacher</div>
+                <div class="title">egrecho.core.tokenizer</div>
                 
               </div>
             </a>
@@ -2144,6 +2385,7 @@ IDE.</p>
 <li><a class="reference internal" href="#egrecho.utils.common.del_default_dict"><code class="docutils literal notranslate"><span class="pre">del_default_dict()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.common.dict_union"><code class="docutils literal notranslate"><span class="pre">dict_union()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.common.list2tuple"><code class="docutils literal notranslate"><span class="pre">list2tuple()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.common.is_picklable"><code class="docutils literal notranslate"><span class="pre">is_picklable()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-egrecho.utils.constants">egrecho.utils.constants</a></li>
@@ -2185,6 +2427,9 @@ IDE.</p>
 <li><a class="reference internal" href="#egrecho.utils.data_utils.ClassLabel.to_file"><code class="docutils literal notranslate"><span class="pre">ClassLabel.to_file()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#egrecho.utils.data_utils.VSORT"><code class="docutils literal notranslate"><span class="pre">VSORT</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.data_utils.count_vocab_from_iterator"><code class="docutils literal notranslate"><span class="pre">count_vocab_from_iterator()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.data_utils.build_vocab_from_iterator"><code class="docutils literal notranslate"><span class="pre">build_vocab_from_iterator()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.data_utils.SplitInfo"><code class="docutils literal notranslate"><span class="pre">SplitInfo</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.data_utils.try_length"><code class="docutils literal notranslate"><span class="pre">try_length()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.data_utils.wavscp2dicts"><code class="docutils literal notranslate"><span class="pre">wavscp2dicts()</span></code></a></li>
@@ -2234,6 +2479,14 @@ IDE.</p>
 <li><a class="reference internal" href="#egrecho.utils.logging.Logger.error_once"><code class="docutils literal notranslate"><span class="pre">Logger.error_once()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-egrecho.utils.mask">egrecho.utils.mask</a><ul>
+<li><a class="reference internal" href="#egrecho.utils.mask.subsequent_chunk_mask"><code class="docutils literal notranslate"><span class="pre">subsequent_chunk_mask()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.mask.make_pad_mask"><code class="docutils literal notranslate"><span class="pre">make_pad_mask()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.mask.make_non_pad_mask"><code class="docutils literal notranslate"><span class="pre">make_non_pad_mask()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.mask.prepare_4d_attention_mask"><code class="docutils literal notranslate"><span class="pre">prepare_4d_attention_mask()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.mask.make_causal_mask"><code class="docutils literal notranslate"><span class="pre">make_causal_mask()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-egrecho.utils.misc">egrecho.utils.misc</a><ul>
@@ -2295,6 +2548,7 @@ IDE.</p>
 <li><a class="reference internal" href="#egrecho-utils-io">egrecho.utils.io</a></li>
 <li><a class="reference internal" href="#egrecho-utils-patch">egrecho.utils.patch</a></li>
 <li><a class="reference internal" href="#egrecho-utils-seeder">egrecho.utils.seeder</a></li>
+<li><a class="reference internal" href="#egrecho-utils-text">egrecho.utils.text</a></li>
 </ul>
 
           </div>

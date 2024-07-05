@@ -237,6 +237,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/optimization.html">egrecho.core.optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/parser.html">egrecho.core.parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/teacher.html">egrecho.core.teacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/tokenizer.html">egrecho.core.tokenizer</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api.html#egrecho-utils">egrecho.utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of egrecho.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -248,6 +249,7 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.dist">egrecho.utils.dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.imports">egrecho.utils.imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.logging">egrecho.utils.logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.mask">egrecho.utils.mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.misc">egrecho.utils.misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.register">egrecho.utils.register</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#module-egrecho.utils.torch_utils">egrecho.utils.torch_utils</a></li>
@@ -285,9 +287,14 @@
 <li class="toctree-l3"><a class="reference internal" href="egrecho.utils.seeder.html">egrecho.utils.seeder.seed</a></li>
 </ul>
 </li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="index.html#egrecho-utils-text">egrecho.utils.text</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.utils.text</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.text.html">egrecho.utils.text.cleaners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api.html#egrecho-pipeline">egrecho.pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../pipeline/index.html">egrecho.pipeline.base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pipeline/index.html#module-egrecho.pipeline.speaker_embedding">egrecho.pipeline.speaker_embedding</a></li>
 </ul>
@@ -916,8 +923,19 @@ can matching ckpts in the same level. Defaults to best_k_models.yaml.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.utils.save_csv">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">save_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldnames</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fmtparams</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L326-L340"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.save_csv" title="Permalink to this definition">#</a></dt>
+<dd><p>Save csv lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.utils.repr_dict">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">repr_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inline_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L326-L343"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.repr_dict" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">repr_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inline_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L343-L360"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.repr_dict" title="Permalink to this definition">#</a></dt>
 <dd><p>Make dict more readable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -928,7 +946,7 @@ can matching ckpts in the same level. Defaults to best_k_models.yaml.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.utils.buf_count_newlines">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">buf_count_newlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L354-L367"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.buf_count_newlines" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">buf_count_newlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L371-L384"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.buf_count_newlines" title="Permalink to this definition">#</a></dt>
 <dd><p>Count the number of lines in a file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -939,7 +957,7 @@ can matching ckpts in the same level. Defaults to best_k_models.yaml.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.utils.read_key_first_lists">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_key_first_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L370-L398"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_key_first_lists" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_key_first_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L387-L415"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_key_first_lists" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads txt line by line, and items sep with blank in one line.</p>
 <p>Returns a list of tuples contains two item, the first column and
 the second formated other columns. (the second can be a list of strings when <cite>vector=True</cite>).</p>
@@ -952,7 +970,7 @@ the second formated other columns. (the second can be a list of strings when <ci
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.utils.read_lists">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L401-L425"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_lists" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_lists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">every_bytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L418-L442"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_lists" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads txt line by line, and items sep with blank in one line.</p>
 <p>Returns a list of strings
 (or a list of lists contains all strings splitted when <cite>vector=True</cite>).</p>
@@ -965,7 +983,7 @@ the second formated other columns. (the second can be a list of strings when <ci
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.utils.read_key_first_lists_lazy">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_key_first_lists_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L428-L449"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_key_first_lists_lazy" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_key_first_lists_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L445-L466"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_key_first_lists_lazy" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads txt line by line lazy, and items sep with blank in one line.</p>
 <p>Generates tuples contains two item, the first column and
 the second formated other columns. (the second can be a list of strings when <cite>vector=True</cite>).</p>
@@ -978,7 +996,7 @@ the second formated other columns. (the second can be a list of strings when <ci
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.utils.read_lists_lazy">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_lists_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L452-L469"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_lists_lazy" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.utils.</span></span><span class="sig-name descname"><span class="pre">read_lists_lazy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/utils.py#L469-L486"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.utils.read_lists_lazy" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads txt line by line lazy, and items sep with blank in one line.</p>
 <p>Returns a list of strings
 (or a list of lists contains all strings splitted when <cite>vector=True</cite>).</p>
@@ -1237,6 +1255,7 @@ are synced with the disk and not just buffered for later writing).</p></li>
 <li><a class="reference internal" href="#egrecho.utils.io.utils.load_jsonl_lazy"><code class="docutils literal notranslate"><span class="pre">load_jsonl_lazy()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.utils.save_jsonl"><code class="docutils literal notranslate"><span class="pre">save_jsonl()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.utils.load_csv_lazy"><code class="docutils literal notranslate"><span class="pre">load_csv_lazy()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.io.utils.save_csv"><code class="docutils literal notranslate"><span class="pre">save_csv()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.utils.repr_dict"><code class="docutils literal notranslate"><span class="pre">repr_dict()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.utils.buf_count_newlines"><code class="docutils literal notranslate"><span class="pre">buf_count_newlines()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.utils.read_key_first_lists"><code class="docutils literal notranslate"><span class="pre">read_key_first_lists()</span></code></a></li>

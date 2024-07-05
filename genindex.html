@@ -235,6 +235,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/core/optimization.html">egrecho.core.optimization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/core/parser.html">egrecho.core.parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/core/teacher.html">egrecho.core.teacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/core/tokenizer.html">egrecho.core.tokenizer</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/api.html#egrecho-utils">egrecho.utils</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of egrecho.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -246,6 +247,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.dist">egrecho.utils.dist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.imports">egrecho.utils.imports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.logging">egrecho.utils.logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.mask">egrecho.utils.mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.misc">egrecho.utils.misc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.register">egrecho.utils.register</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/utils/index.html#module-egrecho.utils.torch_utils">egrecho.utils.torch_utils</a></li>
@@ -283,9 +285,14 @@
 <li class="toctree-l3"><a class="reference internal" href="api/utils/egrecho.utils.seeder.html">egrecho.utils.seeder.seed</a></li>
 </ul>
 </li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils/index.html#egrecho-utils-text">egrecho.utils.text</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.utils.text</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/utils/egrecho.utils.text.html">egrecho.utils.text.cleaners</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils/egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="api/api.html#egrecho-pipeline">egrecho.pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/api.html#egrecho-pipeline">egrecho.pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of egrecho.pipeline</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/pipeline/index.html">egrecho.pipeline.base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pipeline/index.html#module-egrecho.pipeline.speaker_embedding">egrecho.pipeline.speaker_embedding</a></li>
 </ul>
@@ -333,6 +340,10 @@
   <h2>_</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.__call__">__call__() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature.__init__">__init__() (egrecho.core.feature_extractor.BaseFeature method)</a>
 </li>
     </ul></td>
@@ -349,6 +360,8 @@
 </li>
         <li><a href="api/core/parser.html#egrecho.core.pl_parser.LightningParser.add_trainer_args">add_trainer_args() (egrecho.core.pl_parser.LightningParser method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.all_special_ids">all_special_ids (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
         <li><a href="api/utils/index.html#egrecho.utils.common.alt_none">alt_none() (in module egrecho.utils.common)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.patch.html#egrecho.utils.patch.io_patch.AltGzipFile">AltGzipFile (class in egrecho.utils.patch.io_patch)</a>
@@ -357,10 +370,10 @@
 </li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.serializable.asdict_filt">asdict_filt() (in module egrecho.utils.patch.simple_parse_patch.serializable)</a>
 </li>
-        <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.attach_model">attach_model() (egrecho.core.teacher.Teacher method)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.attach_model">attach_model() (egrecho.core.teacher.Teacher method)</a>
+</li>
         <li><a href="api/utils/index.html#egrecho.utils.torch_utils.audio_collate_fn">audio_collate_fn() (in module egrecho.utils.torch_utils)</a>
 </li>
         <li><a href="api/core/module.html#egrecho.core.module.TopVirtualModel.auto">auto() (egrecho.core.module.TopVirtualModel method)</a>
@@ -389,19 +402,33 @@
 </li>
         <li><a href="api/core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature">BaseFeature (class in egrecho.core.feature_extractor)</a>
 </li>
-        <li><a href="api/utils/index.html#egrecho.utils.torch_utils.batch_pad_right">batch_pad_right() (in module egrecho.utils.torch_utils)</a>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer">BaseTokenizer (class in egrecho.core.tokenizer)</a>
 </li>
-        <li><a href="api/utils/index.html#egrecho.utils.common.batched">batched() (in module egrecho.utils.common)</a>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizerConfig">BaseTokenizerConfig (class in egrecho.core.tokenizer)</a>
+</li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.basic_cleaners">basic_cleaners() (in module egrecho.utils.text.cleaners)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.batch_decode">batch_decode() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.torch_utils.batch_pad_right">batch_pad_right() (in module egrecho.utils.torch_utils)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/utils/index.html#egrecho.utils.common.batched">batched() (in module egrecho.utils.common)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.bos">bos (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.utils.buf_count_newlines">buf_count_newlines() (in module egrecho.utils.io.utils)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.data_utils.buffer_shuffle">buffer_shuffle() (in module egrecho.utils.data_utils)</a>
 </li>
         <li><a href="api/core/data_builder.html#egrecho.core.data_builder.DataBuilder.build_dataset">build_dataset() (egrecho.core.data_builder.DataBuilder method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens">build_inputs_with_special_tokens() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
         <li><a href="api/core/data_builder.html#egrecho.core.data_builder.DataBuilder.build_single_dataset">build_single_dataset() (egrecho.core.data_builder.DataBuilder method)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.data_utils.build_vocab_from_iterator">build_vocab_from_iterator() (in module egrecho.utils.data_utils)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -412,6 +439,8 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils/index.html#egrecho.utils.common.camelcase_to_snakecase">camelcase_to_snakecase() (in module egrecho.utils.common)</a>
+</li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.chinese_mandarin_cleaners">chinese_mandarin_cleaners() (in module egrecho.utils.text.cleaners)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.misc.class2str">class2str() (in module egrecho.utils.misc)</a>
 </li>
@@ -425,15 +454,19 @@
 </li>
         <li><a href="api/utils/egrecho.utils.patch.html#egrecho.utils.patch.torchdata_patch.StreamWrapper.close_streams">close_streams() (egrecho.utils.patch.torchdata_patch.StreamWrapper class method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.cls">cls (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
         <li><a href="api/core/parser.html#egrecho.core.parser.CommonParser">CommonParser (class in egrecho.core.parser)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.imports.compare_version">compare_version() (in module egrecho.utils.imports)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils/index.html#egrecho.utils.register.ConcatRegister">ConcatRegister (class in egrecho.utils.register)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils/index.html#egrecho.utils.register.ConcatStrRegister">ConcatStrRegister (class in egrecho.utils.register)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.config">config (egrecho.core.tokenizer.BaseTokenizer property)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.utils.ConfigFileMixin">ConfigFileMixin (class in egrecho.utils.io.utils)</a>
 </li>
@@ -451,6 +484,14 @@
           <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.configure_teacher_callbacks">(egrecho.core.teacher.Teacher method)</a>
 </li>
         </ul></li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.convert_to_tensors">convert_to_tensors() (in module egrecho.core.tokenizer)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizerConfig.copy_extras">copy_extras() (egrecho.core.tokenizer.BaseTokenizerConfig method)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.data_utils.count_vocab_from_iterator">count_vocab_from_iterator() (in module egrecho.utils.data_utils)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.create_token_type_ids_from_sequences">create_token_type_ids_from_sequences() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.reader.CsvIterable">CsvIterable (class in egrecho.utils.io.reader)</a>
 </li>
     </ul></td>
@@ -479,6 +520,8 @@
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.logging.Logger.debug">debug() (egrecho.utils.logging.Logger method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.decode">decode() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.decoding.decode_dict">decode_dict() (in module egrecho.utils.patch.simple_parse_patch.decoding)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.decoding.decode_enum">decode_enum() (in module egrecho.utils.patch.simple_parse_patch.decoding)</a>
@@ -494,6 +537,8 @@
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.decoding.decode_tuple">decode_tuple() (in module egrecho.utils.patch.simple_parse_patch.decoding)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.decoding.decoding_fn_for_type">decoding_fn_for_type() (in module egrecho.utils.patch.simple_parse_patch.decoding)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.default_save_extras">default_save_extras() (egrecho.core.tokenizer.BaseTokenizer method)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.serializable.default_value">default_value() (in module egrecho.utils.patch.simple_parse_patch.serializable)</a>
 </li>
@@ -607,6 +652,13 @@
 </li>
         </ul></li>
         <li>
+    egrecho.core.tokenizer
+
+        <ul>
+          <li><a href="api/core/tokenizer.html#module-egrecho.core.tokenizer">module</a>
+</li>
+        </ul></li>
+        <li>
     egrecho.pipeline.base
 
         <ul>
@@ -690,8 +742,6 @@
           <li><a href="api/utils/egrecho.utils.io.html#module-egrecho.utils.io.kaldi">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     egrecho.utils.io.reader
 
@@ -706,6 +756,8 @@
           <li><a href="api/utils/egrecho.utils.io.html#module-egrecho.utils.io.resolve_ckpt">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     egrecho.utils.io.utils
 
@@ -725,6 +777,13 @@
 
         <ul>
           <li><a href="api/utils/index.html#module-egrecho.utils.logging">module</a>
+</li>
+        </ul></li>
+        <li>
+    egrecho.utils.mask
+
+        <ul>
+          <li><a href="api/utils/index.html#module-egrecho.utils.mask">module</a>
 </li>
         </ul></li>
         <li>
@@ -798,6 +857,20 @@
 </li>
         </ul></li>
         <li>
+    egrecho.utils.text.cleaners
+
+        <ul>
+          <li><a href="api/utils/egrecho.utils.text.html#module-egrecho.utils.text.cleaners">module</a>
+</li>
+        </ul></li>
+        <li>
+    egrecho.utils.text.number_cn
+
+        <ul>
+          <li><a href="api/utils/egrecho.utils.text.html#module-egrecho.utils.text.number_cn">module</a>
+</li>
+        </ul></li>
+        <li>
     egrecho.utils.torch_utils
 
         <ul>
@@ -811,7 +884,13 @@
           <li><a href="api/utils/index.html#module-egrecho.utils.types">module</a>
 </li>
         </ul></li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.english_cleaners">english_cleaners() (in module egrecho.utils.text.cleaners)</a>
+</li>
         <li><a href="api/utils/index.html#egrecho.utils.dist.EnvInfo">EnvInfo (class in egrecho.utils.dist)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.eod">eod (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.eos">eos (egrecho.core.tokenizer.BaseTokenizer property)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.logging.Logger.error">error() (egrecho.utils.logging.Logger method)</a>
 </li>
@@ -839,6 +918,10 @@
         </ul></li>
         <li><a href="api/utils/index.html#egrecho.utils.register.ExternalRegister">ExternalRegister (class in egrecho.utils.register)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names">extra_files_names (egrecho.core.tokenizer.BaseTokenizerConfig property)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.extradir">extradir (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -859,6 +942,12 @@
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.dist.EnvInfo.from_args">from_args() (egrecho.utils.dist.EnvInfo class method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.from_cfg_dir">from_cfg_dir() (egrecho.core.tokenizer.BaseTokenizer class method)</a>
+
+        <ul>
+          <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizerConfig.from_cfg_dir">(egrecho.core.tokenizer.BaseTokenizerConfig class method)</a>
+</li>
+        </ul></li>
         <li><a href="api/core/config.html#egrecho.core.config.DataclassConfig.from_config">from_config() (egrecho.core.config.DataclassConfig class method)</a>
 
         <ul>
@@ -905,6 +994,8 @@
 </li>
         <li><a href="api/core/parser.html#egrecho.core.parser.BaseCommand.get_dummy_parser">get_dummy_parser() (egrecho.core.parser.BaseCommand class method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizerConfig.get_extra_files">get_extra_files() (egrecho.core.tokenizer.BaseTokenizerConfig method)</a>
+</li>
         <li><a href="api/core/feature_extractor.html#egrecho.core.feature_extractor.BaseFeature.get_extractor_dict">get_extractor_dict() (egrecho.core.feature_extractor.BaseFeature class method)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.annotation_utils.html#egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations.get_field_type_from_annotations">get_field_type_from_annotations() (in module egrecho.utils.patch.simple_parse_patch.annotation_utils.get_field_annotations)</a>
@@ -922,6 +1013,8 @@
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.get_lr_scheduler_total_steps_name">get_lr_scheduler_total_steps_name() (egrecho.core.teacher.Teacher class method)</a>
 </li>
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.get_num_training_steps">get_num_training_steps() (egrecho.core.teacher.Teacher method)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.get_special_tokens_mask">get_special_tokens_mask() (egrecho.core.tokenizer.Tokenizer method)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.patch.html#egrecho.utils.patch.io_patch.FsspecLocalGlob.glob">glob() (egrecho.utils.patch.io_patch.FsspecLocalGlob class method)</a>
 </li>
@@ -949,6 +1042,8 @@
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.logging.Logger.info_once">info_once() (egrecho.utils.logging.Logger method)</a>
 </li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.input_text_batched">input_text_batched() (egrecho.core.tokenizer.Tokenizer class method)</a>
+</li>
         <li><a href="api/core/data_builder.html#egrecho.core.data_builder.DataBuilder.inputs_dim">inputs_dim (egrecho.core.data_builder.DataBuilder property)</a>
 </li>
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.instantiate_lr_scheduler">instantiate_lr_scheduler() (egrecho.core.teacher.Teacher method)</a>
@@ -972,6 +1067,8 @@
         <li><a href="api/utils/index.html#egrecho.utils.torch_utils.is_numpy_array">is_numpy_array() (in module egrecho.utils.torch_utils)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.imports.is_package_available">is_package_available() (in module egrecho.utils.imports)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.common.is_picklable">is_picklable() (in module egrecho.utils.common)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.dist.is_port_in_use">is_port_in_use() (in module egrecho.utils.dist)</a>
 </li>
@@ -1075,7 +1172,15 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/utils/index.html#egrecho.utils.mask.make_causal_mask">make_causal_mask() (in module egrecho.utils.mask)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.mask.make_non_pad_mask">make_non_pad_mask() (in module egrecho.utils.mask)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.mask.make_pad_mask">make_pad_mask() (in module egrecho.utils.mask)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.patch.html#egrecho.utils.patch.io_patch.make_path_posix">make_path_posix() (in module egrecho.utils.patch.io_patch)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.mask">mask (egrecho.core.tokenizer.BaseTokenizer property)</a>
 </li>
         <li><a href="api/core/module.html#egrecho.core.model_base.ModelBase">ModelBase (class in egrecho.core.model_base)</a>
 </li>
@@ -1106,6 +1211,8 @@
           <li><a href="api/core/parser.html#module-egrecho.core.pl_parser">egrecho.core.pl_parser</a>
 </li>
           <li><a href="api/core/teacher.html#module-egrecho.core.teacher">egrecho.core.teacher</a>
+</li>
+          <li><a href="api/core/tokenizer.html#module-egrecho.core.tokenizer">egrecho.core.tokenizer</a>
 </li>
           <li><a href="api/pipeline/index.html#module-egrecho.pipeline.base">egrecho.pipeline.base</a>
 </li>
@@ -1141,6 +1248,8 @@
 </li>
           <li><a href="api/utils/index.html#module-egrecho.utils.logging">egrecho.utils.logging</a>
 </li>
+          <li><a href="api/utils/index.html#module-egrecho.utils.mask">egrecho.utils.mask</a>
+</li>
           <li><a href="api/utils/index.html#module-egrecho.utils.misc">egrecho.utils.misc</a>
 </li>
           <li><a href="api/utils/egrecho.utils.patch.html#module-egrecho.utils.patch.io_patch">egrecho.utils.patch.io_patch</a>
@@ -1161,6 +1270,10 @@
 </li>
           <li><a href="api/utils/egrecho.utils.seeder.html#module-egrecho.utils.seeder.seed">egrecho.utils.seeder.seed</a>
 </li>
+          <li><a href="api/utils/egrecho.utils.text.html#module-egrecho.utils.text.cleaners">egrecho.utils.text.cleaners</a>
+</li>
+          <li><a href="api/utils/egrecho.utils.text.html#module-egrecho.utils.text.number_cn">egrecho.utils.text.number_cn</a>
+</li>
           <li><a href="api/utils/index.html#module-egrecho.utils.torch_utils">egrecho.utils.torch_utils</a>
 </li>
           <li><a href="api/utils/index.html#module-egrecho.utils.types">egrecho.utils.types</a>
@@ -1169,6 +1282,8 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/core/module.html#egrecho.core.model_base.ModuleConfig">ModuleConfig (class in egrecho.core.model_base)</a>
+</li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.multilingual_cleaners">multilingual_cleaners() (in module egrecho.utils.text.cleaners)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -1193,6 +1308,8 @@
         <li><a href="api/utils/index.html#egrecho.utils.cuda_utils.num_gpus">num_gpus() (in module egrecho.utils.cuda_utils)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.dist.EnvInfo.num_shards">num_shards (egrecho.utils.dist.EnvInfo property)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.num_special_tokens_to_add">num_special_tokens_to_add() (egrecho.core.tokenizer.Tokenizer method)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.cuda_utils.NVMLDeviceCount">NVMLDeviceCount (class in egrecho.utils.cuda_utils)</a>
 </li>
@@ -1228,7 +1345,15 @@
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.pad">pad (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.pad">pad() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
         <li><a href="api/utils/index.html#egrecho.utils.torch_utils.pad_right_to">pad_right_to() (in module egrecho.utils.torch_utils)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.pad_token_id">pad_token_id (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.pad_token_type_id">pad_token_type_id (egrecho.core.tokenizer.BaseTokenizer property)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.types.PaddingStrategy">PaddingStrategy (class in egrecho.utils.types)</a>
 </li>
@@ -1244,6 +1369,8 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils/index.html#egrecho.utils.cuda_utils.peak_cuda_memory">peak_cuda_memory() (in module egrecho.utils.cuda_utils)</a>
 </li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.phoneme_cleaners">phoneme_cleaners() (in module egrecho.utils.text.cleaners)</a>
+</li>
         <li><a href="api/pipeline/index.html#egrecho.pipeline.base.PipeLine">PipeLine (class in egrecho.pipeline.base)</a>
 </li>
         <li><a href="api/core/module.html#egrecho.core.module.TopVirtualModel.pipeline_out">pipeline_out() (egrecho.core.module.TopVirtualModel class method)</a>
@@ -1253,6 +1380,10 @@
         <li><a href="api/core/module.html#egrecho.core.model_base.ModelBase.post_init">post_init() (egrecho.core.model_base.ModelBase method)</a>
 </li>
         <li><a href="api/pipeline/index.html#egrecho.pipeline.base.PipeLine.postprocess">postprocess() (egrecho.pipeline.base.PipeLine method)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.mask.prepare_4d_attention_mask">prepare_4d_attention_mask() (in module egrecho.utils.mask)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.prepare_for_model">prepare_for_model() (egrecho.core.tokenizer.Tokenizer method)</a>
 </li>
         <li><a href="api/pipeline/index.html#egrecho.pipeline.base.PipeLine.preprocess">preprocess() (egrecho.pipeline.base.PipeLine method)</a>
 </li>
@@ -1286,8 +1417,12 @@
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.cuda_utils.release_memory">release_memory() (in module egrecho.utils.cuda_utils)</a>
 </li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.number_cn.replace_numbers_to_characters_in_text">replace_numbers_to_characters_in_text() (in module egrecho.utils.text.number_cn)</a>
+</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.replace_symbols">replace_symbols() (in module egrecho.utils.text.cleaners)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.utils.repr_dict">repr_dict() (in module egrecho.utils.io.utils)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.resolve_ckpt.resolve_ckpt">resolve_ckpt() (in module egrecho.utils.io.resolve_ckpt)</a>
@@ -1329,14 +1464,24 @@
         <ul>
           <li><a href="api/core/parser.html#egrecho.core.pl_parser.SaveConfigCallback.save_config">(egrecho.core.pl_parser.SaveConfigCallback method)</a>
 </li>
+          <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.save_config">(egrecho.core.tokenizer.BaseTokenizer method)</a>
+</li>
         </ul></li>
+        <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.utils.save_csv">save_csv() (in module egrecho.utils.io.utils)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.save_extras">save_extras() (egrecho.core.tokenizer.BaseTokenizer method)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.utils.save_jsonl">save_jsonl() (in module egrecho.utils.io.utils)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.save_to">save_to() (egrecho.core.tokenizer.BaseTokenizer method)</a>
 </li>
         <li><a href="api/core/parser.html#egrecho.core.pl_parser.SaveConfigCallback">SaveConfigCallback (class in egrecho.core.pl_parser)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.seeder.html#egrecho.utils.seeder.seed.SeedWorkers">SeedWorkers (class in egrecho.utils.seeder.seed)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.dist.send_exit_ddp">send_exit_ddp() (in module egrecho.utils.dist)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.sep">sep (egrecho.core.tokenizer.BaseTokenizer property)</a>
 </li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.writer.SequentialDewWriter">SequentialDewWriter (class in egrecho.utils.io.writer)</a>
 </li>
@@ -1354,12 +1499,12 @@
         </ul></li>
         <li><a href="api/core/module.html#egrecho.core.module.DataMoudle.setup_data">setup_data() (egrecho.core.module.DataMoudle method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.setup_loss_fn_dict">setup_loss_fn_dict() (egrecho.core.teacher.Teacher method)</a>
 </li>
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.setup_model">setup_model() (egrecho.core.teacher.Teacher method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/core/parser.html#egrecho.core.parser.BaseCommand.setup_parser">setup_parser() (egrecho.core.parser.BaseCommand class method)</a>
 </li>
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.setup_train_metrics">setup_train_metrics() (egrecho.core.teacher.Teacher method)</a>
@@ -1392,6 +1537,8 @@
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.register.StrRegister">StrRegister (class in egrecho.utils.register)</a>
 </li>
+        <li><a href="api/utils/index.html#egrecho.utils.mask.subsequent_chunk_mask">subsequent_chunk_mask() (in module egrecho.utils.mask)</a>
+</li>
         <li><a href="api/utils/index.html#egrecho.utils.cuda_utils.synchronize">synchronize() (in module egrecho.utils.cuda_utils)</a>
 </li>
     </ul></td>
@@ -1403,6 +1550,8 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher">Teacher (class in egrecho.core.teacher)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.TensorType">TensorType (class in egrecho.core.tokenizer)</a>
 </li>
         <li><a href="api/core/module.html#egrecho.core.module.DataMoudle.test_dataset">test_dataset (egrecho.core.module.DataMoudle property)</a>
 </li>
@@ -1424,9 +1573,11 @@
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.torch_utils.to_py_obj">to_py_obj() (in module egrecho.utils.torch_utils)</a>
 </li>
+        <li><a href="api/utils/index.html#egrecho.utils.types.ModelOutput.to_tuple">to_tuple() (egrecho.utils.types.ModelOutput method)</a>
+</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/utils/index.html#egrecho.utils.types.ModelOutput.to_tuple">to_tuple() (egrecho.utils.types.ModelOutput method)</a>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer">Tokenizer (class in egrecho.core.tokenizer)</a>
 </li>
         <li><a href="api/core/module.html#egrecho.core.module.TopVirtualModel">TopVirtualModel (class in egrecho.core.module)</a>
 </li>
@@ -1440,6 +1591,12 @@
           <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.training_step">(egrecho.core.teacher.Teacher method)</a>
 </li>
         </ul></li>
+        <li><a href="api/utils/egrecho.utils.text.html#egrecho.utils.text.cleaners.transliteration_cleaners">transliteration_cleaners() (in module egrecho.utils.text.cleaners)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.Tokenizer.truncate_sequences">truncate_sequences() (egrecho.core.tokenizer.Tokenizer method)</a>
+</li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.TruncationStrategy">TruncationStrategy (class in egrecho.core.tokenizer)</a>
+</li>
         <li><a href="api/utils/egrecho.utils.patch.simple_parse_patch.html#egrecho.utils.patch.simple_parse_patch.decoding.try_constructor">try_constructor() (in module egrecho.utils.patch.simple_parse_patch.decoding)</a>
 </li>
         <li><a href="api/utils/index.html#egrecho.utils.types.StrEnum.try_from_str">try_from_str() (egrecho.utils.types.StrEnum class method)</a>
@@ -1472,16 +1629,20 @@
 </li>
         <li><a href="api/utils/egrecho.utils.io.html#egrecho.utils.io.kaldi.valid_kaldi_storage_name">valid_kaldi_storage_name() (in module egrecho.utils.io.kaldi)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/utils/egrecho.utils.patch.html#egrecho.utils.patch.torchdata_patch.validate_input_col">validate_input_col() (in module egrecho.utils.patch.torchdata_patch)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/core/module.html#egrecho.core.module.TopVirtualModel.validation_step">validation_step() (egrecho.core.module.TopVirtualModel method)</a>
 
         <ul>
           <li><a href="api/core/teacher.html#egrecho.core.teacher.Teacher.validation_step">(egrecho.core.teacher.Teacher method)</a>
 </li>
         </ul></li>
+        <li><a href="api/core/tokenizer.html#egrecho.core.tokenizer.BaseTokenizer.vocab_size">vocab_size (egrecho.core.tokenizer.BaseTokenizer property)</a>
+</li>
+        <li><a href="api/utils/index.html#egrecho.utils.data_utils.VSORT">VSORT (class in egrecho.utils.data_utils)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>

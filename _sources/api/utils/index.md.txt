@@ -54,6 +54,13 @@
 
 ```
 
+# egrecho.utils.mask
+```{eval-rst}
+.. automodule:: egrecho.utils.mask
+    :members:
+
+```
+
 # egrecho.utils.misc
 ```{eval-rst}
 .. automodule:: egrecho.utils.misc
@@ -112,4 +119,11 @@ egrecho.utils.patch.md
 :maxdepth: 1
 
 egrecho.utils.seeder.md
+```
+
+# egrecho.utils.text
+```{toctree}
+:maxdepth: 1
+
+egrecho.utils.text.md
 ```
