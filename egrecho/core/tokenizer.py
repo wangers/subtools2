@@ -184,8 +184,7 @@ class BaseTokenizerConfig(DataclassConfig):
 
         extra_files_names = alt_none(extra_files_names, self.extra_files_names)
         filename_prefix = filename_prefix + "-" if filename_prefix else ""
-        if extradir is not None:
-            extradir = self.extradir
+        extradir = self.extradir
         # about to copy files
         if extradir is not None and extra_files_names:
             extradir = str(extradir)
@@ -196,7 +195,7 @@ class BaseTokenizerConfig(DataclassConfig):
                 _cp_file, srcdir=extradir, f_prefix=filename_prefix, exs=excludes
             )
             apply_to_collection(
-                extra_files_names, dtype=Union[str, os.PathLike], function=cp_fn
+                extra_files_names, dtype=(str, os.PathLike), function=cp_fn
             )
         return tuple(tgt_files)
 
@@ -340,19 +339,24 @@ class BaseTokenizer(ABC):
             f"{type(self).__name__} has no attribute 'mask' or 'mask_id'"
         )
 
-    @abstractmethod
-    def text2ids(self, line: TextInput, **kwargs) -> List[int]:
-        raise NotImplementedError("abstract method")
+    def tokenize(self, line: TextInput, **kwargs) -> List[str]:
+        """Accept kwargs for tokenize, overwrite it in subclasses."""
+        return self.text2tokens(line)
+
+    def text2ids(self, line: TextInput) -> List[int]:
+        return self.text2tokens(self.tokens2ids(line))
 
     def ids2text(self, ids: EncodedInput) -> str:
-        raise NotImplementedError("abstract method")
+        return self.ids2tokens(self.tokens2text(ids))
 
-    def text2tokens(self, line: TextInput, **kwargs) -> List[str]:
+    @abstractmethod
+    def text2tokens(self, line: TextInput) -> List[str]:
         raise NotImplementedError("abstract method")
 
     def tokens2text(self, tokens: PreTokenizedInput) -> str:
         raise NotImplementedError("abstract method")
 
+    @abstractmethod
     def tokens2ids(self, tokens: PreTokenizedInput) -> List[int]:
         raise NotImplementedError("abstract method")
 
@@ -782,7 +786,7 @@ class Tokenizer(BaseTokenizer):
 
     def get_input_ids(self, text, is_split_into_words: bool = False, **kwargs):
         if isinstance(text, str):
-            tokens = self.text2tokens(text, **kwargs)
+            tokens = self.tokenize(text, **kwargs)
             return self.tokens2ids(tokens)
         elif (
             isinstance(text, (list, tuple))
@@ -793,14 +797,14 @@ class Tokenizer(BaseTokenizer):
                 tokens = list(
                     itertools.chain(
                         *(
-                            self.text2tokens(t, is_split_into_words=True, **kwargs)
+                            self.tokenize(t, is_split_into_words=True, **kwargs)
                             for t in text
                         )
                     )
                 )
                 return self.tokens2ids(tokens)
             else:
-                return self.text2tokens(text)
+                return self.tokens2ids(text)
         elif (
             isinstance(text, (list, tuple))
             and len(text) > 0
@@ -1719,8 +1723,8 @@ class Tokenizer(BaseTokenizer):
 
     def __repr__(self) -> str:
         return (
-            f"{self.__class__.__name__}(config='{self.config}' \nvocab_size={self.vocab_size}"
-            f" padding_side='{self.padding_side}', truncation_side='{self.truncation_side}')"
+            f"{self.__class__.__name__}(config={self.config} \n\tvocab_size={self.vocab_size}"
+            f" padding_side={self.padding_side}, truncation_side={self.truncation_side})"
         )
 
 

@@ -234,11 +234,13 @@ Well done! whisper-small has been successfully fine-tuned.
 
   | model | params | original | WER (ins, des, sub) |
   | :----- | :-----: | :--------: | :------- |
-  | medium-lora| 769M   | 17.04    | **3.94** (0.51, 0.33, 3.10)   |
+  | medium-full| 769M   | 17.04    | **3.23** (0.38, 0.27, 2.57)   |
+  | medium-lora| -   | -    | 3.94 (0.51, 0.33, 3.10)   |
   | medium-lion-lora| -  | -    | 9.23 (2.01, 0.30, 6.92)  |
-  | small-lora| 244M   | 39.61    | 6.58 (1.05, 0.47, 5.05)  |
+  | small-full | 244M   | 39.61    | **4.04** (0.44, 0.29, 3.30)  |
+  | small-lora| - | -    | 6.58 (1.05, 0.47, 5.05)  |
   | small-full (freeze-enc)| -  | -   | 13.60 (5.41, 0.51, 7.68)  |
-  | small-full | -   | -    | **4.04** (0.44, 0.29, 3.30)  |
+
 
 *Conducted by Dexin Liao (2024-06)*
 > **Note**:

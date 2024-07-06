@@ -122,6 +122,7 @@ class DataclassSerialMixin:
 
     subclasses: ClassVar[list] = []
     decode_into_subclasses: ClassVar[bool] = False
+    filt_type: ClassVar[str] = 'none'
 
     def __init_subclass__(cls, decode_into_subclasses: Optional[bool] = None):
         logger.debug(f"Registering a new Serializable subclass: {cls}")
@@ -153,13 +154,14 @@ class DataclassSerialMixin:
     def to_dict(
         self,
         dict_factory=dict,
-        filt_type: Literal["default", "none", "orig"] = "default",
+        filt_type: Optional[Literal["default", "none", "orig"]] = None,
         init_field_only=True,
         save_dc_types=False,
     ) -> dict:
         """
         Serializes this dataclass to a dict.
         """
+        filt_type = filt_type or self.filt_type
         return asdict_filt(
             self,
             dict_factory=dict_factory,

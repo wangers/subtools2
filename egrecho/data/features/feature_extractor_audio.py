@@ -461,6 +461,19 @@ class OfflineFeatureExtractor(SequenceFeature):
             Feature configuration, for reproduction. Pass a {} will get a kaldi-fbank of 80 dim.
         **kwargs:
             Other arguments.
+
+    Example::
+
+        import torch
+
+        from egrecho.data.features.feature_extractor_audio import OfflineFeatureExtractor
+
+        fbank = (torch.randn(100, 80), torch.randn(75, 80))
+        extractor = OfflineFeatureExtractor(mean_norm=False, feat_conf={})
+        outs = extractor(fbank, sampling_rate=16000)
+        feats, att_mask = outs['input_features'], outs['attention_mask']
+        assert tuple(feats.shape) == (2, 100, 80)
+        assert (att_mask.sum(dim=-1).tolist() == [100,75])
     """
 
     # Input names expected by the model
@@ -482,11 +495,11 @@ class OfflineFeatureExtractor(SequenceFeature):
             )
 
         self.feat_conf = dict_union(DEFAULT_FEAT_CONF, feat_conf)
-        self.sampling_rate = feat_conf["sampling_rate"]
-        self.feature_size = self.get_online_extractor().feature_dim
-
+        self.sampling_rate = self.feat_conf["sampling_rate"]
         self.mean_norm = mean_norm
         self.std_norm = std_norm
+        self.return_attention_mask = return_attention_mask
+        self.feature_size = self.get_online_extractor().feature_dim
 
         super().__init__(
             feature_size=self.feature_size,
@@ -517,13 +530,18 @@ class OfflineFeatureExtractor(SequenceFeature):
         Returns:
             dict: A dictionary containing features.
 
-        Example:
-        >>> extractor = OfflineFeatureExtractor(mean_norm=False)
-        >>> signal = (torch.arange(8.).view(2,4))
-        >>> extractor(signal)
-        {'input_features': tensor([[[0., 1., 2., 3.],
-                [4., 5., 6., 7.]]]),
-        'attention_mask': tensor([[1, 1]], dtype=torch.int32)}
+        Example::
+
+            import torch
+
+            from egrecho.data.features.feature_extractor_audio import OfflineFeatureExtractor
+
+            fbank = (torch.randn(100, 80), torch.randn(75, 80))
+            extractor = OfflineFeatureExtractor(mean_norm=False, feat_conf={})
+            outs = extractor(fbank, sampling_rate=16000)
+            feats, att_mask = outs['input_features'], outs['attention_mask']
+            assert tuple(feats.shape) == (2, 100, 80)
+            assert (att_mask.sum(dim=-1).tolist() == [100,75])
         """
         if sampling_rate is not None:
             if sampling_rate != self.sampling_rate:
@@ -532,12 +550,7 @@ class OfflineFeatureExtractor(SequenceFeature):
                     f" sampling rate of {self.sampling_rate}. Please make sure that the provided `samples` input"
                     f" was sampled with {self.sampling_rate} and not {sampling_rate}."
                 )
-        else:
-            logger.warning(
-                "It is strongly recommended to pass the `sampling_rate` argument to this function. "
-                "Failing to do so can result in silent errors that might be hard to debug."
-            )
-            sampling_rate = self.sampling_rate
+
         is_batched = bool(
             isinstance(features, (list, tuple))
             and (
