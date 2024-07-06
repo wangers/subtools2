@@ -15,7 +15,7 @@ from egrecho.utils.io import DataFilesList
 from egrecho.utils.logging import get_logger
 from egrecho_cli.register import COMMAND_REGISTRY
 
-logger = get_logger()
+logger = get_logger(__name__)
 CONMMANDS_NAMESPACE = "egrecho_cli"
 SCRIPT_PATTERNS = "commands" + os.path.sep + "**.py"
 

@@ -59,6 +59,7 @@ class Logger:
         self._logger.setLevel(logging.INFO)
         self._logger.addHandler(handler)
         self._logger.propagate = False
+        self._force_verbose = None
 
         Logger.__loggers[name] = self
 
@@ -76,6 +77,34 @@ class Logger:
         func = stack[stack_pos][3]
 
         return fn, ln, func
+
+    @staticmethod
+    def get_msg_prefix(fn, ln, func, *, verbose=False):
+        if not verbose:
+            try:
+                fn = os.path.basename(fn)
+            except (TypeError, ValueError, AttributeError):
+                fn = fn
+            return f'{fn}:{ln}'
+        return f'{fn}:{ln} {func}'
+
+    @staticmethod
+    def _check_valid_logging_level(level: str):
+        assert level in [
+            "INFO",
+            "DEBUG",
+            "WARNING",
+            "ERROR",
+        ], "found invalid logging level"
+
+    def set_level(self, level: str) -> None:
+        """Set the logging level
+
+        Args:
+            level (str): Can only be INFO, DEBUG, WARNING and ERROR.
+        """
+        self._check_valid_logging_level(level)
+        self._logger.setLevel(getattr(logging, level))
 
     def _log(self, level, message, ranks: List[int] = None):
         if ranks is None:
@@ -98,14 +127,25 @@ class Logger:
                 )
                 getattr(self._logger, level)(message)
 
-    def info(self, message: str, ranks: List[int] = None, stack_pos: int = 2) -> None:
+    def info(
+        self,
+        message: str,
+        ranks: List[int] = None,
+        stack_pos: int = 2,
+        verbose: Optional[bool] = None,
+    ) -> None:
         """Log an info message.
 
         Args:
             message (str): The message to be logged.
             ranks (List[int]): List of parallel ranks.
         """
-        message_prefix = "{}:{} {}".format(*self.__get_call_info(stack_pos))
+        if not bool(verbose := self._force_verbose):
+            verbose = False if verbose is None else verbose
+
+        message_prefix = self.get_msg_prefix(
+            *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
+        )
         message = "{}\n#### {}".format(message_prefix, message)
         self._log("info", message, ranks)
 
@@ -123,7 +163,11 @@ class Logger:
             self.info(message, ranks, stack_pos=3)
 
     def warning(
-        self, message: str, ranks: List[int] = None, stack_pos: int = 2
+        self,
+        message: str,
+        ranks: List[int] = None,
+        stack_pos: int = 2,
+        verbose: Optional[bool] = None,
     ) -> None:
         """Log a warning message.
 
@@ -131,7 +175,12 @@ class Logger:
             message (str): The message to be logged.
             ranks (List[int]): List of parallel ranks.
         """
-        message_prefix = "{}:{} {}".format(*self.__get_call_info(stack_pos))
+        if not bool(verbose := self._force_verbose):
+            verbose = False if verbose is None else verbose
+
+        message_prefix = self.get_msg_prefix(
+            *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
+        )
         message = "{}\n#### {}".format(message_prefix, message)
         self._log("warning", message, ranks)
 
@@ -148,29 +197,56 @@ class Logger:
             _seen_logs.add(message)
             self.warning(message, ranks=ranks, stack_pos=3)
 
-    def debug(self, message: str, ranks: List[int] = None, stack_pos: int = 2) -> None:
+    def debug(
+        self,
+        message: str,
+        ranks: List[int] = None,
+        stack_pos: int = 2,
+        verbose: Optional[bool] = None,
+    ) -> None:
         """Log a debug message.
 
         Args:
             message (str): The message to be logged.
             ranks (List[int]): List of parallel ranks.
         """
-        message_prefix = "{}:{} {}".format(*self.__get_call_info(stack_pos))
+        if not bool(verbose := self._force_verbose):
+            verbose = True if verbose is None else verbose
+
+        message_prefix = self.get_msg_prefix(
+            *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
+        )
         message = "{}\n#### {}".format(message_prefix, message)
         self._log("debug", message, ranks)
 
-    def error(self, message: str, ranks: List[int] = None, stack_pos: int = 2) -> None:
+    def error(
+        self,
+        message: str,
+        ranks: List[int] = None,
+        stack_pos: int = 2,
+        verbose: Optional[bool] = None,
+    ) -> None:
         """Log an error message.
 
         Args:
             message (str): The message to be logged.
             ranks (List[int]): List of parallel ranks.
         """
-        message_prefix = "{}:{} {}".format(*self.__get_call_info(stack_pos))
+        if not bool(verbose := self._force_verbose):
+            verbose = True if verbose is None else verbose
+
+        message_prefix = self.get_msg_prefix(
+            *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
+        )
         message = "{}\n#### {}".format(message_prefix, message)
         self._log("error", message, ranks)
 
-    def error_once(self, message: str, ranks: List[int] = None) -> None:
+    def error_once(
+        self,
+        message: str,
+        ranks: List[int] = None,
+        verbose=True,
+    ) -> None:
         """
         Log a error, but only once.
 
@@ -181,7 +257,15 @@ class Logger:
         global _seen_logs
         if message not in _seen_logs:
             _seen_logs.add(message)
-            self.error(message, ranks=ranks, stack_pos=3)
+            self.error(
+                message,
+                ranks=ranks,
+                stack_pos=3,
+                verbose=verbose,
+            )
+
+    def force_verbose(self, verbose):
+        self._force_verbose = verbose
 
 
 def _infer_rank() -> Optional[int]:
