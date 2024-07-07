@@ -49,8 +49,8 @@ def _rename_column(sample: Dict, orig_col: str, new_col: str, check: bool = True
 def _rename_columns(sample: Dict, col_mapping: Dict[str, str], check: bool = True):
     if check:
         _check_columns(sample, col_mapping)
-    sample = {new_col: sample[orig_col] for orig_col, new_col in col_mapping.items()}
-    for orig_col in col_mapping:
+    for orig_col, new_col in col_mapping.items():
+        sample[new_col] = sample[orig_col]
         del sample[orig_col]
     return sample
 
