@@ -421,9 +421,9 @@ def _jit_compile() -> Generator:
         TopVirtualModel._jit_is_scripting = False
 
 
-class DataMoudle(pl.LightningDataModule):
+class DataModule(pl.LightningDataModule):
     """
-    A simple lightning datamoudle wrapper for dataloader.
+    A simple lightning datamodule wrapper for dataloader.
 
     The iterable dataset in :class:`~egrecho.data.iterable.IterabelDatasetWrapper` auto sharding samples in
     different ranks, we should load the dataset in hook: :meth:`setup` as this hook is

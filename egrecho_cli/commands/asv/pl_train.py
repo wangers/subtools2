@@ -20,7 +20,7 @@ from lightning.pytorch.loggers import CSVLogger, Logger, TensorBoardLogger
 from lightning.pytorch.utilities import rank_zero_warn
 
 from egrecho.core.loads import resolve_ckpt, save_ckpt_conf_dir
-from egrecho.core.module import DataMoudle, TopVirtualModel
+from egrecho.core.module import DataModule, TopVirtualModel
 from egrecho.core.parser import BaseCommand
 from egrecho.core.pl_parser import LightningParser, SaveConfigCallback
 from egrecho.core.teacher import Teacher
@@ -73,7 +73,7 @@ class TrainASV(BaseCommand):
                 help="Data attributes infers from data builder will pass to model/teacher before instantiatting.",
             )
 
-            parser.add_class_args(DataMoudle, "data", skip={"batch_size"})
+            parser.add_class_args(DataModule, "data", skip={"batch_size"})
 
             parser.link_arguments(
                 "data_builder", "data.builder", apply_on="instantiate"
