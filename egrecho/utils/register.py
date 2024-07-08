@@ -199,7 +199,7 @@ class ConcatRegister(Register):
 
     def _do_register(
         self,
-        fn: Callable,
+        fn_or_cls: Callable,
         name: Optional[str] = None,
         override: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
@@ -211,10 +211,10 @@ class ConcatRegister(Register):
                 and getattr(register, "_do_register", None) is not None
             ):
                 return register._do_register(
-                    fn, name=name, override=override, metadata=metadata
+                    fn_or_cls, name=name, override=override, metadata=metadata
                 )
         raise RuntimeError(
-            f"Faield register (name={name}, fn={fn}, metadata={metadata}) "
+            f"Faield register (name={name}, fn={fn_or_cls}, metadata={metadata}) "
             f"to {self}. Probably because all registers are {ExternalRegister.__name__!r}, check it."
         )
 
