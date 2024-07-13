@@ -174,6 +174,8 @@ _KALDI_NATIVE_IO_AVAILABLE = is_package_available("kaldi_native_io")
 _JIWER_AVAILABLE = is_package_available("jiwer")
 _ONNX_AVAILABLE = is_package_available("onnx")
 _ONNXRUNTIME_AVAILABLE = is_package_available("onnxruntime") and _ONNX_AVAILABLE
+_OMEGACONF_AVAILABLE = is_package_available("omegaconf")
+_HYDRA_AVAILABLE = is_package_available("hydra")
 
 _TORCH_GREATER_EQUAL_2_0 = RequirementCache("torch>=2.0")
 _TORCH_GREATER_EQUAL_1_9 = RequirementCache("torch>=1.9")
@@ -192,6 +194,24 @@ def torchaudio_ge_2_1():
     return is_module_available("torchaudio") and compare_version(
         "torchaudio", operator.ge, "2.1"
     )
+
+
+@functools.lru_cache
+def check_ort_requirements(version: str = '1.4'):
+    """
+    Check onnxruntime is installed and if the installed version match is recent enough
+
+    Raises:
+        ImportError: If onnxruntime is not installed or too old version is found
+    """
+    onnx_require = 'onnxruntime' + version
+    if not RequirementCache(onnx_require):
+        raise ImportError(f'Failed require {onnx_require}.')
+    if not _ONNXRUNTIME_AVAILABLE:
+        raise ModuleNotFoundError(
+            'Cannot verify the exported onnx file, because '
+            'the installation of onnx or onnxruntime cannot be found. Please install onnx and onnxruntime.'
+        )
 
 
 def lazy_import(module_name, callback=None):

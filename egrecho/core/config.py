@@ -3,23 +3,27 @@
 
 
 import collections
-import copy
+import contextlib
 from dataclasses import dataclass, is_dataclass
 from functools import partial
-from typing import Union
+from pathlib import Path
+from typing import Dict, Mapping, Optional, Union
 
 from egrecho.utils.common import (
     DataclassSerialMixin,
+    GenericSerialMixin,
     asdict_filt,
     field_dict,
     fields_init_var,
+    omegaconf2container,
 )
-from egrecho.utils.io import ConfigFileMixin, repr_dict
+from egrecho.utils.imports import _OMEGACONF_AVAILABLE
+from egrecho.utils.io import ConfigFileMixin, SerializationFn, repr_dict
 from egrecho.utils.logging import get_logger
 from egrecho.utils.misc import ConfigurationException
 
 field_init_dict = partial(field_dict, init_field_only=True)
-logger = get_logger()
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -51,6 +55,14 @@ class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
         super().__init_subclass__(**kwargs)
 
     @classmethod
+    def _valid_input_config(cls, config):
+        return (
+            isinstance(config, DataclassConfig)
+            or isinstance(config, collections.abc.Mapping)
+            or (is_dataclass(config) and not isinstance(config, type))
+        )
+
+    @classmethod
     def from_config(
         cls,
         config: Union[dict, "DataclassConfig"] = None,
@@ -75,18 +87,12 @@ class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
                 The new config instance.
         """
         config = config or {}
-        if isinstance(config, DataclassConfig):
-            config_kwargs = config.to_dict(filt_type="orig")
-        elif (is_dataclass(config) and not isinstance(config, type)) or isinstance(
-            config, dict
-        ):
-            config_kwargs = asdict_filt(config, filt_type="orig")
-        elif isinstance(config, collections.abc.Mapping):
-            config_kwargs = {key: config[key] for key in copy.deepcopy(config)}
-        else:
+        if not cls._valid_input_config(config):
             raise TypeError(
-                f'config param of {cls}.from_config should be DataclassConfig/dataclass/dict/mapping, but got invalid type {type(config)}.'
+                f'config param of {cls}.from_config should be of DataclassConfig|dataclass|dict|mapping, but got invalid type {type(config)}.'
             )
+
+        config_kwargs = normalize_dict(config)
 
         config_kwargs.update(kwargs)
         valid_keys = field_init_dict(cls).keys()
@@ -114,13 +120,79 @@ class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
         return repr_str
 
 
-def normalize_dict(data: Union[dict, DataclassConfig]):
+class GenericFileMixin(GenericSerialMixin):
+    def save_to(
+        self,
+        *args,
+        **kwargs,
+    ):
+        raise NotImplementedError
+
+    @classmethod
+    def fetch_from(cls, *args, **kwargs):
+        raise NotImplementedError
+
+    def to_cfg_file(
+        self, path: Union[Path, str], file_type: Optional[str] = None, **kwargs
+    ):
+        """
+        Saves current instance's configuration to config file. Weights will not be saved.
+        Args:
+            path: path to config file where model model configuration will be saved
+
+        Returns:
+        """
+        d = self.to_dict()
+        SerializationFn.save_file(d, path=path, file_type=file_type, **kwargs)
+
+    @classmethod
+    def from_cfg_file(
+        cls, path: Union[Path, str], file_type: Optional[str] = None, **kwargs
+    ) -> object:
+        """
+        Instantiates an instance from config file.
+        with model weights be initialized randomly.
+        Args:
+            path: path to config file.
+
+        Returns:
+
+        """
+        data = cls.load_cfg_file(path, file_type, **kwargs)
+        return cls.from_dict(data)
+
+    @staticmethod
+    def load_cfg_file(
+        path: Union[Path, str], file_type: Optional[str] = None, **kwargs
+    ) -> Dict:
+
+        config = SerializationFn.load_file(path, file_type=file_type, **kwargs)
+        if _OMEGACONF_AVAILABLE:
+            from omegaconf import OmegaConf
+            from omegaconf.errors import UnsupportedValueType, ValidationError
+
+            with contextlib.suppress(UnsupportedValueType, ValidationError):
+
+                config = OmegaConf.create(config)
+                omegaconf_resolve = kwargs.pop('omegaconf_resolve', True)
+                if omegaconf_resolve:
+                    return omegaconf2container(config)
+                else:
+                    return config
+        return config
+
+
+def normalize_dict(data: Union[Mapping, DataclassConfig]):
     if isinstance(data, DataclassConfig):
         return data.to_dict()
     else:
+        if isinstance(data, collections.abc.Mapping):
+            data = {k: data[k] for k in data}
         if (is_dataclass(data) and not isinstance(data, type)) or isinstance(
-            data, collections.abc.Mapping
+            data, dict
         ):
+            if _OMEGACONF_AVAILABLE:
+                data = omegaconf2container(data)
             return asdict_filt(data, filt_type="orig")
         else:
             raise ValueError(

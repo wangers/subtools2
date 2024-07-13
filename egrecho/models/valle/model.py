@@ -30,14 +30,16 @@ class Valle(TopVirtualModel):
     "Neural Codec Language Models are Zero-Shot Text to Speech Synthesizers", https://arxiv.org/abs/2301.02111
     """
 
+    CONFIG_CLS = ValleModelConfig
+
     def __init__(
         self,
         config: Union[ValleModelConfig, dict] = None,
     ):
-        self.config = ValleModelConfig.from_config(config=config)
-        super().__init__()
+        config = ValleModelConfig.from_config(config=config)
+        super().__init__(config)
         # save_hyperparameters can't handle dataclass.
-        config = self.config.to_dict()
+        config = self.config.to_dict(filt_type="default")
         self.save_hyperparameters("config")
 
         self.ar_model = ArDecoder(self.config) if self.config.has_ar else None

@@ -303,18 +303,23 @@ class TrainASV(BaseCommand):
             parser:
                 Corresponded parser of `config`.
         """
-        extra_callbacks = self.default_callbacks
-        extra_callbacks += [config[c] for c in parser.callback_keys]
-
+        # trainer cbs
         if config["trainer"].get("callbacks") is None:
             config["trainer"]["callbacks"] = []
-        config["trainer"]["callbacks"].extend(extra_callbacks)
+
+        # default cbs
+        config["trainer"]["callbacks"] += self.default_callbacks
+        # parser cbs
+        config["trainer"]["callbacks"] += [config[c] for c in parser.callback_keys]
+
+        # trainer_defaults['callbacks']
         if "callbacks" in self.trainer_defaults:
             value = self.trainer_defaults["callbacks"]
             config["trainer"]["callbacks"] += (
                 value if isinstance(value, list) else [value]
             )
 
+        # SaveConfigCallback
         if self.save_config_callback and not config["trainer"]["fast_dev_run"]:
             config_callback = self.save_config_callback(
                 self.parser,

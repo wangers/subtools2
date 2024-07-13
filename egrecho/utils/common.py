@@ -8,16 +8,26 @@ import functools
 import re
 import time
 from collections import Counter, OrderedDict
+from copy import deepcopy
 from dataclasses import Field
 from itertools import chain, islice
-from logging import getLogger
-from typing import Any, ClassVar, Dict, Iterable, Literal, Optional, TypeVar
+from typing import Any, ClassVar, Dict, Iterable, Literal, Optional, TypeVar, Union
 
+from egrecho.utils.apply import apply_to_collection
+from egrecho.utils.imports import _HYDRA_AVAILABLE, _OMEGACONF_AVAILABLE
+from egrecho.utils.logging import get_logger
 from egrecho.utils.patch import asdict_filt, from_dict, register_decoding_fn
+from egrecho.utils.types import FilterType
 
-logger = getLogger(__name__)
+if _HYDRA_AVAILABLE:
+    import hydra
+
+import traceback
+
+logger = get_logger(__name__)
 
 D = TypeVar("D", bound="DataclassSerialMixin")
+G = TypeVar("G", bound="GenericSerialMixin")
 T = TypeVar("T")
 K = TypeVar("K")
 V = TypeVar("V")
@@ -122,7 +132,7 @@ class DataclassSerialMixin:
 
     subclasses: ClassVar[list] = []
     decode_into_subclasses: ClassVar[bool] = False
-    filt_type: ClassVar[str] = 'none'
+    filt_type: ClassVar[Union[str, FilterType]] = FilterType.NONE
 
     def __init_subclass__(cls, decode_into_subclasses: Optional[bool] = None):
         logger.debug(f"Registering a new Serializable subclass: {cls}")
@@ -188,7 +198,99 @@ class DataclassSerialMixin:
             of ``cls`` and drop the extra keys in the dict.
             Passing ``drop_extra_fields=False`` forces the above-mentioned behaviour.
         """
+        if _OMEGACONF_AVAILABLE:
+            obj = omegaconf2container(obj)
         return from_dict(cls, obj, drop_extra_fields=drop_extra_fields)
+
+
+class GenericSerialMixin:
+    """Serialization mixin of common class with config attribute."""
+
+    CONFIG_CLS = None
+
+    def to_dict(self, **kwargs) -> dict:
+        """Returns object's configuration to config dictionary"""
+
+        if hasattr(self, "config") and self.config is not None:
+            if (to_dict := getattr(self.config, "to_dict", None)) and callable(to_dict):
+                return self.config.to_dict(**kwargs)
+            if _OMEGACONF_AVAILABLE:
+                config = omegaconf2container(config)
+            filt_type = kwargs.pop('filt_type', FilterType.NONE)
+            init_field_only = kwargs.pop('init_field_only', True)
+            return asdict_filt(
+                config, filt_type=filt_type, init_field_only=init_field_only, **kwargs
+            )
+        else:
+            raise NotImplementedError(
+                "to_dict() can currently only return object.config but current object does not have it."
+            )
+
+    @classmethod
+    def from_dict(cls: type[G], config) -> G:
+        """Instantiates object using DictConfig-based configuration"""
+
+        if _OMEGACONF_AVAILABLE:
+            # Resolves interpolations of DictConfig
+            config = omegaconf2container(config)
+
+        out_desc = []
+        imported_cls = None
+        if target_cls := config.get('_target_', None):
+            from egrecho.core.loads import load_module_class
+
+            try:
+                # try to import the target class
+                imported_cls = load_module_class(target_cls, cls)
+            except Exception as e:
+                tb = traceback.format_exc()
+                prev_error = (
+                    f"Import target class failed!\nTarget class:\t{target_cls}"
+                    f"\nError(s):\t{e}\n{tb}"
+                )
+                out_desc.append(prev_error)
+                logger.debug(
+                    prev_error + f"\nFalling back to use curent `cls` =>{cls}."
+                )
+
+        cur_cls = imported_cls or cls
+
+        # shortpath
+        if (
+            (cfg_cls := cur_cls.CONFIG_CLS) is not None
+            and hasattr(cfg_cls, "from_dict")
+            and callable(cfg_cls.from_dict)
+        ):
+            config.pop('_target_', None)
+            config = cfg_cls.from_dict(config)
+            return cur_cls(config=config)
+
+        # Hydra 1.x API
+        if imported_cls and _HYDRA_AVAILABLE:
+            # hydra-based instantiation
+            try:
+                instance = hydra.utils.instantiate(config=config)
+            except Exception as e:
+                tb = traceback.format_exc()
+                prev_error = (
+                    f"Hydra model instantiation failed!\nTarget class:\t{target_cls}"
+                    f"\nError(s):\t{e}\n{tb}"
+                )
+                out_desc.append(prev_error)
+                logger.debug(
+                    prev_error + f"\nFalling back to cur_cls(config) =>{cur_cls}."
+                )
+        else:
+            try:
+                # target class resolution was unsuccessful, fall back to current `cls`
+                instance = cur_cls(config=config)
+            except Exception as e:
+                # report saved errors, if any, and raise
+                if out_desc:
+                    logger.error('\n'.join(out_desc))
+                raise e
+
+        return instance
 
 
 def fields_init_var(class_or_instance):
@@ -418,12 +520,13 @@ def list2tuple(func):
     return wrapper
 
 
-def is_picklable(obj: object) -> bool:
-    """Tests if an object can be pickled."""
-    import pickle
+def omegaconf2container(config):
+    from omegaconf import OmegaConf
+    from omegaconf.dictconfig import DictConfig
 
-    try:
-        pickle.dumps(obj)
-        return True
-    except (pickle.PickleError, AttributeError, RuntimeError, TypeError):
-        return False
+    config = deepcopy(config)
+    # Resolves interpolations of DictConfig
+    config = apply_to_collection(
+        config, DictConfig, OmegaConf.to_container, resolve=True, enum_to_str=True
+    )
+    return config

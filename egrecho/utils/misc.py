@@ -168,6 +168,17 @@ def if_continue() -> bool:
         )
 
 
+def is_picklable(obj: object) -> bool:
+    """Tests if an object can be pickled."""
+    import pickle
+
+    try:
+        pickle.dumps(obj)
+        return True
+    except (pickle.PickleError, AttributeError, RuntimeError, TypeError):
+        return False
+
+
 def valid_import_clspath(name: str):
     """Import path must be str with dot pattern (``'calendar.Calendar'``)."""
     if not isinstance(name, str) or "." not in name:

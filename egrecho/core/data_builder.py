@@ -7,7 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
-from egrecho.core.config import DataclassConfig
+from egrecho.core.config import DataclassConfig, GenericFileMixin
 from egrecho.utils.constants import DATASET_META_FILENAME, DEFAULT_FILES
 from egrecho.utils.data_utils import ClassLabel, Split
 from egrecho.utils.io import (
@@ -50,7 +50,7 @@ class DataBuilderConfig(DataclassConfig):
             self.file_patterns = yaml_load_string(self.file_patterns)
 
 
-class DataBuilder:
+class DataBuilder(GenericFileMixin):
     """
     Base builder class for building dataset.
 
@@ -115,14 +115,14 @@ class DataBuilder:
         )
 
     @classmethod
-    def from_file(
+    def fetch_from(
         cls,
         path: Optional[str] = None,
         data_dir: Optional[str] = None,
         file_patterns: Optional[Union[str, List[str], Dict[str, str]]] = None,
     ) -> "DataBuilder":
         if Path(path).is_file():
-            config = SerializationFn.load_file(path)
+            config = cls.load_cfg_file(path)
         else:
             raise FileExistsError(f"{path} missing.")
         return cls.from_config(config, data_dir=data_dir, file_patterns=file_patterns)

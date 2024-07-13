@@ -210,8 +210,8 @@ def get_class_path(
 
 @rich_exception_info
 def load_module_class(
-    module_path: str, base_module_type: Type
-) -> Type[TopVirtualModel]:
+    module_path: str, base_module_type: Optional[Type] = None
+) -> Type:
     """
     Given a import path which contains class and returns the class type.
 
@@ -233,7 +233,8 @@ def load_module_class(
     Returns:
         Type: The class type loaded from the module path.
     """
-    assert inspect.isclass(base_module_type)
+    if base_module_type is not None:
+        assert inspect.isclass(base_module_type)
     try:
         module_path = resolve_class_path_by_name(module_path, base_module_type)
 

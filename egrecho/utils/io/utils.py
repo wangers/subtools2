@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2023-03)
 
+import contextlib
 import csv
 import io
 import json
 import re
+import sys
 from codecs import StreamReader, StreamWriter
 from io import BytesIO, StringIO
 from pathlib import Path
@@ -23,8 +25,8 @@ from typing import (
 import yaml
 
 from egrecho.utils.common import alt_none
-from egrecho.utils.imports import is_package_available
-from egrecho.utils.patch import gzip_open_patch
+from egrecho.utils.imports import _OMEGACONF_AVAILABLE, is_package_available
+from egrecho.utils.patch import gzip_open_patch, stringify_path
 from egrecho.utils.types import is_tensor
 
 if is_package_available("orjson"):
@@ -46,6 +48,17 @@ def auto_open(path: Union[str, Path], mode: str = "r", **kwargs):
 
     Note: just support local path now.
     """
+    strpath = stringify_path(path)
+    if strpath == "-":
+        if mode == "r":
+            return StdStreamWrapper(sys.stdin)
+        elif mode == "w":
+            return StdStreamWrapper(sys.stdout)
+        else:
+            raise ValueError(
+                f"Cannot open stream for '-' with mode other 'r' or 'w' (got: '{mode}')"
+            )
+
     if isinstance(path, (BytesIO, StringIO, StreamWriter, StreamReader)):
         return path
     else:
@@ -135,13 +148,23 @@ class ConfigFileMixin(JsonMixin, YamlMixin):
     def load_cfg_file(
         path: Union[Path, str], file_type: Optional[str] = None, **kwargs
     ) -> Dict:
-        file_type = alt_none(file_type, Path(path).suffix.split(".")[-1])
-        if file_type in ("yaml", "yml"):
-            return load_yaml(path, **kwargs)
-        elif file_type == "json":
-            return load_json(path, **kwargs)
-        else:
-            raise ValueError(f"unsuport config file type: {file_type}")
+
+        config = SerializationFn.load_file(path, file_type=file_type, **kwargs)
+        if _OMEGACONF_AVAILABLE:
+            from omegaconf import OmegaConf
+            from omegaconf.errors import UnsupportedValueType, ValidationError
+
+            with contextlib.suppress(UnsupportedValueType, ValidationError):
+
+                config = OmegaConf.create(config)
+                omegaconf_resolve = kwargs.pop('omegaconf_resolve', True)
+                if omegaconf_resolve:
+                    from egrecho.utils.common import omegaconf2container
+
+                    return omegaconf2container(config)
+                else:
+                    return config
+        return config
 
     def to_cfg_file(
         self, path: Union[Path, str], file_type: Optional[str] = None, **kwargs
@@ -191,7 +214,7 @@ class SerializationFn:
     @staticmethod
     def save_file(
         data: dict, path: Union[Path, str], file_type: Optional[str] = None, **kwargs
-    ) -> Dict:
+    ):
         file_type = alt_none(file_type, Path(path).suffix.split(".")[-1])
         yaml_inline_list = kwargs.pop("inline_list", False)
         if file_type in ("yaml", "yml"):
@@ -200,6 +223,19 @@ class SerializationFn:
             save_json(data, path, **kwargs)
         else:
             raise ValueError(f"unsuport file type: {file_type}")
+
+
+dump_yaml_kwargs = {
+    "default_flow_style": False,
+    "allow_unicode": True,
+    "sort_keys": False,
+}
+
+dump_json_kwargs = {
+    "ensure_ascii": False,
+    "sort_keys": False,
+    'indent': 2,
+}
 
 
 class _DefaultLoader(getattr(yaml, "CSafeLoader", yaml.SafeLoader)):  # type: ignore
@@ -255,16 +291,13 @@ def load_yaml(path: Union[Path, str], Loader=_DefaultLoader) -> Dict:
         return yaml.load(fin, Loader=Loader)
 
 
-def save_yaml(
-    data: Any, path: Union[Path, str], inline_list=False, sort_keys=False, **kwargs
-) -> Dict:
+def save_yaml(data: Any, path: Union[Path, str], inline_list=False, **kwargs) -> Dict:
+    kwargs = {**dump_yaml_kwargs, **kwargs}
     with auto_open(path, "w") as fou:
         if not inline_list:
-            yaml.dump(data, fou, Dumper=yaml.SafeDumper, sort_keys=sort_keys, **kwargs)
+            yaml.dump(data, fou, Dumper=yaml.SafeDumper, **kwargs)
         else:
-            yaml.dump(
-                data, fou, Dumper=_InlineListDumper, sort_keys=sort_keys, **kwargs
-            )
+            yaml.dump(data, fou, Dumper=_InlineListDumper, **kwargs)
 
 
 def yaml_load_string(stream):
@@ -289,8 +322,9 @@ def load_json(path: Union[Path, str], **kwargs) -> Dict:
 
 
 def save_json(data: Any, path: Union[Path, str], **kwargs) -> None:
+    kwargs = {**dump_json_kwargs, **kwargs}
     with auto_open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False, **kwargs)
+        json.dump(data, f, **kwargs)
 
 
 def load_jsonl_lazy(path: Union[Path, str], **kwargs) -> Generator:
@@ -484,3 +518,22 @@ def read_lists_lazy(
                 yield split_line
             else:
                 yield line
+
+
+class StdStreamWrapper:
+    def __init__(self, stream):
+        self.stream = stream
+
+    def close(self):
+        pass
+
+    def __enter__(self):
+        return self.stream
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+    def __getattr__(self, item: str):
+        if item == "close":
+            return self.close
+        return getattr(self.stream, item)

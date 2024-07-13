@@ -287,6 +287,14 @@ class Split(StrEnum):
         return list(Split._member_map_.values())
 
 
+class FilterType(StrEnum):
+    """Filt strategy when dict dumps."""
+
+    NONE = 'none'
+    DEFAULT = 'default'
+    ORIG = 'orig'
+
+
 class PaddingStrategy(StrEnum):
     """
     Possible values for the `padding` argument in. Useful for tab-completion in an

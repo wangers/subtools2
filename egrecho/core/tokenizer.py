@@ -17,7 +17,7 @@ import numpy as np
 import torch
 
 import egrecho.utils.constants as constants
-from egrecho.core.config import DataclassConfig
+from egrecho.core.config import DataclassConfig, GenericFileMixin
 from egrecho.utils.apply import apply_to_collection
 from egrecho.utils.common import OrderedDict, alt_none
 from egrecho.utils.imports import _TRANSFORMERS_AVAILABLE, lazy_import
@@ -216,7 +216,7 @@ class BaseTokenizerConfig(DataclassConfig):
         return apply_to_collection(extra_files_names, dtype=str, function=_add_prefix)
 
 
-class BaseTokenizer(ABC):
+class BaseTokenizer(ABC, GenericFileMixin):
     r"""
     A base class offers serialize methods for tokenizer. and derived classes should implement its
     encode/decode methods (:meth:``text2ids``, :meth:``ids2text``, etc..)
@@ -392,7 +392,7 @@ class BaseTokenizer(ABC):
         return self.config.extradir
 
     @classmethod
-    def from_cfg_dir(
+    def fetch_from(
         cls,
         srcdir: Union[str, os.PathLike],
         **kwargs,
@@ -425,18 +425,8 @@ class BaseTokenizer(ABC):
         os.makedirs(savedir, exist_ok=True)
         tok_cfg_fname = kwargs.pop("config_fname", constants.DEFAULT_TOKENIZER_FILENAME)
         tok_cfg_file = os.path.join(savedir, tok_cfg_fname)
-        self.save_config(tok_cfg_file)
+        self.to_cfg_file(tok_cfg_file)
         self.save_extras(savedir=savedir, filename_prefix=filename_prefix)
-
-    def save_config(self, path: str):
-        """
-        save the configuration to a file.
-
-        Args:
-            path (Union[Path, str]):
-                The path of the output file.
-        """
-        self.config.to_file(path)
 
     def save_extras(
         self, savedir: str, filename_prefix: Optional[str] = None

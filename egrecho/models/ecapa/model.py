@@ -24,6 +24,7 @@ class EcapaModel(XvectorMixin):
             expose to link with datamodule.
     """
 
+    CONFIG_CLS = EcapaSVConfig
     main_input_name = ["input_features"]
 
     def __init__(
@@ -32,15 +33,16 @@ class EcapaModel(XvectorMixin):
         inputs_dim: Optional[int] = None,
         num_classes: Optional[int] = None,
     ) -> None:
-        self.config = EcapaSVConfig.from_config(config=config)
+        config = EcapaSVConfig.from_config(config=config)
         if inputs_dim is not None:
-            self.config.inputs_dim = inputs_dim
+            config.inputs_dim = inputs_dim
         if num_classes is not None:
-            self.config.num_classes = num_classes
-        super().__init__()
+            config.num_classes = num_classes
+        super().__init__(config)
         # save_hyperparameters can't handle dataclass.
         config = self.config.to_dict()
         self.save_hyperparameters("config")
+        self.config: EcapaSVConfig
 
         self.ecapa = EcapaXvector(self.config)
         if self.config.classifier_str:

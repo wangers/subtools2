@@ -12,6 +12,7 @@ import torch
 from torch import ScriptModule
 from torch.utils.data.dataloader import DataLoader
 
+from egrecho.core.config import GenericFileMixin
 from egrecho.core.data_builder import DataBuilder, Split
 from egrecho.core.teacher import Teacher
 from egrecho.data.iterable import SyncDataLoader
@@ -23,7 +24,7 @@ if TYPE_CHECKING:
     from torch.utils.data import Dataset
 
 
-class TopVirtualModel(pl.LightningModule):
+class TopVirtualModel(pl.LightningModule, GenericFileMixin):
     """
     A lightning module which is related to training, val, test.
 
@@ -31,15 +32,22 @@ class TopVirtualModel(pl.LightningModule):
     step logics, dataloaders, criterion, etc.
     """
 
-    __jit_unused_properties__ = pl.LightningModule.__jit_unused_properties__ + [
+    __jit_unused_properties__ = [
         "teacher",
-    ]
+    ] + pl.LightningModule.__jit_unused_properties__
 
-    config_class = None
+    CONFIG_CLS = None
     main_input_name: str = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, config, *args, **kwargs):
         super().__init__()
+        if self.CONFIG_CLS is not None and not isinstance(config, self.CONFIG_CLS):
+            raise ValueError(
+                f"Parameter config in ``{self.__class__.__name__}(config)`` "
+                f"should be an {self.CONFIG_CLS.__name__} instance, "
+                f"but got {type(config)!r}."
+            )
+        self.config = config
         # a pointer to its teacher
         self._teacher: Teacher = None
 
