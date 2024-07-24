@@ -24,7 +24,6 @@ def average_best_models(
     Structure may like::
 
         ./dirpath/version_1
-                ├── hparams.yaml
                 └── checkpoints
                     ├── best_k_models.yaml
                     ├── last.ckpt

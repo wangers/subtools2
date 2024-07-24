@@ -15,9 +15,10 @@ from egrecho.data.datasets.constants import (
     SAMPLE_RATE_COLUMN,
     SPEAKER_COLUMN,
 )
+from egrecho.data.features.feature_extractor_audio import SequenceFeature
 from egrecho.models.architecture.speaker import XvectorMixin, XvectorOutput
 from egrecho.utils.imports import torchaudio_ge_2_1
-from egrecho.data.features.feature_extractor_audio import SequenceFeature
+
 from .base import PipeLine
 
 
@@ -30,13 +31,13 @@ def load_audio(
     if isinstance(inputs, bytes):
         inputs, sample_rate = io.BytesIO(inputs)
 
-    elif isinstance(inputs, io.IOBase):
+    elif isinstance(inputs, io.IOBase) or isinstance(inputs, str):
         if torchaudio_ge_2_1():
             inputs, sample_rate = torchaudio.load(inputs, backend="ffmpeg")
         else:
             inputs, sample_rate = torchaudio.backend.soundfile_backend.load(inputs)
-    elif isinstance(inputs, str):
-        inputs, sample_rate = torchaudio.load(inputs, sample_rate)
+    else:
+        raise TypeError(f'Invalid audio inputs type {type(inputs)} => {inputs}')
     if resample_rate is not None and sample_rate != resample_rate:
         inputs = torchaudio.functional.resample(sample_rate, resample_rate)
     inputs = inputs[:1, ...]  # first channel.
@@ -75,7 +76,7 @@ class SpeakerEmbedding(PipeLine):
 
         postprocess_params = {}
 
-        return forward_kwargs, {}, postprocess_params
+        return {}, forward_kwargs, postprocess_params
 
     def preprocess(self, inputs):
         id_meta = {}
@@ -105,7 +106,9 @@ class SpeakerEmbedding(PipeLine):
                     )
                 if inputs[SAMPLE_RATE_COLUMN] != self.feature_extractor.sampling_rate:
                     inputs[AUDIO_COLUMN] = torchaudio.functional.resample(
-                        SAMPLE_RATE_COLUMN, self.feature_extractor.sampling_rate
+                        inputs[AUDIO_COLUMN],
+                        inputs[SAMPLE_RATE_COLUMN],
+                        self.feature_extractor.sampling_rate,
                     )
                 inputs = inputs[AUDIO_COLUMN]
 

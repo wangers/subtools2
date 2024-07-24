@@ -39,6 +39,7 @@ def save_ckpt_conf_dir(
 
         ./ckptdir
         └── ./config
+            ├── model_config.yaml
             ├── feature_config.yaml
             └── types.yaml
 
@@ -59,7 +60,7 @@ def save_ckpt_conf_dir(
     if model_conf:
         if not isinstance(model_conf, dict):
             raise TypeError(
-                f"The provided extractor should be a dict, but got {type(model_conf)}."
+                f"The provided model config should be a dict, but got {type(model_conf)}."
             )
 
     if extractor:
@@ -95,7 +96,7 @@ def save_ckpt_conf_dir(
             constants.TYPE_FILENAME,
         )
         for item, file in zip((model_conf, extractor, types_dict), save_files):
-            if item:
+            if item is not None:
                 SerializationFn.save_file(item, savedir / file)
 
 
@@ -131,12 +132,12 @@ def resolve_pretrained_model(
     Auto resolve local dir like::
 
         ./dirpath/version_1
-                ├── hparams.yaml
                 └── checkpoints
                     ├── best_k_models.yaml
                     ├── last.ckpt
                     ├── abc.ckpt
                     └── ./config
+                        ├── model_config.yaml
                         ├── feature_config.yaml
                         └── types.yaml
 

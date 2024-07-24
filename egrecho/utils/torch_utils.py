@@ -267,3 +267,22 @@ def single_torch_nj():
     # even when we are not invoking the main (e.g. when spawning subprocesses).
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
+
+
+def save_dislike_batch(
+    batch,
+    exstr: str = None,
+    expdir: str = None,
+) -> None:
+    """Save the dislike batch into disk. Might use this to debug."""
+    from uuid import uuid4
+
+    from egrecho.utils.logging import get_logger
+
+    logger = get_logger()
+    expdir = expdir or './'
+
+    exstr = f'{exstr}' + '-' if exstr else ''
+    filename = f"{expdir}/batch-{exstr}{uuid4()}.pt"
+    logger.info(f"Saving batch to {filename}")
+    torch.save(batch, filename)

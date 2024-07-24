@@ -58,7 +58,7 @@ class AudioDew(DataclassDew):
     gender: Optional[str] = None
     extras: Optional[Dict[str, Any]] = None
 
-    def __post__init__(self):
+    def __post_init__(self):
         if self.feat_path is not None and self.audio_path is not None:
             raise ValueError(
                 f"{self.id} should have audio or feat, but got both: "
@@ -82,12 +82,11 @@ class AudioDew(DataclassDew):
     def from_dict(cls, data: dict) -> "AudioDew":
         return AudioDew(**data)
 
-    def __repr__(self):
-        return asdict_filt(self)
-
 
 @rich_exception_info
-def decode_audio_dew(sample: AudioDew):
+def decode_audio_dew(sample):
+    if not isinstance(sample, AudioDew):
+        sample = AudioDew.from_dict(sample)
     ret = sample.to_dict()
 
     if sample.feat_path is not None:
@@ -120,7 +119,7 @@ def decode_audio_dew(sample: AudioDew):
                 )
                 waveforms = waveforms[:, offset : offset + num_frames]
         else:
-            waveforms = torchaudio.load(wav)
+            waveforms, sample_rate = torchaudio.load(wav)
 
         ret[AUDIO_COLUMN] = waveforms
         ret[SAMPLE_RATE_COLUMN] = sample_rate

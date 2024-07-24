@@ -45,7 +45,6 @@ def resolve_ckpt(
         or
 
         ./dirpath/
-        ├── hparams.yaml
         └── checkpoints
             ├── best_k_models.yaml
             ├── last.ckpt
@@ -54,7 +53,6 @@ def resolve_ckpt(
     With version subdir structure can be::
 
         ./dirpath/version_1
-                ├── hparams.yaml
                 └── checkpoints
                     ├── best_k_models.yaml
                     ├── last.ckpt
@@ -128,7 +126,6 @@ def resolve_version_ckpt(
     Cares about structure like::
 
         ./dirpath/version_1
-                ├── hparams.yaml
                 └── checkpoints
                     ├── best_k_models.yaml
                     ├── last.ckpt
@@ -215,7 +212,6 @@ def resolve_rel_ckpt(
         or
 
         ./dirpath/
-        ├── hparams.yaml
         └── checkpoints
             ├── best_k_models.yaml
             ├── last.ckpt

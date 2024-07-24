@@ -5,7 +5,6 @@ import io
 import random
 import shutil
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from itertools import chain, islice, repeat
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Type, Union
@@ -36,10 +35,9 @@ class Dew:
     to_dict: Callable[["Dew"], Dict]
 
 
-@dataclass
 class DataclassDew(Dew, ABC):
     id: str
-    extras: Optional[Dict[str, Any]] = None
+    extras: Optional[Dict[str, Any]]
 
     @classmethod
     @abstractmethod
@@ -65,7 +63,7 @@ class DataclassDew(Dew, ABC):
     def __getattr__(self, name: str) -> Any:
         try:
             return self.extras[name]
-        except (ArithmeticError, KeyError):
+        except (AttributeError, KeyError):
             raise AttributeError(f"No such attr: {name}.")
 
     def __getitem__(self, name: str):
@@ -203,7 +201,7 @@ class DewSamples:
         return SequentialDewWriter(path, overwrite=overwrite, **kwargs)
 
     def to_file(
-        self, path: Union[str, Path], overwrite: bool = False, **kwargs
+        self, path: Union[str, Path], overwrite: bool = True, **kwargs
     ) -> "DewSamples":
         logger.info(f"Save data to {path} ...")
         with self.open_writer(path, overwrite=overwrite, **kwargs) as w:

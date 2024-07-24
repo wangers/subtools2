@@ -337,11 +337,11 @@ class TrainASV(BaseCommand):
 
     # TODO: move this out of cli and consider rank problem
     def save_ckpt_conf_dir(self):
-        if (
-            (_infer_rank() or 0) == 0
-            and not self.subcommand_init["trainer"]["fast_dev_run"]
-            and self.resume_ckpt is None
-        ):
+
+        # and self.resume_ckpt is None
+        if (_infer_rank() or 0) == 0 and not self.subcommand_init["trainer"][
+            "fast_dev_run"
+        ]:
             ckpt_dir = Path(self.trainer.log_dir) / "checkpoints"
             model_type = self.model.__class__
 

@@ -9,7 +9,7 @@ import shutil
 import subprocess
 import warnings
 from abc import ABC
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from functools import lru_cache, partial
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union, cast
 
@@ -764,3 +764,21 @@ def is_out_of_cpu_memory(exception: BaseException) -> bool:
         and len(exception.args) == 1
         and "DefaultCPUAllocator: can't allocate memory" in exception.args[0]
     )
+
+
+def avoid_float16_autocast_context():
+    """
+    If the current autocast context is float16, cast it to bfloat16
+    if available (unless we're in jit) or float32
+    """
+
+    if torch.is_autocast_enabled() and torch.get_autocast_gpu_dtype() == torch.float16:
+        if torch.jit.is_scripting() or torch.jit.is_tracing():
+            return torch.cuda.amp.autocast(dtype=torch.float32)
+
+        if torch.cuda.is_bf16_supported():
+            return torch.cuda.amp.autocast(dtype=torch.bfloat16)
+        else:
+            return torch.cuda.amp.autocast(dtype=torch.float32)
+    else:
+        return nullcontext()

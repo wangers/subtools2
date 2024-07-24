@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from egrecho.core.config import DataclassConfig, GenericFileMixin
-from egrecho.utils.constants import DATASET_META_FILENAME, DEFAULT_FILES
+from egrecho.utils.constants import DATASET_META_FILENAME, DEFAULT_DATA_FILES
 from egrecho.utils.data_utils import ClassLabel, Split
 from egrecho.utils.io import (
     DataFilesDict,
@@ -41,7 +41,7 @@ class DataBuilderConfig(DataclassConfig):
 
     data_dir: Optional[str] = field(default=None, metadata={"to_dict": False})
     file_patterns: Optional[Union[str, List[str], Dict[str, str]]] = field(
-        default_factory=lambda: DEFAULT_FILES
+        default_factory=lambda: DEFAULT_DATA_FILES
     )
 
     def __post_init__(self):

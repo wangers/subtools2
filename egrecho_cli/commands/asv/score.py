@@ -28,6 +28,7 @@ def score_set(
     trial_dir: Optional[str] = None,
     helper_scp: Optional[str] = None,
     skip_mean: bool = False,
+    skip_metric: bool = False,
     spk2utt: Optional[str] = None,
     submean: bool = True,
     score_norm: bool = True,
@@ -54,6 +55,8 @@ def score_set(
             submean -> `helper_scp + '.mean.npy'`, cohorset -> add `'spk_'` prefix to `helper_scp` filename.
         skip_mean:
             Whether skip prepare mean vector such as spk_xvector.scp, xvector.mean.npy.
+        skip_metric:
+            Might we just want to get score file. defualts to False.
         sn_kwds:
             Some kwargs for score norm.
         verbose:
@@ -99,11 +102,12 @@ def score_set(
         score_files = cs.score(*trial_files, storage_dir=scp_dir)
     metrics = []
     metric_kwds = metric_kwds or {}
-    for f in score_files:
-        metr = metrics_from_score_file(f, **metric_kwds)
-        metrics.append(metr)
-        if verbose:
-            print(json.dumps(metr, indent=4))
+    if not skip_metric:
+        for f in score_files:
+            metr = metrics_from_score_file(f, **metric_kwds)
+            metrics.append(metr)
+            if verbose:
+                print(json.dumps(metr, indent=4))
 
     if score_norm:
         sn_kwds = sn_kwds or {}
@@ -115,11 +119,12 @@ def score_set(
             eval_scp, cohort_scp=spk_vec_path, submean_vec=mean_vec_path, **sn_kwds
         ) as sn:
             score_files = sn.norm(*score_files)
-        for f in score_files:
-            metr = metrics_from_score_file(f, **metric_kwds)
-            metrics.append(metr)
-            if verbose:
-                print(json.dumps(metr, indent=4))
+        if not skip_metric:
+            for f in score_files:
+                metr = metrics_from_score_file(f, **metric_kwds)
+                metrics.append(metr)
+                if verbose:
+                    print(json.dumps(metr, indent=4))
     if metrics:
         save_json(metrics, result_file) if result_file else save_json(
             metrics, Path(scp_dir) / "eer.results.json"

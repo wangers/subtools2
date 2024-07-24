@@ -66,6 +66,8 @@ def is_local_path(url_or_filename: str) -> bool:
 
 def is_remote_url(url_or_filename: str) -> bool:
     """Whether a path is remote."""
+    if isinstance(url_or_filename, Path):
+        url_or_filename = str(url_or_filename)
     parsed = urlparse(url_or_filename)
     return parsed.scheme in ("http", "https", "s3", "gs", "hdfs", "ftp")
 
