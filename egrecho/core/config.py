@@ -3,7 +3,6 @@
 
 
 import collections
-import contextlib
 from dataclasses import dataclass, is_dataclass
 from functools import partial
 from pathlib import Path
@@ -12,10 +11,12 @@ from typing import Dict, Mapping, Optional, Union
 from egrecho.utils.common import (
     DataclassSerialMixin,
     GenericSerialMixin,
+    SaveLoadMixin,
     asdict_filt,
     field_dict,
     fields_init_var,
     omegaconf2container,
+    omegaconf_handler,
 )
 from egrecho.utils.imports import _OMEGACONF_AVAILABLE
 from egrecho.utils.io import ConfigFileMixin, SerializationFn, repr_dict
@@ -120,18 +121,7 @@ class DataclassConfig(ConfigFileMixin, DataclassSerialMixin):
         return repr_str
 
 
-class GenericFileMixin(GenericSerialMixin):
-    def save_to(
-        self,
-        *args,
-        **kwargs,
-    ):
-        raise NotImplementedError
-
-    @classmethod
-    def fetch_from(cls, *args, **kwargs):
-        raise NotImplementedError
-
+class GenericFileMixin(GenericSerialMixin, SaveLoadMixin):
     def to_cfg_file(
         self, path: Union[Path, str], file_type: Optional[str] = None, **kwargs
     ):
@@ -165,21 +155,12 @@ class GenericFileMixin(GenericSerialMixin):
     def load_cfg_file(
         path: Union[Path, str], file_type: Optional[str] = None, **kwargs
     ) -> Dict:
-
+        omegaconf_resolve = kwargs.pop('omegaconf_resolve', True)
         config = SerializationFn.load_file(path, file_type=file_type, **kwargs)
         if _OMEGACONF_AVAILABLE:
-            from omegaconf import OmegaConf
-            from omegaconf.errors import UnsupportedValueType, ValidationError
-
-            with contextlib.suppress(UnsupportedValueType, ValidationError):
-
-                config = OmegaConf.create(config)
-                omegaconf_resolve = kwargs.pop('omegaconf_resolve', True)
-                if omegaconf_resolve:
-                    return omegaconf2container(config)
-                else:
-                    return config
-        return config
+            return omegaconf_handler(config, omegaconf_resolve=omegaconf_resolve)
+        else:
+            return config
 
 
 def normalize_dict(data: Union[Mapping, DataclassConfig]):

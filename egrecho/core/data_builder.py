@@ -72,7 +72,7 @@ class DataBuilder(GenericFileMixin):
 
         Keep in mind that that cached result won't changed
         if you modify the related data files in this instance. You can use
-        ``def from_file(...)`` or ``def from_config(...)`` to get a new instance.
+        ``def from_config(...)`` to get a new instance.
     """
 
     CONFIG_CLS: DataBuilderConfig
@@ -120,12 +120,18 @@ class DataBuilder(GenericFileMixin):
         path: Optional[str] = None,
         data_dir: Optional[str] = None,
         file_patterns: Optional[Union[str, List[str], Dict[str, str]]] = None,
+        **kwargs,
     ) -> "DataBuilder":
         if Path(path).is_file():
             config = cls.load_cfg_file(path)
         else:
             raise FileExistsError(f"{path} missing.")
-        return cls.from_config(config, data_dir=data_dir, file_patterns=file_patterns)
+        return cls.from_config(
+            config,
+            data_dir=data_dir,
+            file_patterns=file_patterns,
+            **kwargs,
+        )
 
     @classmethod
     def from_config(

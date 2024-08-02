@@ -47,7 +47,7 @@ def asdict_filt(
     obj,
     *,
     dict_factory=dict,
-    filt_type: Literal["default", "none", "orig"] = "default",
+    filt_type: Literal["default", "none", "orig"] = "none",
     init_field_only=False,
     save_dc_types=False,
 ) -> dict:
@@ -57,7 +57,7 @@ def asdict_filt(
     Args:
         obj: The dataclass or dictionary object to convert.
         dict_factory: The factory function to create the resulting dictionary (default: dict).
-        filt_type: The type of filtering to apply (default: 'default').
+        filt_type: The type of filtering to apply (default: 'none').
 
             - 'default': Filters out default values in the dataclass object.
             - 'none': Filters out None values in the dataclass/dict object.

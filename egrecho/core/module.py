@@ -17,11 +17,84 @@ from egrecho.core.data_builder import DataBuilder, Split
 from egrecho.core.teacher import Teacher
 from egrecho.data.iterable import SyncDataLoader
 from egrecho.utils.cuda_utils import release_memory, to_device
-from egrecho.utils.imports import is_module_available
-from egrecho.utils.misc import ConfigurationException
+from egrecho.utils.imports import is_module_available, lazy_import
+from egrecho.utils.misc import ConfigurationException, add_end_docstrings
+from egrecho.utils.types import _INIT_WEIGHT
 
+loads = lazy_import('egrecho.core.loads')  # avoid circular imports
 if TYPE_CHECKING:
     from torch.utils.data import Dataset
+
+    from egrecho.core.loads import HResults, SaveLoadHelper
+
+SAVEFETCH_EXAMPLE_DOCSTRING = r"""
+        Example:
+
+        .. code-block::
+
+            from egrecho.models.ecapa.model import EcapaModel
+            from egrecho.data.features.feature_extractor_audio import KaldiFeatureExtractor
+            extractor = KaldiFeatureExtractor()
+            model = EcapaModel()
+            dirpath = 'testdir/ecapa'
+            model.save_to(dirpath, components=extractor)
+
+        .. code-block::
+
+            $ tree testdir/ecapa
+            testdir/ecapa/
+            ├── config
+            │   ├── feature_config.yaml
+            │   ├── model_config.yaml
+            │   └── types.yaml
+            └── model_weight.ckpt
+
+        .. code-block::
+
+            model = EcapaModel.fetch_from(dirpath)
+            assert isinstance(model,EcapaModel)
+            # fetch extractor
+            hresults = model.save_load_helper.fetch_from(dirpath, skip_keys='model')
+            assert isinstance(hresults.feature_extractor, KaldiFeatureExtractor)
+            # base model instantiate.
+            model = TopVirtualModel.fetch_from(dirpath)
+            assert isinstance(model,EcapaModel)
+            # now remove types.yaml
+            # rm -f testdir/ecapa/config/types.yaml
+            model = TopVirtualModel.fetch_from(dirpath)
+            # Error instantiate TopVirtualModel
+            # Let's complete the model type
+            model_cls = 'egrecho.models.ecapa.model.EcapaModel'
+            model = TopVirtualModel.fetch_from(dirpath, _cls_=model_cls)
+            assert isinstance(model, EcapaModel)
+            # Type is ok
+            model_cls = EcapaModel
+            model = TopVirtualModel.fetch_from(dirpath, _cls_=model_cls)
+            assert isinstance(model, EcapaModel)
+            # classname string is ok as EcapaModel is already imported
+            model_cls = 'EcapaModel'
+            model = TopVirtualModel.fetch_from(dirpath, _cls_=model_cls)
+            assert isinstance(model, EcapaModel)
+            model_cls = 'Valle'
+            # Error as 'Valle' is not registed.
+            model = TopVirtualModel.fetch_from(
+                dirpath,
+                _cls_=model_cls,
+                init_weight="random",
+                config_fname='anyinvalid.yaml',
+                config=None,
+            )  # only load model without weight and eliminate the model_config.yaml of Ecapa model directory
+            from egrecho.models.valle.model import Valle
+            # Try again.
+            model = TopVirtualModel.fetch_from(
+                dirpath,
+                _cls_=model_cls,
+                init_weight="random",
+                config_fname='???.yaml',
+                config=None,
+            )
+            assert isinstance(model, Valle)
+"""
 
 
 class TopVirtualModel(pl.LightningModule, GenericFileMixin):
@@ -34,6 +107,7 @@ class TopVirtualModel(pl.LightningModule, GenericFileMixin):
 
     __jit_unused_properties__ = [
         "teacher",
+        "save_load_helper",
     ] + pl.LightningModule.__jit_unused_properties__
 
     CONFIG_CLS = None
@@ -48,6 +122,8 @@ class TopVirtualModel(pl.LightningModule, GenericFileMixin):
                 f"but got {type(config)!r}."
             )
         self.config = config
+        self._save_load_helper: "SaveLoadHelper" = None
+
         # a pointer to its teacher
         self._teacher: Teacher = None
 
@@ -106,6 +182,25 @@ class TopVirtualModel(pl.LightningModule, GenericFileMixin):
         # link model first
         teacher.attach_model(self)
         self.teacher.setup_model()
+
+    @property
+    def save_load_helper(self) -> "SaveLoadHelper":
+
+        if self._save_load_helper is None:
+            self._save_load_helper = loads.SaveLoadHelper()
+        return self._save_load_helper
+
+    @save_load_helper.setter
+    def save_load_helper(self, save_load_helper):
+        self._save_load_helper = save_load_helper
+
+    def update_save_load_helper(
+        self, save_load_helper: Optional["SaveLoadHelper"] = None
+    ):
+        if save_load_helper is None:
+            return self.save_load_helper
+        else:
+            self.save_load_helper = save_load_helper
 
     def training_step(self, *args: Any, **kwargs: Any):
         """
@@ -266,6 +361,74 @@ class TopVirtualModel(pl.LightningModule, GenericFileMixin):
             **kwargs,
         )
         release_memory()
+        return model
+
+    @add_end_docstrings(SAVEFETCH_EXAMPLE_DOCSTRING)
+    def save_to(
+        self,
+        savedir,
+        **kwargs,
+    ):
+        """Saves to a directory.
+
+        Args:
+            savedir: path
+            \**kwargs: args passing to :meth:`~egrecho.core.loads.SaveLoadHelper.save_to` of object
+                of :class:`~egrecho.core.loads.SaveLoadHelper`.
+
+        """
+        self.save_load_helper.save_to(savedir, self, **kwargs)
+
+    @classmethod
+    @add_end_docstrings(SAVEFETCH_EXAMPLE_DOCSTRING)
+    def fetch_from(
+        cls,
+        dirpath,
+        config: Optional[Union[str, Path, Dict[str, Any]]] = None,
+        init_weight: _INIT_WEIGHT = 'pretrained',
+        map_location: Optional[torch.device] = 'cpu',
+        strict: bool = True,
+        save_load_helper: "SaveLoadHelper" = None,
+        **kwargs,
+    ):
+        """Fetch pretrained from a directory.
+
+        Args:
+            dirpath: srcdir
+            config: config path/dict which could override the underlying model init cfg (model_config.yaml).
+            init_weight: Init weight from ('pretrained'|'random'), or string ckpt
+                name (model_weight.ckpt) or full path to ckpt /path/to/model_weight.ckpt.
+                Default: ``'pretrained'``.
+
+            map_location: MAP_LOCATION_TYPE as in torch.load().
+                Defaults to 'cpu'.
+            strict: Whether to strictly enforce that the keys in checkpoint match
+                the keys returned by this module's state dict.
+                Defaults: ``True``
+
+            save_load_helper: obj of save_load_helper
+                Default: ``None``, which will initiate a default :class:`~egrecho.core.loads.SaveLoadHelper`.
+
+            \**kwargs(Dict[str,Any]): additional parameters of model cfg.
+
+        """
+        if save_load_helper is None:
+            save_load_helper = loads.SaveLoadHelper()
+        if isinstance(config, (str, Path)):
+            config = cls.load_cfg_file(config)
+        model_cfg = {
+            'config': config,
+            'init_weight': init_weight,
+            'map_location': map_location,
+            'strict': strict,
+            **kwargs,
+        }
+        hreults: HResults = save_load_helper.fetch_from(
+            dirpath, base_model_cls=cls, single_key='model', model=model_cfg
+        )
+        model = hreults.model
+        if isinstance(model, TopVirtualModel):
+            model.update_save_load_helper(save_load_helper)
         return model
 
     def auto(self, layer, x):

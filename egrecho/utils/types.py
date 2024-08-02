@@ -6,7 +6,7 @@ import warnings
 from collections import OrderedDict
 from dataclasses import fields
 from enum import Enum
-from typing import Any, List, Literal, Optional, Tuple
+from typing import Any, List, Literal, Optional, Tuple, Union
 
 TRAIN_DATALOADERS = Any  # any iterable or collection of iterables
 EVAL_DATALOADERS = Any  # any iterable or collection of iterables
@@ -297,13 +297,21 @@ class FilterType(StrEnum):
 
 class PaddingStrategy(StrEnum):
     """
-    Possible values for the `padding` argument in. Useful for tab-completion in an
+    Possible values for the `padding` argument. Useful for tab-completion in an
     IDE.
     """
 
     LONGEST = "longest"
     MAX_LENGTH = "max_length"
     DO_NOT_PAD = "do_not_pad"
+
+
+_INIT_WEIGHT = Union[Literal["pretrained", "random"], None, str]
+
+
+class InitWeightType(StrEnum):
+    RANDOM = "random"
+    PRETRAINED = "pretrained"
 
 
 def is_tensor(x):

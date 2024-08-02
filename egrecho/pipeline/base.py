@@ -25,20 +25,14 @@ import types
 import warnings
 from abc import ABC, abstractmethod
 from contextlib import contextmanager
-from pathlib import Path
-from typing import Any, Callable, Dict, Literal, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, Optional, Type, Union
 
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset, IterableDataset
 
 from egrecho.core.feature_extractor import BaseFeature
-from egrecho.core.loads import (
-    ResolveModelResult,
-    SerializationFn,
-    load_module_class,
-    resolve_pretrained_model,
-)
+from egrecho.core.loads import load_module_class
 from egrecho.core.module import TopVirtualModel
 from egrecho.data.iterable import IterabelDatasetWrapper, Processor
 from egrecho.utils.common import alt_none
@@ -112,203 +106,6 @@ class PipeLine(ABC):
             self._forward_params,
             self._postprocess_params,
         ) = self._sanitize_parameters(**kwargs)
-
-    @classmethod
-    def resolve_pretrained_model(
-        cls,
-        checkpoint: str = "last.ckpt",
-        dirpath: Optional[str] = None,
-        model_type: Optional[str] = None,
-        feature_config: Union[str, dict] = None,
-        **kwargs,
-    ) -> Tuple[ResolveModelResult, Dict[str, Any]]:
-        """Isolate from :meth:`from_pretrained` to check arguments errors early."""
-        kwargs = kwargs.copy()
-        best_k_mode: Literal["min", "max"] = kwargs.pop("best_k_mode", "min")
-        version = kwargs.pop("version", "version")
-        resolve_kwargs = kwargs.pop("resolve_kwargs", {})
-
-        resolved_opt = resolve_pretrained_model(
-            checkpoint,
-            dirpath,
-            best_k_mode=best_k_mode,
-            version=version,
-            **resolve_kwargs,
-        )
-
-        if isinstance(feature_config, str):
-            feature_config = SerializationFn.load_file(feature_config)
-        feature_config = alt_none(feature_config, resolved_opt.feature_config)
-        if (
-            feature_config is None
-            or feature_config.get("feature_extractor_type") is None
-        ):
-            raise ValueError(
-                f"Got invalid feature config=({feature_config}), needs a config dict with `'feature_extractor_type'` "
-                "and its related configuration to instantiate extractor. Set a yaml in your ckpt's config dir"
-                " (e.g., 'config/feats_config.yaml')  or "
-                "passing a dict directly."
-            )
-
-        model_type = alt_none(model_type, resolved_opt.model_type)
-        if model_type is None:
-            raise ValueError(
-                "Required model_type to instantiate model, provide it via set it (e.g, config/types.yaml) "
-                "or directly passing model_type in kwargs."
-            )
-        resolved_opt.model_type = model_type
-        resolved_opt.feature_config = feature_config
-
-        # served as an early import checking.
-        cls.load_model_type(resolved_opt.model_type)
-        cls.load_extractor_type(resolved_opt.feature_config["feature_extractor_type"])
-
-        return resolved_opt, kwargs
-
-    @classmethod
-    def from_pretrained(
-        cls,
-        checkpoint: str = "last.ckpt",
-        dirpath: Optional[str] = None,
-        model_type: Optional[str] = None,
-        feature_config: Union[str, dict] = None,
-        device: Union[str, int, Literal["auto", "from_model"]] = None,
-        hparams_file: Optional[Union[str, Path]] = None,
-        strict: bool = True,
-        resolve_mode: bool = False,
-        **kwargs,
-    ) -> Union["PipeLine", Tuple[ResolveModelResult, Dict[str, Any]]]:
-        """Initiate pretrained model, extractor and build pipeline.
-
-        Resolve checkpoint -> instantiate model/extractor -> load checkpoint -> move to device
-        -> instantiate pipeline.
-
-        Args:
-            checkpoint (str, optional):
-                The file name of checkpoint to resolve, local file needs a suffix like ".ckpt" / ".pt",
-                While checkpoint="best" is a preseved key means it will find `best_k_fname` which is
-                a file contains `Dict[BEST_K_MODEL_PATH, BEST_K_SCORE]`, and sort by its score to
-                match a best ckpt. Defaults to "last.ckpt".
-            dirpath (Path or str, optional):
-                The root path. Defaults to None, which means the current directory.
-            model_type (str):
-                model type string, if not specified, model type will be resolved from
-                :meth:`resolve_pretrained_model`.
-            feature_config (str or dict):
-                A extractor config dict/config_file must include a key `"feature_extractor_type"` to instantiate.
-                If not specified, it will be resolved from :meth:`resolve_pretrained_model`
-            device (Union[str, int, Literal["auto", "from_model"]]):
-                map location.
-            hparams_file : Path or str, optional
-                Path to a .yaml file with hierarchical structure
-                as in this example::
-
-                    num_classes: 5994
-                    config:
-                        channels: 1024
-
-                You most likely won't need this since Lightning will always save the
-                hyperparameters to the checkpoint. However, if your checkpoint weights
-                do not have the hyperparameters saved, use this method to pass in a .yaml
-                file with the hparams you would like to use. These will be converted
-                into a dict and passed into your Model for use.
-            strict: Whether to strictly enforce that the keys in ``checkpoint_path`` match the keys
-                returned by this module's state dict.
-            version (str, optional):
-                The versioned subdir name. Conmmonly subdir is named as "version_0/version_1", if you specify
-                the version name with a version num, it will search that version dir, otherwise choose the max number
-                of version (above "version_1"). Defaults to "version".
-            best_k_mode (Literal["max", "min"], optional):
-                The mode for selecting the best_k checkpoint. Defaults to "min".
-            resolve_kwargs (dict):
-                additional kwargs passing to :func:`~egrecho.core.loads.resolve_pretrained_model`.
-            load_ckpt_kwargs (dict):
-                additional kwargs passing to model's :meth:`load_from_checkpoint`.
-            resolve_mode (bool):
-                Only returns a tuple contains resolved ckpt opt and remain kwargs,
-                you need manully call :meth:`_load_ckpt`.
-            \**kwargs:
-                Passing remain kwargs to pipeline :meth:`__init__` and an extra keyword args placeholder.
-        """
-
-        resolved_opt, kwargs = cls.resolve_pretrained_model(
-            checkpoint,
-            dirpath,
-            model_type=model_type,
-            feature_config=feature_config,
-            **kwargs,
-        )
-        if not resolve_mode:
-            return cls._load_ckpt(
-                resolved_opt,
-                hparams_file=hparams_file,
-                device=device,
-                strict=strict,
-                **kwargs,
-            )
-        else:
-            # prepare kwargs for manully load ckpt.
-            kwargs["hparams_file"] = hparams_file
-            kwargs["device"] = device
-            kwargs["strict"] = strict
-            return resolved_opt, kwargs
-
-    @classmethod
-    def _load_ckpt(
-        cls,
-        resolved_opt: ResolveModelResult,
-        hparams_file: Optional[Union[str, Path]] = None,
-        device: Union[str, int, Literal["auto", "from_model"]] = None,
-        strict: bool = True,
-        **kwargs,
-    ):
-        """Actually loads states dict here."""
-        load_ckpt_kwargs = kwargs.pop("load_ckpt_kwargs", {})
-        extractor_type = cls.load_extractor_type(
-            resolved_opt.feature_config["feature_extractor_type"]
-        )
-        model_class = cls.load_model_type(resolved_opt.model_type)
-        feature_extractor = extractor_type.from_dict(resolved_opt.feature_config)
-        device = alt_none(device, -1)
-        if device == DeviceMode.AUTO:
-            device = GPUManager.detect()
-        elif device == DeviceMode.FROM_MODEL:
-            raise ValueError("DO NOT SUPPORT NOW, can not del state cache")
-            # device = None
-        elif isinstance(device, int) and device < 0:
-            device = "cpu"
-        map_location = torch.device(device) if device is not None else None
-        logger.info(
-            f"Loading {model_class.__name__} from ckpt ({resolved_opt.checkpoint}) to device ({device or 'as_ckpt'}).",
-            ranks=0,
-        )
-
-        model = model_class.from_pretrained(
-            checkpoint_path=resolved_opt.checkpoint,
-            map_location="cpu",
-            hparams_file=hparams_file,
-            strict=strict,
-            **load_ckpt_kwargs,
-        )
-
-        return cls(
-            model=model,
-            feature_extractor=feature_extractor,
-            device=map_location,
-            **kwargs,
-        )
-
-    @classmethod
-    def load_module(cls, module_path: str, base_module_type: Type):
-        return load_module_class(module_path, base_module_type)
-
-    @classmethod
-    def load_model_type(cls, module_path: str):
-        return cls.load_module(module_path, TopVirtualModel)
-
-    @classmethod
-    def load_extractor_type(cls, module_path: str):
-        return cls.load_module(module_path, BaseFeature)
 
     @abstractmethod
     def _sanitize_parameters(self, **pipeline_parameters):
@@ -530,6 +327,22 @@ class PipeLine(ABC):
         self.device = device
 
         return self
+
+    @classmethod
+    def from_pretrained(cls, *args, **kwargs):
+        raise NotImplementedError
+
+    @classmethod
+    def load_module(cls, module_path: str, base_module_type: Type):
+        return load_module_class(module_path, base_module_type)
+
+    @classmethod
+    def load_model_type(cls, module_path: str):
+        return cls.load_module(module_path, TopVirtualModel)
+
+    @classmethod
+    def load_extractor_type(cls, module_path: str):
+        return cls.load_module(module_path, BaseFeature)
 
 
 class PipelineDataset(Dataset):

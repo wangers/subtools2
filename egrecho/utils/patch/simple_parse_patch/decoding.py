@@ -188,9 +188,8 @@ def get_decoding_fn(type_annotation: type[T] | str) -> Callable[..., T]:
     wasteful calls to the function. This makes this process pretty efficient.
 
     Args:
-        t (Type[T]):
-            A type or type annotation. Can be arbitrarily nested.
-            For example:
+        t (Type[T]): A type or type annotation. Can be arbitrarily nested. For example:
+
             - List[int]
             - Dict[str, Foo]
             - Tuple[int, str, Any],

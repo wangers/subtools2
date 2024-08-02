@@ -6,13 +6,15 @@ from pathlib import Path
 from typing import Any, Dict, Union
 
 import egrecho.utils.constants as constants
-from egrecho.utils.io import ConfigFileMixin, repr_dict
+from egrecho.utils.common import SaveLoadMixin
+from egrecho.utils.io import ConfigFileMixin, is_remote_url, repr_dict
 from egrecho.utils.logging import get_logger
+from egrecho.utils.misc import ConfigurationException
 
 logger = get_logger()
 
 
-class BaseFeature(ConfigFileMixin):
+class BaseFeature(ConfigFileMixin, SaveLoadMixin):
     r"""
     A base class offers serialize methods for feature extractor.
 
@@ -34,22 +36,6 @@ class BaseFeature(ConfigFileMixin):
             except AttributeError as e:
                 logger.error(f"Can't set {key} with value {value} for {self}")
                 raise e
-
-    @classmethod
-    def create_extractor(cls, path: Union[str, Path], **kwargs):
-        extractor_dict, kwargs = cls.get_extractor_dict(path, **kwargs)
-        return cls.from_dict(extractor_dict, **kwargs)
-
-    @classmethod
-    def get_extractor_dict(cls, path: Union[str, Path], **kwargs):
-        """
-        Get config file from dir/file path.
-        """
-        path = Path(path)
-        if path.is_dir():
-            feature_extractor_file = path / constants.DEFAULT_EXTRACTOR_FILENAME
-        extractor_dict = cls.load_cfg_file(feature_extractor_file)
-        return extractor_dict, kwargs
 
     @classmethod
     def from_dict(
@@ -100,6 +86,52 @@ class BaseFeature(ConfigFileMixin):
         output = copy.deepcopy(self.__dict__)
         output["feature_extractor_type"] = self.__class__.__name__
         return output
+
+    @classmethod
+    def fetch_from(
+        cls,
+        srcdir: Union[str, Path],
+        **kwargs,
+    ) -> "BaseFeature":
+        if is_remote_url(srcdir):
+            raise NotImplementedError("TO DO, support remote file.")
+        return cls.create_extractor(srcdir, **kwargs)
+
+    def save_to(
+        self,
+        savedir,
+        **kwargs,
+    ):
+        savedir = Path(savedir)
+        if savedir.is_file():
+            raise ConfigurationException(
+                f"Provided path ({savedir}) should be a directory, not a file."
+            )
+        savedir.mkdir(parents=True, exist_ok=True)
+        cfg_fname = kwargs.pop("config_fname", constants.DEFAULT_EXTRACTOR_FILENAME)
+        cfg_file = savedir / str(cfg_fname)
+        self.to_cfg_file(cfg_file)
+
+    @classmethod
+    def create_extractor(cls, path: Union[str, Path], **kwargs):
+        extractor_dict, kwargs = cls.get_extractor_dict(path, **kwargs)
+        return cls.from_dict(extractor_dict, **kwargs)
+
+    @classmethod
+    def get_extractor_dict(cls, path: Union[str, Path], **kwargs):
+        """
+        Get config file from dir/file path.
+        """
+        path = Path(path)
+        if path.is_dir():
+            feature_extractor_file = kwargs.pop(
+                "config_fname", constants.DEFAULT_EXTRACTOR_FILENAME
+            )
+            feature_extractor_file = path / constants.DEFAULT_EXTRACTOR_FILENAME
+        else:
+            feature_extractor_file = path
+        extractor_dict = cls.load_cfg_file(feature_extractor_file)
+        return extractor_dict, kwargs
 
     def __repr__(self):
         return f"{self.__class__.__name__}\n{repr_dict(self.to_dict())}"

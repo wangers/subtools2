@@ -311,3 +311,12 @@ def locate_(path: str):
                 + f"\nAre you sure that '{part}' is an attribute of '{parent_dotpath}'?"
             ) from exc_attr
     return obj
+
+
+def pprint2str(object: object, **kwargs):
+    import io
+    from pprint import pprint
+
+    stream = io.StringIO()
+    pprint(object, stream=stream, **kwargs)
+    return stream.getvalue()

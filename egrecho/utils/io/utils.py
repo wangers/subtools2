@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2023-03)
 
-import contextlib
+
 import csv
 import io
 import json
@@ -24,7 +24,7 @@ from typing import (
 
 import yaml
 
-from egrecho.utils.common import alt_none
+from egrecho.utils.common import alt_none, omegaconf_handler
 from egrecho.utils.imports import _OMEGACONF_AVAILABLE, is_package_available
 from egrecho.utils.patch import gzip_open_patch, stringify_path
 from egrecho.utils.types import is_tensor
@@ -148,23 +148,12 @@ class ConfigFileMixin(JsonMixin, YamlMixin):
     def load_cfg_file(
         path: Union[Path, str], file_type: Optional[str] = None, **kwargs
     ) -> Dict:
-
+        omegaconf_resolve = kwargs.pop('omegaconf_resolve', True)
         config = SerializationFn.load_file(path, file_type=file_type, **kwargs)
         if _OMEGACONF_AVAILABLE:
-            from omegaconf import OmegaConf
-            from omegaconf.errors import UnsupportedValueType, ValidationError
-
-            with contextlib.suppress(UnsupportedValueType, ValidationError):
-
-                config = OmegaConf.create(config)
-                omegaconf_resolve = kwargs.pop('omegaconf_resolve', True)
-                if omegaconf_resolve:
-                    from egrecho.utils.common import omegaconf2container
-
-                    return omegaconf2container(config)
-                else:
-                    return config
-        return config
+            return omegaconf_handler(config, omegaconf_resolve=omegaconf_resolve)
+        else:
+            return config
 
     def to_cfg_file(
         self, path: Union[Path, str], file_type: Optional[str] = None, **kwargs

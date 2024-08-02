@@ -176,7 +176,7 @@ class Logger:
             ranks (List[int]): List of parallel ranks.
         """
         if not bool(verbose := self._force_verbose):
-            verbose = False if verbose is None else verbose
+            verbose = True if verbose is None else verbose
 
         message_prefix = self.get_msg_prefix(
             *self.__get_call_info(stack_pos=stack_pos), verbose=verbose

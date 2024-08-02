@@ -84,7 +84,7 @@ class BaseTokenizerConfig(DataclassConfig):
 
     Args:
         extradir (Optional[Union[str, Path]]):
-            Path to the directory containing vocabulary files defined by :meth:``extra_files_names``.
+            Path to the directory containing vocabulary files defined by :meth:`extra_files_names`.
     """
 
     extradir: Optional[str] = field(default=None, metadata={"to_dict": False})
@@ -117,21 +117,20 @@ class BaseTokenizerConfig(DataclassConfig):
             )
 
     @classmethod
-    def from_cfg_dir(
+    def fetch_from(
         cls,
         srcdir: Union[str, os.PathLike],
         **kwargs,
     ) -> "BaseTokenizerConfig":
         r"""
-        Instantiate a :class:``BaseTokenizerConfig`` (or a derived class).
+        Instantiate a :class:`BaseTokenizerConfig` (or a derived class).
         """
         if is_remote_url(srcdir):
             raise NotImplementedError("TO DO, support remote file.")
         resolved_path = srcdir
         assert os.path.isdir(resolved_path), f"{resolved_path} should be a directory."
-        tokenizer_config_path = (
-            Path(resolved_path) / constants.DEFAULT_TOKENIZER_FILENAME
-        )
+        config_fname = kwargs.pop("config_fname", constants.DEFAULT_TOKENIZER_FILENAME)
+        tokenizer_config_path = Path(resolved_path) / config_fname
         tokenizer_kwargs = cls.load_cfg_file(tokenizer_config_path)
         extradir = tokenizer_kwargs.pop("extradir", None)
         extradir = extradir or str(resolved_path)
@@ -149,9 +148,10 @@ class BaseTokenizerConfig(DataclassConfig):
         """
         Copys the extra files of the tokenizer config.
 
-        Use :meth:``BaseTokenizer.save_to`` to save the whole configuration
+        Use :meth:`BaseTokenizer.save_to` to save the whole configuration
         (config file + extra files) of the tokenizer. This method will copy all files
-        defined by :meth:``extra_files_names`` by defaults.
+        defined by :meth:`extra_files_names` by defaults.
+
         Args:
             savedir (``str``):
                 The directory in which to save the extra files.
@@ -219,17 +219,17 @@ class BaseTokenizerConfig(DataclassConfig):
 class BaseTokenizer(ABC, GenericFileMixin):
     r"""
     A base class offers serialize methods for tokenizer. and derived classes should implement its
-    encode/decode methods (:meth:``text2ids``, :meth:``ids2text``, etc..)
+    encode/decode methods (:meth:`text2ids`, :meth:`ids2text`, etc..)
 
     The implementation of the tokenizer method is intended for derived classes.
     Its purpose is to facilitate coordination between model inputs and the frontend data processor.
 
-    Unlike :class:``egrecho.core.feature_extractor.speaker.BaseFeature``, which is designed to save
-    its mainly attributes as config itself. :class:``BaseTokenizer`` maintains an inside :attr:``config`` instance.
+    Unlike :class:`egrecho.core.feature_extractor.speaker.BaseFeature`, which is designed to save
+    its mainly attributes as config itself. :class:`BaseTokenizer` maintains an inside :attr:`config` instance.
 
     Class attributes (overridden by derived classes)
 
-        - **CONFIG_CLS** -- The type of assosiate :class:``BaseTokenizerConfig`` (or a derived class).
+        - **CONFIG_CLS** -- The type of assosiate :class:`BaseTokenizerConfig` (or a derived class).
 
     Args:
         config (BaseTokenizerConfig):
@@ -369,14 +369,16 @@ class BaseTokenizer(ABC, GenericFileMixin):
     @property
     def all_special_ids(self) -> List[int]:
         """
-        `List[int]`: List the ids of the special tokens(`'<unk>'`, `'<cls>'`, etc.) mapped to class attributes.
+        Returns:
+            `List[int]`: List the ids of the special tokens(`'<unk>'`, `'<cls>'`, etc.) mapped to class attributes.
         """
         raise NotImplementedError
 
     @property
     def vocab_size(self) -> int:
         """
-        ``int``: Size of the base vocabulary (without the added tokens).
+        Returns:
+            ``int``: Size of the base vocabulary (without the added tokens).
         """
         raise NotImplementedError
 
@@ -398,10 +400,10 @@ class BaseTokenizer(ABC, GenericFileMixin):
         **kwargs,
     ) -> "BaseTokenizer":
         r"""
-        Instantiate a :class:``BaseTokenizer`` (or a derived class) from a
+        Instantiate a :class:`BaseTokenizer` (or a derived class) from a
         dir has config files.
         """
-        config = cls.CONFIG_CLS.from_cfg_dir(srcdir, **kwargs)
+        config = cls.CONFIG_CLS.fetch_from(srcdir, **kwargs)
         return cls(config)
 
     def save_to(
@@ -419,8 +421,9 @@ class BaseTokenizer(ABC, GenericFileMixin):
                 An optional prefix to add to the named of the saved files.
         """
         if os.path.isfile(savedir):
-            logger.error(f"Provided path ({savedir}) should be a directory, not a file")
-            return
+            raise ConfigurationException(
+                f"Provided path ({savedir}) should be a directory, not a file"
+            )
 
         os.makedirs(savedir, exist_ok=True)
         tok_cfg_fname = kwargs.pop("config_fname", constants.DEFAULT_TOKENIZER_FILENAME)
@@ -459,31 +462,33 @@ ENCODE_KWARGS_DOCSTRING = r"""
                 :meth:`Tokenizer.build_inputs_with_special_tokens` function, which defines which tokens are
                 automatically added to the input ids. This is usefull if you want to add ``bos`` or ``eos`` tokens
                 automatically.
-            padding (``bool``, ``str`` or :class:``~egrecho.utils.types.PaddingStrategy``, *optional*, defaults to ``False``):
-                Activates and controls padding. Accepts the following values:
+            padding (``bool``, ``str`` or :class:`~egrecho.utils.types.PaddingStrategy`, *optional*, defaults to ``False``): Activates
+                and controls padding. Accepts the following values:
 
-            - ``True`` or ``'longest'``: Pad to the longest sequence in the batch (or no padding if only a single
-                sequence if provided).
-            - ``'max_length'``: Pad to a maximum length specified with the argument ``max_length`` or to the maximum
-                acceptable input length for the model if that argument is not provided.
-            - ``False`` or ``'do_not_pad'`` (default): No padding (i.e., can output a batch with sequences of different
-                lengths).
+                    - ``True`` or ``'longest'``: Pad to the longest sequence in the batch (or no padding if only
+                      a single sequence if provided).
+                    - ``'max_length'``: Pad to a maximum length specified with the argument ``max_length`` or to the
+                      maximum acceptable input length for the model if that argument is not provided.
+                    - ``False`` or ``'do_not_pad'`` (default): No padding (i.e., can output a batch with sequences
+                      of different  lengths).
 
-            truncation (``bool``, ``str`` or :class:``~egrecho.core.tokenizer.TruncationStrategy``, *optional*, defaults to ``False``):
-                Activates and controls truncation. Accepts the following values:
+            truncation (``bool``, ``str`` or :class:`TruncationStrategy`, *optional*, defaults to ``False``): Activates
+                and controls truncation. Accepts the following values:
 
-            - ``True`` or ``'longest_first'``: Truncate to a maximum length specified with the argument ``max_length`` or
-            to the maximum acceptable input length for the model if that argument is not provided. This will
-            truncate token by token, removing a token from the longest sequence in the pair if a pair of
-            sequences (or a batch of pairs) is provided.
-            - ``'only_first'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-            maximum acceptable input length for the model if that argument is not provided. This will only
-            truncate the first sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
-            - ``'only_second'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-            maximum acceptable input length for the model if that argument is not provided. This will only
-            truncate the second sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
-            - ``False`` or ``'do_not_truncate'`` (default): No truncation (i.e., can output batch with sequence lengths
-            greater than the model maximum admissible input size).
+                    - ``True`` or ``'longest_first'``: Truncate to a maximum length specified with the argument
+                      ``max_length`` or to the maximum acceptable input length for the model if that argument
+                      is not provided. This will truncate token by token, removing a token from the longest
+                      sequence in the pair if a pair of sequences (or a batch of pairs) is provided.
+                    - ``'only_first'``: Truncate to a maximum length specified with the argument ``max_length`` or
+                      to the maximum acceptable input length for the model if that argument is not provided. This
+                      will only truncate the first sequence of a pair if a pair of sequences
+                      (or a batch of pairs) is provided.
+                    - ``'only_second'``: Truncate to a maximum length specified with the argument ``max_length``
+                      or to the maximum acceptable input length for the model if that argument is not provided.
+                      This will only truncate the second sequence of a pair if a pair of sequences
+                      (or a batch of pairs) is provided.
+                    - ``False`` or ``'do_not_truncate'`` (default): No truncation (i.e., can
+                      output batch with sequence lengths greater than the model maximum admissible input size).
 
             max_length (``int``, *optional*):
                 Controls the maximum length to use by one of the truncation/padding parameters.
@@ -504,11 +509,11 @@ ENCODE_KWARGS_DOCSTRING = r"""
                 If set will pad the sequence to a multiple of the provided value. Requires ``padding`` to be activated.
                 This is especially useful to enable the use of Tensor Cores on NVIDIA hardware with compute capability
                 ``>= 7.5`` (Volta).
-            return_tensors (``str`` or :class:`~egrecho.core.tokenizer.TensorType`, *optional*):
-                If set, will return tensors instead of list of python integers. Acceptable values are:
+            return_tensors (``str`` or :class:`TensorType`, *optional*): If set, will return tensors instead of list
+                of python integers. Acceptable values are:
 
-            - ``'pt'``: Return PyTorch ``torch.Tensor`` objects.
-            - ``'np'``: Return Numpy ``np.ndarray`` objects.
+                    - ``'pt'``: Return PyTorch ``torch.Tensor`` objects.
+                    - ``'np'``: Return Numpy ``np.ndarray`` objects.
 """
 
 ENCODE_ADDITIONAL_KWARGS_DOCSTRING = r"""
@@ -528,7 +533,7 @@ ENCODE_ADDITIONAL_KWARGS_DOCSTRING = r"""
                 Whether or not to return the lengths of the encoded inputs.
             verbose (``bool``, *optional*, defaults to ``True``):
                 Whether or not to print more information and warnings.
-            \**kwargs: passed to the ``self.tokenize()`` method
+            \**kwargs: passed to the :meth:`self.tokenize`.
 
         Return:
             [``BatchEncoding``]: A [``BatchEncoding``] with the following fields:
@@ -559,15 +564,15 @@ class Tokenizer(BaseTokenizer):
       that it can be used by the model. Workflows typically follows:
 
         - Pre-define settings: Get truncate/pad strategy. Computes the total size of the returned encodings
-          via :meth:``num_special_tokens_to_add``. Which default hacks building
-          empty input ids through :meth:``build_inputs_with_special_tokens``.
-        - Truncates: :meth:``truncate_sequences``.
+          via :meth:`num_special_tokens_to_add`. Which default hacks building
+          empty input ids through :meth:`build_inputs_with_special_tokens`.
+        - Truncates: :meth:`truncate_sequences`.
         - Add special tokens like eos/sos, the list method should be overriden in a subclass:
 
-            * :meth:``build_inputs_with_special_tokens``: Build model inputs from given ids.
-            * :meth:``create_token_type_ids_from_sequences``: Create the token type IDs corresponding to the sequences.
+            * :meth:`build_inputs_with_special_tokens`: Build model inputs from given ids.
+            * :meth:`create_token_type_ids_from_sequences`: Create the token type IDs corresponding to the sequences.
 
-        - Pad: pad a sample use :meth:``pad``.
+        - Pad: pad a sample use :meth:`pad`.
 
     - :meth:`batch_decode` / :meth:`decode`: inverse of :meth:`__call__`, depends on :meth:`_decode` in subclasses.
 
@@ -733,31 +738,31 @@ class Tokenizer(BaseTokenizer):
                 :meth:`Tokenizer.build_inputs_with_special_tokens` function, which defines which tokens are
                 automatically added to the input ids. This is usefull if you want to add ``bos`` or ``eos`` tokens
                 automatically.
-            padding (``bool``, ``str`` or :class:`~egrecho.utils.types.PaddingStrategy`, *optional*, defaults to ``False``):
-                Activates and controls padding. Accepts the following values:
+            padding (``bool``, ``str`` or :class:`~egrecho.utils.types.PaddingStrategy`, *optional*, defaults to ``False``): Activates
+                and controls padding. Accepts the following values:
 
-            - ``True`` or ``'longest'``: Pad to the longest sequence in the batch (or no padding if only a single
-                sequence if provided).
-            - ``'max_length'``: Pad to a maximum length specified with the argument ``max_length`` or to the maximum
-                acceptable input length for the model if that argument is not provided.
-            - ``False`` or ``'do_not_pad'`` (default): No padding (i.e., can output a batch with sequences of different
-                lengths).
+                    - ``True`` or ``'longest'``: Pad to the longest sequence in the batch (or no padding if only a single
+                      sequence if provided).
+                    - ``'max_length'``: Pad to a maximum length specified with the argument ``max_length`` or to the maximum
+                      acceptable input length for the model if that argument is not provided.
+                    - ``False`` or ``'do_not_pad'`` (default): No padding (i.e., can output a batch with sequences of different
+                      lengths).
 
-            truncation (``bool``, ``str`` or :class:`~egrecho.core.tokenizer.TruncationStrategy`, *optional*, defaults to ``False``):
-                Activates and controls truncation. Accepts the following values:
+            truncation (``bool``, ``str`` or :class:`TruncationStrategy`, *optional*, defaults to ``False``): Activates
+                and controls truncation. Accepts the following values:
 
-            - ``True`` or ``'longest_first'``: Truncate to a maximum length specified with the argument ``max_length`` or
-            to the maximum acceptable input length for the model if that argument is not provided. This will
-            truncate token by token, removing a token from the longest sequence in the pair if a pair of
-            sequences (or a batch of pairs) is provided.
-            - ``'only_first'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-            maximum acceptable input length for the model if that argument is not provided. This will only
-            truncate the first sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
-            - ``'only_second'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-            maximum acceptable input length for the model if that argument is not provided. This will only
-            truncate the second sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
-            - ``False`` or ``'do_not_truncate'`` (default): No truncation (i.e., can output batch with sequence lengths
-            greater than the model maximum admissible input size).
+                    - ``True`` or ``'longest_first'``: Truncate to a maximum length specified with the argument ``max_length`` or
+                      to the maximum acceptable input length for the model if that argument is not provided. This will
+                      truncate token by token, removing a token from the longest sequence in the pair if a pair of
+                      sequences (or a batch of pairs) is provided.
+                    - ``'only_first'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
+                      maximum acceptable input length for the model if that argument is not provided. This will only
+                      truncate the first sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
+                    - ``'only_second'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
+                      maximum acceptable input length for the model if that argument is not provided. This will only
+                      truncate the second sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
+                    - ``False`` or ``'do_not_truncate'`` (default): No truncation (i.e., can output batch with sequence lengths
+                      greater than the model maximum admissible input size).
 
             max_length (``int``, *optional*):
                 Controls the maximum length to use by one of the truncation/padding parameters.
@@ -766,9 +771,11 @@ class Tokenizer(BaseTokenizer):
                 is required by one of the truncation/padding parameters. If the model has no specific maximum input
                 length (like XLNet) truncation/padding to a maximum length will be deactivated.
             is_split_into_words (``bool``, *optional*, defaults to ``False``):
-                Whether or not the input is already pre-tokenized (e.g., split into words). If set to ``True``, the
-                tokenizer assumes the input is already split into words (for instance, by splitting it on whitespace)
-                which it will tokenize. This is useful for NER or token classification.
+                Whether or not the input is already pre-tokenized (e.g., split into words).
+
+                If set to ``True``, the tokenizer assumes the input is already split into words
+                (for instance, by splitting it on whitespace) which it will tokenize.
+                This is useful for NER or token classification.
             \**kwargs:
                 Additional keyword arguments.
         """
@@ -991,7 +998,7 @@ class Tokenizer(BaseTokenizer):
         tensor_converter = get_converter()
         batch_outputs = tensor_converter(batch_outputs, tensor_type=return_tensors)
 
-        return
+        return batch_outputs
 
     @add_end_docstrings(ENCODE_KWARGS_DOCSTRING, ENCODE_ADDITIONAL_KWARGS_DOCSTRING)
     def prepare_for_model(
@@ -1158,26 +1165,28 @@ class Tokenizer(BaseTokenizer):
 
         Args:
             ids (``List[int]``):
-                Tokenized input ids of the first sequence. Can be obtained from a string by the :meth:``text2ids``.
+                Tokenized input ids of the first sequence. Can be obtained from a string by the :meth:`text2ids`.
             pair_ids (``List[int]``, *optional*):
-                Tokenized input ids of the second sequence. Can be obtained from a string by the :meth:``text2ids``.
+                Tokenized input ids of the second sequence. Can be obtained from a string by the :meth:`text2ids`.
             num_tokens_to_remove (``int``, *optional*, defaults to 0):
                 Number of tokens to remove using the truncation strategy.
-            truncation_strategy (``str`` or :class:`~egrecho.core.tokenizer.TruncationStrategy`, *optional*, defaults to ``False``):
-                The strategy to follow for truncation. Can be:
+            truncation_strategy (``str`` or :class:`TruncationStrategy`, *optional*, defaults to ``False``): The
+                strategy to follow for truncation. Can be:
 
-            - ``'longest_first'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-                maximum acceptable input length for the model if that argument is not provided. This will truncate
-                token by token, removing a token from the longest sequence in the pair if a pair of sequences (or a
-                batch of pairs) is provided.
-            - ``'only_first'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-                maximum acceptable input length for the model if that argument is not provided. This will only
-                truncate the first sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
-            - ``'only_second'``: Truncate to a maximum length specified with the argument ``max_length`` or to the
-                maximum acceptable input length for the model if that argument is not provided. This will only
-                truncate the second sequence of a pair if a pair of sequences (or a batch of pairs) is provided.
-            - ``'do_not_truncate'`` (default): No truncation (i.e., can output batch with sequence lengths greater
-                than the model maximum admissible input size).
+                    - ``'longest_first'``: Truncate to a maximum length specified with the argument
+                      ``max_length`` or to the maximum acceptable input length for the model if that argument
+                      is not provided. This will truncate token by token, removing a token from the longest
+                      sequence in the pair if a pair of sequences (or a batch of pairs) is provided.
+                    - ``'only_first'``: Truncate to a maximum length specified with the argument ``max_length``
+                      or to the maximum acceptable input length for the model if that argument is not provided.
+                      This will only truncate the first sequence of a pair if a pair of sequences
+                      (or a batch of pairs) is provided.
+                    - ``'only_second'``: Truncate to a maximum length specified with the argument ``max_length``
+                      or to the maximum acceptable input length for the model if that argument is not provided.
+                      This will only truncate the second sequence of a pair if a pair of
+                      sequences (or a batch of pairs) is provided.
+                    - ``'do_not_truncate'`` (default): No truncation (i.e., can output batch with sequence
+                      lengths greater than the model maximum admissible input size).
 
             stride (``int``, *optional*, defaults to 0):
                 If set to a positive number, the overflowing tokens returned will contain some tokens from the main
@@ -1325,7 +1334,7 @@ class Tokenizer(BaseTokenizer):
     ) -> List[int]:
         """
         Retrieves sequence ids from a token list that has no special tokens added. This method is called when adding
-        special tokens using the tokenizer `prepare_for_model`.
+        special tokens using the tokenizer :meth:`prepare_for_model`.
 
         Args:
             token_ids_0 (``List[int]``):
@@ -1397,12 +1406,12 @@ class Tokenizer(BaseTokenizer):
                 Select a strategy to pad the returned sequences (according to the model's padding side and padding
                 index) among:
 
-            - ``True`` or ``'longest'``: Pad to the longest sequence in the batch (or no padding if only a single
-                sequence if provided).
-            - ``'max_length'``: Pad to a maximum length specified with the argument ``max_length`` or to the maximum
-                acceptable input length for the model if that argument is not provided.
-            - ``False`` or ``'do_not_pad'`` (default): No padding (i.e., can output a batch with sequences of different
-                lengths).
+                    - ``True`` or ``'longest'``: Pad to the longest sequence in the batch (or no padding if only
+                      a single sequence if provided).
+                    - ``'max_length'``: Pad to a maximum length specified with the argument ``max_length`` or to
+                      the maximum acceptable input length for the model if that argument is not provided.
+                    - ``False`` or ``'do_not_pad'`` (default): No padding (i.e., can output a batch with
+                      sequences of different lengths).
 
             max_length (``int``, *optional*):
                 Maximum length of the returned list and optionally padding length (see above).
@@ -1415,11 +1424,11 @@ class Tokenizer(BaseTokenizer):
                 Whether to return the attention mask. If left to the default, will return the attention mask according
                 to the specific tokenizer's default, defined by the ``return_outputs`` attribute.
 
-            return_tensors (``str`` or :class:`TensorType`, *optional*):
-                If set, will return tensors instead of list of python integers. Acceptable values are:
+            return_tensors (``str`` or :class:`TensorType`, *optional*): If set, will
+                return tensors instead of list of python integers. Acceptable values are:
 
-            - ``'pt'``: Return PyTorch ``torch.Tensor`` objects.
-            - ``'np'``: Return Numpy ``np.ndarray`` objects.
+                    - ``'pt'``: Return PyTorch ``torch.Tensor`` objects.
+                    - ``'np'``: Return Numpy ``np.ndarray`` objects.
 
             verbose (``bool``, *optional*, defaults to ``True``):
                 Whether or not to print more information and warnings.
@@ -1537,17 +1546,16 @@ class Tokenizer(BaseTokenizer):
                 Dictionary of tokenized inputs (``List[int]``) or batch of tokenized inputs (``List[List[int]]``).
             max_length: maximum length of the returned list and optionally padding length (see below).
                 Will truncate by taking into account the special tokens.
-            padding_strategy:
-                PaddingStrategy to use for padding.
+            padding_strategy: PaddingStrategy to use for padding.
 
-            - PaddingStrategy.LONGEST Pad to the longest sequence in the batch
-            - PaddingStrategy.MAX_LENGTH: Pad to the max length (default)
-            - PaddingStrategy.DO_NOT_PAD: Do not pad
+                - PaddingStrategy.LONGEST Pad to the longest sequence in the batch
+                - PaddingStrategy.MAX_LENGTH: Pad to the max length (default)
+                - PaddingStrategy.DO_NOT_PAD: Do not pad
 
                 The tokenizer padding sides are defined in self.padding_side:
 
-            - 'left': pads on the left of the sequences
-            - 'right': pads on the right of the sequences
+                    - 'left': pads on the left of the sequences
+                    - 'right': pads on the right of the sequences
 
             pad_to_multiple_of: (optional) Integer if set will pad the sequence to a multiple of the provided value.
                 This is especially useful to enable the use of Tensor Core on NVIDIA hardware with compute capability

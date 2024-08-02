@@ -211,6 +211,28 @@ class EnvInfo:
         )
 
 
+def is_global_rank_zero():
+    """Helper function to determine if the current process is global_rank 0 (the main process)"""
+    # Try to get the pytorch RANK env var
+    # RANK is set by torch.distributed.launch
+    rank = os.environ.get("RANK", None)
+    if rank is not None:
+        return int(rank) == 0
+
+    # Try to get the SLURM global rank env var
+    # SLURM_PROCID is set by SLURM
+    slurm_rank = os.environ.get("SLURM_PROCID", None)
+    if slurm_rank is not None:
+        return int(slurm_rank) == 0
+
+    # if neither pytorch and SLURM env vars are set
+    # check NODE_RANK/GROUP_RANK and LOCAL_RANK env vars
+    # asume global_rank is zero if undefined
+    node_rank = os.environ.get("NODE_RANK", os.environ.get("GROUP_RANK", 0))
+    local_rank = os.environ.get("LOCAL_RANK", 0)
+    return int(node_rank) == 0 and int(local_rank) == 0
+
+
 class TorchMPLauncher:
     r"""Launches processes that run a given function in parallel, and joins them all at the end.
 

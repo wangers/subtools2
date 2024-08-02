@@ -23,6 +23,24 @@ from egrecho.utils.misc import ConfigurationException
 logger = get_logger(__name__)
 
 
+def avoid_float16_autocast_context():
+    """
+    If the current autocast context is float16, cast it to bfloat16
+    if available (unless we're in jit) or float32
+    """
+
+    if torch.is_autocast_enabled() and torch.get_autocast_gpu_dtype() == torch.float16:
+        if torch.jit.is_scripting() or torch.jit.is_tracing():
+            return torch.cuda.amp.autocast(dtype=torch.float32)
+
+        if torch.cuda.is_bf16_supported():
+            return torch.cuda.amp.autocast(dtype=torch.bfloat16)
+        else:
+            return torch.cuda.amp.autocast(dtype=torch.float32)
+    else:
+        return nullcontext()
+
+
 def set_to_cuda(modules):
     """Send modules to gpu.
 
@@ -199,6 +217,47 @@ def parse_gpus_opt(gpus: Optional[Union[str, int]]) -> Optional[List[int]]:
     return gpus
 
 
+def parse_gpu_id(
+    gpu_id: Optional[Union[str, int]] = 'auto'
+) -> Optional[Union[str, int]]:
+    """
+    Parse single gpu id option.
+
+    Args:
+        gpu_id(Optional[Union[str, int]]): select which GPU:
+
+            -   case 0: "auto", auto select spare gpu.
+            -   case 1: a single int (str) negative number (-1) means cpu.
+            -   case 2: a single int (str) positive number means specified id.
+            -   case 3: '' or None returns None, which means defualt behaviour in same case, e.g., torch.load(...)
+            -   case 4: other strings, e.g., "cuda:1"
+
+    """
+    if isinstance(gpu_id, str):
+        gpu_id = gpu_id.lower().strip()
+        try:
+            gpu_id = int(gpu_id)
+        except Exception as exc:  # noqa
+            pass
+    if gpu_id == 'auto':
+        if not is_cuda_available():
+            logger.warning(
+                f'Try to auto select gpu but no gpu is available, fallback to cpu.'
+            )
+            return 'cpu'
+        return GPUManager.detect()
+    if isinstance(gpu_id, int) and gpu_id < 0:
+        return 'cpu'
+    elif isinstance(gpu_id, int):
+        valid_gpus = [gpu for gpu in range(num_gpus())]
+        if gpu_id not in valid_gpus:
+            raise ConfigurationException(f"Requested gpu:{gpu_id}, but it is invalid.")
+        return gpu_id
+    else:
+        # '' => None
+        return gpu_id or None
+
+
 def _gpus_str2int(gpus: Union[str, int, Sequence[int]]) -> Union[int, List[int]]:
     if isinstance(gpus, str):
         gpus = gpus.strip()
@@ -298,7 +357,8 @@ def release_memory(*objects):
     if not isinstance(objects, list):
         objects = list(objects)
     for i in range(len(objects)):
-        objects[i] = None
+        if objects[i] is not None:
+            objects[i] = None
     gc.collect()
     if is_cuda_available():
         try:
@@ -764,21 +824,3 @@ def is_out_of_cpu_memory(exception: BaseException) -> bool:
         and len(exception.args) == 1
         and "DefaultCPUAllocator: can't allocate memory" in exception.args[0]
     )
-
-
-def avoid_float16_autocast_context():
-    """
-    If the current autocast context is float16, cast it to bfloat16
-    if available (unless we're in jit) or float32
-    """
-
-    if torch.is_autocast_enabled() and torch.get_autocast_gpu_dtype() == torch.float16:
-        if torch.jit.is_scripting() or torch.jit.is_tracing():
-            return torch.cuda.amp.autocast(dtype=torch.float32)
-
-        if torch.cuda.is_bf16_supported():
-            return torch.cuda.amp.autocast(dtype=torch.bfloat16)
-        else:
-            return torch.cuda.amp.autocast(dtype=torch.float32)
-    else:
-        return nullcontext()

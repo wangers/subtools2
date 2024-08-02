@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import dataclasses
 import functools
 import re
@@ -85,12 +86,22 @@ class ObjectDict(dict):
         # type: (str) -> Any
         try:
             return self[name]
-        except KeyError:
-            raise AttributeError(name)
+        except KeyError as e:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{name}'"
+            ) from e
 
     def __setattr__(self, name, value):
         # type: (str, Any) -> None
         self[name] = value
+
+    def __repr__(self) -> str:
+        if not len(self):
+            return ""
+        max_key_length = max(len(str(k)) for k in self)
+        tmp_name = "{:" + str(max_key_length + 3) + "s} {}"
+        rows = [tmp_name.format(f'"{n}":', self[n]) for n in sorted(self.keys())]
+        return "\n".join(rows)
 
     def __dir__(self):
         # for auto-completion in a REPL (e.g. Jupyter notebook)
@@ -273,7 +284,7 @@ class GenericSerialMixin:
             except Exception as e:
                 tb = traceback.format_exc()
                 prev_error = (
-                    f"Hydra model instantiation failed!\nTarget class:\t{target_cls}"
+                    f"Hydra instantiation failed!\nTarget class:\t{target_cls}"
                     f"\nError(s):\t{e}\n{tb}"
                 )
                 out_desc.append(prev_error)
@@ -291,6 +302,23 @@ class GenericSerialMixin:
                 raise e
 
         return instance
+
+
+class SaveLoadMixin:
+    """Save_to/load_from repo."""
+
+    def save_to(
+        self,
+        savedir,
+        *args,
+        **kwargs,
+    ):
+        raise NotImplementedError
+
+    @classmethod
+    def fetch_from(cls, dirpath, *args, **kwargs):
+        """Fetch from a repo."""
+        raise NotImplementedError
 
 
 def fields_init_var(class_or_instance):
@@ -520,13 +548,34 @@ def list2tuple(func):
     return wrapper
 
 
-def omegaconf2container(config):
+def omegaconf2container(config, resolve=True):
     from omegaconf import OmegaConf
     from omegaconf.dictconfig import DictConfig
 
     config = deepcopy(config)
     # Resolves interpolations of DictConfig
     config = apply_to_collection(
-        config, DictConfig, OmegaConf.to_container, resolve=True, enum_to_str=True
+        config, DictConfig, OmegaConf.to_container, resolve=resolve, enum_to_str=True
     )
+    return config
+
+
+def omegaconf_handler(config: Optional[Dict[Any, Any]], omegaconf_resolve=True):
+    """If omegaconf is available, creates DictConfig and resolves it when omegaconf_resolve=True.
+
+    Args:
+        config:
+            lodaded kwargs dict.
+        omegaconf_resolve:
+            If False, returns DictConfig else returns the dict resolved from DictConfig.
+    """
+    if _OMEGACONF_AVAILABLE:
+        from omegaconf import OmegaConf
+        from omegaconf.errors import UnsupportedValueType, ValidationError
+
+        with contextlib.suppress(UnsupportedValueType, ValidationError):
+
+            config = OmegaConf.create(config)
+            if omegaconf_resolve:
+                return omegaconf2container(config)
     return config
