@@ -5,14 +5,14 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="egrecho.utils.apply" href="../utils/index.html" /><link rel="prev" title="egrecho.core.teacher" href="teacher.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.07.18 -->
         <title>egrecho.core.tokenizer - Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=613ab9ff" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css" />
@@ -94,19 +94,6 @@
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
   <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
     <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -147,7 +134,7 @@
       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
       <path d="M13.5 6.5l4 4" />
       <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
   <symbol id="svg-eye" viewBox="0 0 24 24">
@@ -370,7 +357,7 @@ a config file (tokenizer_config.json), it will be set to the directory of the co
 allowing for the locationing of files defined by <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names" title="egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extra_files_names()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>extradir</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) -- Path to the directory containing vocabulary files defined by :meth:<code class="docutils literal notranslate"><span class="pre">extra_files_names</span></code>.</p>
+<dd class="field-odd"><p><strong>extradir</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) -- Path to the directory containing vocabulary files defined by <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names" title="egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extra_files_names()</span></code></a>.</p>
 </dd>
 </dl>
 <dl class="py property">
@@ -390,9 +377,9 @@ allowing for the locationing of files defined by <a class="reference internal" h
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizerConfig.from_cfg_dir">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_cfg_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcdir</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L119-L139"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizerConfig.from_cfg_dir" title="Permalink to this definition">#</a></dt>
-<dd><p>Instantiate a :class:<code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig</span></code> (or a derived class).</p>
+<dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizerConfig.fetch_from">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcdir</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L119-L138"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizerConfig.fetch_from" title="Permalink to this definition">#</a></dt>
+<dd><p>Instantiate a <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig" title="egrecho.core.tokenizer.BaseTokenizerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizerConfig</span></code></a> (or a derived class).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig" title="egrecho.core.tokenizer.BaseTokenizerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizerConfig</span></code></a></span></p>
@@ -402,28 +389,25 @@ allowing for the locationing of files defined by <a class="reference internal" h
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizerConfig.copy_extras">
-<span class="sig-name descname"><span class="pre">copy_extras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_files_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excludes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L141-L200"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizerConfig.copy_extras" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">copy_extras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_files_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excludes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L140-L200"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizerConfig.copy_extras" title="Permalink to this definition">#</a></dt>
 <dd><p>Copys the extra files of the tokenizer config.</p>
-<p>Use :meth:<code class="docutils literal notranslate"><span class="pre">BaseTokenizer.save_to</span></code> to save the whole configuration
+<p>Use <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizer.save_to" title="egrecho.core.tokenizer.BaseTokenizer.save_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseTokenizer.save_to()</span></code></a> to save the whole configuration
 (config file + extra files) of the tokenizer. This method will copy all files
-defined by :meth:<code class="docutils literal notranslate"><span class="pre">extra_files_names</span></code> by defaults.
-:type savedir: 
-:param savedir: The directory in which to save the extra files.
-:type savedir: <code class="docutils literal notranslate"><span class="pre">str</span></code>
-:type extra_files_names: 
-:param extra_files_names: If None, use default files defined by class property <cite>extra_files_names</cite>
-:type filename_prefix: 
-:param filename_prefix: An optional prefix to add to the named of the saved files.
-:type filename_prefix: <code class="docutils literal notranslate"><span class="pre">str</span></code>, <em>optional</em>
-:type excludes: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>
-:param excludes: Excludes what fnames.
-:type excludes: Union[<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">List[str]</span></code>]</p>
+defined by <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names" title="egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">extra_files_names()</span></code></a> by defaults.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Paths to the files saved.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>savedir</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) -- The directory in which to save the extra files.</p></li>
+<li><p><strong>extra_files_names</strong> -- If None, use default files defined by class property <cite>extra_files_names</cite></p></li>
+<li><p><strong>filename_prefix</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>, <em>optional</em>) -- An optional prefix to add to the named of the saved files.</p></li>
+<li><p><strong>excludes</strong> (Union[<code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">List[str]</span></code>]) -- Excludes what fnames.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Tuple(str)</span></code></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Paths to the files saved.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">Tuple(str)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -432,18 +416,18 @@ defined by :meth:<code class="docutils literal notranslate"><span class="pre">ex
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.tokenizer.</span></span><span class="sig-name descname"><span class="pre">BaseTokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L219-L453"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.tokenizer.</span></span><span class="sig-name descname"><span class="pre">BaseTokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L219-L456"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericFileMixin</span></code></p>
 <p>A base class offers serialize methods for tokenizer. and derived classes should implement its
-encode/decode methods (:meth:<code class="docutils literal notranslate"><span class="pre">text2ids</span></code>, :meth:<code class="docutils literal notranslate"><span class="pre">ids2text</span></code>, etc..)</p>
+encode/decode methods (<code class="xref py py-meth docutils literal notranslate"><span class="pre">text2ids()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">ids2text()</span></code>, etc..)</p>
 <p>The implementation of the tokenizer method is intended for derived classes.
 Its purpose is to facilitate coordination between model inputs and the frontend data processor.</p>
-<p>Unlike :class:<code class="docutils literal notranslate"><span class="pre">egrecho.core.feature_extractor.speaker.BaseFeature</span></code>, which is designed to save
-its mainly attributes as config itself. :class:<code class="docutils literal notranslate"><span class="pre">BaseTokenizer</span></code> maintains an inside :attr:<code class="docutils literal notranslate"><span class="pre">config</span></code> instance.</p>
+<p>Unlike <code class="xref py py-class docutils literal notranslate"><span class="pre">egrecho.core.feature_extractor.speaker.BaseFeature</span></code>, which is designed to save
+its mainly attributes as config itself. <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizer" title="egrecho.core.tokenizer.BaseTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizer</span></code></a> maintains an inside <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizer.config" title="egrecho.core.tokenizer.BaseTokenizer.config"><code class="xref py py-attr docutils literal notranslate"><span class="pre">config</span></code></a> instance.</p>
 <p>Class attributes (overridden by derived classes)</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>CONFIG_CLS</strong> -- The type of assosiate :class:<code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig</span></code> (or a derived class).</p></li>
+<li><p><strong>CONFIG_CLS</strong> -- The type of assosiate <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig" title="egrecho.core.tokenizer.BaseTokenizerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizerConfig</span></code></a> (or a derived class).</p></li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
@@ -524,23 +508,15 @@ its mainly attributes as config itself. :class:<code class="docutils literal not
 <dl class="py property">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer.all_special_ids">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_special_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.all_special_ids" title="Permalink to this definition">#</a></dt>
-<dd><p>List the ids of the special tokens(<cite>‘&lt;unk&gt;’</cite>, <cite>‘&lt;cls&gt;’</cite>, etc.) mapped to class attributes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><cite>List[int]</cite></p>
-</dd>
-</dl>
+<dd><p>Returns:
+<cite>List[int]</cite>: List the ids of the special tokens(<cite>‘&lt;unk&gt;’</cite>, <cite>‘&lt;cls&gt;’</cite>, etc.) mapped to class attributes.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer.vocab_size">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vocab_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.vocab_size" title="Permalink to this definition">#</a></dt>
-<dd><p>Size of the base vocabulary (without the added tokens).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
-</dd>
-</dl>
+<dd><p>Returns:
+<code class="docutils literal notranslate"><span class="pre">int</span></code>: Size of the base vocabulary (without the added tokens).</p>
 </dd></dl>
 
 <dl class="py property">
@@ -557,8 +533,8 @@ its mainly attributes as config itself. :class:<code class="docutils literal not
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer.fetch_from">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcdir</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L394-L405"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.fetch_from" title="Permalink to this definition">#</a></dt>
-<dd><p>Instantiate a :class:<code class="docutils literal notranslate"><span class="pre">BaseTokenizer</span></code> (or a derived class) from a
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcdir</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L396-L407"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.fetch_from" title="Permalink to this definition">#</a></dt>
+<dd><p>Instantiate a <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizer" title="egrecho.core.tokenizer.BaseTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizer</span></code></a> (or a derived class) from a
 dir has config files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -569,7 +545,7 @@ dir has config files.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer.save_to">
-<span class="sig-name descname"><span class="pre">save_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L407-L429"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.save_to" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">save_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L409-L432"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.save_to" title="Permalink to this definition">#</a></dt>
 <dd><p>Saves the whole configuration (config file + extra files) of the tokenizer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -583,7 +559,7 @@ dir has config files.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer.save_extras">
-<span class="sig-name descname"><span class="pre">save_extras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L431-L435"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.save_extras" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">save_extras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L434-L438"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.save_extras" title="Permalink to this definition">#</a></dt>
 <dd><p>Derived classes should overwrite it for special savings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -594,7 +570,7 @@ dir has config files.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.BaseTokenizer.default_save_extras">
-<span class="sig-name descname"><span class="pre">default_save_extras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excludes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L437-L450"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.default_save_extras" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">default_save_extras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excludes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L440-L453"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.BaseTokenizer.default_save_extras" title="Permalink to this definition">#</a></dt>
 <dd><p>A default funtion conviniently copies extra files.</p>
 </dd></dl>
 
@@ -602,7 +578,7 @@ dir has config files.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.tokenizer.</span></span><span class="sig-name descname"><span class="pre">Tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L551-L1718"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.tokenizer.</span></span><span class="sig-name descname"><span class="pre">Tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L556-L1726"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizer" title="egrecho.core.tokenizer.BaseTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizer</span></code></a></p>
 <p>A base class aims to prepare model inputs via __call__ interface , derived from <a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizer" title="egrecho.core.tokenizer.BaseTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTokenizer</span></code></a>.
 And offers some useful methods for padding/truncate. Core methods:</p>
@@ -615,18 +591,18 @@ that it can be used by the model. Workflows typically follows:</p>
 <blockquote>
 <div><ul>
 <li><p>Pre-define settings: Get truncate/pad strategy. Computes the total size of the returned encodings
-via :meth:<code class="docutils literal notranslate"><span class="pre">num_special_tokens_to_add</span></code>. Which default hacks building
-empty input ids through :meth:<code class="docutils literal notranslate"><span class="pre">build_inputs_with_special_tokens</span></code>.</p></li>
-<li><p>Truncates: :meth:<code class="docutils literal notranslate"><span class="pre">truncate_sequences</span></code>.</p></li>
+via <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.num_special_tokens_to_add" title="egrecho.core.tokenizer.Tokenizer.num_special_tokens_to_add"><code class="xref py py-meth docutils literal notranslate"><span class="pre">num_special_tokens_to_add()</span></code></a>. Which default hacks building
+empty input ids through <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens" title="egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_inputs_with_special_tokens()</span></code></a>.</p></li>
+<li><p>Truncates: <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.truncate_sequences" title="egrecho.core.tokenizer.Tokenizer.truncate_sequences"><code class="xref py py-meth docutils literal notranslate"><span class="pre">truncate_sequences()</span></code></a>.</p></li>
 <li><p>Add special tokens like eos/sos, the list method should be overriden in a subclass:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>:meth:<code class="docutils literal notranslate"><span class="pre">build_inputs_with_special_tokens</span></code>: Build model inputs from given ids.</p></li>
-<li><p>:meth:<code class="docutils literal notranslate"><span class="pre">create_token_type_ids_from_sequences</span></code>: Create the token type IDs corresponding to the sequences.</p></li>
+<li><p><a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens" title="egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_inputs_with_special_tokens()</span></code></a>: Build model inputs from given ids.</p></li>
+<li><p><a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.create_token_type_ids_from_sequences" title="egrecho.core.tokenizer.Tokenizer.create_token_type_ids_from_sequences"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_token_type_ids_from_sequences()</span></code></a>: Create the token type IDs corresponding to the sequences.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p>Pad: pad a sample use :meth:<code class="docutils literal notranslate"><span class="pre">pad</span></code>.</p></li>
+<li><p>Pad: pad a sample use <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.pad" title="egrecho.core.tokenizer.Tokenizer.pad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pad()</span></code></a>.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -654,7 +630,7 @@ applied. Should be <code class="docutils literal notranslate"><span class="pre">
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.input_text_batched">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_text_batched</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_split_into_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L669-L687"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.input_text_batched" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_text_batched</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_split_into_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L674-L692"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.input_text_batched" title="Permalink to this definition">#</a></dt>
 <dd><p>Detect inputs text is valid batched.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -665,7 +641,7 @@ applied. Should be <code class="docutils literal notranslate"><span class="pre">
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_split_into_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L689-L775"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.__call__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_split_into_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L694-L782"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.__call__" title="Permalink to this definition">#</a></dt>
 <dd><p>Main abstract method to tokenize and prepare for the model one or several sequence(s) or one or several pair(s) of
 sequences. Below lists a possible format of inputs.</p>
 <div class="admonition tip">
@@ -705,35 +681,48 @@ sequences. Below lists a possible format of inputs.</p>
 <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens" title="egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Tokenizer.build_inputs_with_special_tokens()</span></code></a> function, which defines which tokens are
 automatically added to the input ids. This is usefull if you want to add <code class="docutils literal notranslate"><span class="pre">bos</span></code> or <code class="docutils literal notranslate"><span class="pre">eos</span></code> tokens
 automatically.</p></li>
-<li><p><strong>padding</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="../utils/index.html#egrecho.utils.types.PaddingStrategy" title="egrecho.utils.types.PaddingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PaddingStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Activates and controls padding. Accepts the following values:</p></li>
-<li><p><strong>'longest'</strong> (<em>- True or</em>) -- Pad to the longest sequence in the batch (or no padding if only a single
+<li><p><strong>padding</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="../utils/index.html#egrecho.utils.types.PaddingStrategy" title="egrecho.utils.types.PaddingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PaddingStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- <p>Activates
+and controls padding. Accepts the following values:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">'longest'</span></code>: Pad to the longest sequence in the batch (or no padding if only a single
 sequence if provided).</p></li>
-<li><p><strong>'max_length'</strong> (<em>-</em>) -- Pad to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the maximum
+<li><p><code class="docutils literal notranslate"><span class="pre">'max_length'</span></code>: Pad to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the maximum
 acceptable input length for the model if that argument is not provided.</p></li>
-<li><p><strong>'do_not_pad'</strong> (<em>- False or</em>) -- No padding (i.e., can output a batch with sequences of different
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">'do_not_pad'</span></code> (default): No padding (i.e., can output a batch with sequences of different
 lengths).</p></li>
-<li><p><strong>truncation</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TruncationStrategy" title="egrecho.core.tokenizer.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Activates and controls truncation. Accepts the following values:</p></li>
-<li><p><strong>'longest_first'</strong> (<em>- True or</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or</p></li>
-<li><p><strong>will</strong> (<em>to the maximum acceptable input length for the model if that argument is not provided. This</em>) -- </p></li>
-<li><p><strong>token</strong> (<em>truncate token by</em>) -- </p></li>
-<li><p><strong>of</strong> (<em>removing a token from the longest sequence in the pair if a pair</em>) -- </p></li>
-<li><p><strong>sequences</strong> (<em>truncate the second sequence</em><em> of </em><em>a pair if a pair of</em>) -- </p></li>
-<li><p><strong>'only_first'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the</p></li>
-<li><p><strong>only</strong> (<em>maximum acceptable input length for the model if that argument is not provided. This will</em>) -- </p></li>
-<li><p><strong>sequences</strong> -- </p></li>
-<li><p><strong>'only_second'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the</p></li>
-<li><p><strong>only</strong> -- </p></li>
-<li><p><strong>sequences</strong> -- </p></li>
-<li><p><strong>'do_not_truncate'</strong> (<em>- False or</em>) -- No truncation (i.e., can output batch with sequence lengths</p></li>
-<li><p><strong>size</strong><strong>)</strong><strong>.</strong> (<em>greater than the model maximum admissible input</em>) -- </p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>truncation</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TruncationStrategy" title="egrecho.core.tokenizer.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- <p>Activates
+and controls truncation. Accepts the following values:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">'longest_first'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or
+to the maximum acceptable input length for the model if that argument is not provided. This will
+truncate token by token, removing a token from the longest sequence in the pair if a pair of
+sequences (or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_first'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the
+maximum acceptable input length for the model if that argument is not provided. This will only
+truncate the first sequence of a pair if a pair of sequences (or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_second'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the
+maximum acceptable input length for the model if that argument is not provided. This will only
+truncate the second sequence of a pair if a pair of sequences (or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">'do_not_truncate'</span></code> (default): No truncation (i.e., can output batch with sequence lengths
+greater than the model maximum admissible input size).</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>max_length</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) -- <p>Controls the maximum length to use by one of the truncation/padding parameters.</p>
 <p>If left unset or set to <code class="docutils literal notranslate"><span class="pre">None</span></code>, this will use the predefined model maximum length if a maximum length
 is required by one of the truncation/padding parameters. If the model has no specific maximum input
 length (like XLNet) truncation/padding to a maximum length will be deactivated.</p>
 </p></li>
-<li><p><strong>is_split_into_words</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Whether or not the input is already pre-tokenized (e.g., split into words). If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the
-tokenizer assumes the input is already split into words (for instance, by splitting it on whitespace)
-which it will tokenize. This is useful for NER or token classification.</p></li>
+<li><p><strong>is_split_into_words</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- <p>Whether or not the input is already pre-tokenized (e.g., split into words).</p>
+<p>If set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the tokenizer assumes the input is already split into words
+(for instance, by splitting it on whitespace) which it will tokenize.
+This is useful for NER or token classification.</p>
+</p></li>
 <li><p><strong>**kwargs</strong> -- Additional keyword arguments.</p></li>
 </ul>
 </dd>
@@ -742,7 +731,7 @@ which it will tokenize. This is useful for NER or token classification.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.num_special_tokens_to_add">
-<span class="sig-name descname"><span class="pre">num_special_tokens_to_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L904-L926"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.num_special_tokens_to_add" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">num_special_tokens_to_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L911-L933"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.num_special_tokens_to_add" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the number of added tokens when encoding a sequence with special tokens.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -765,7 +754,7 @@ Do not put this inside your training loop.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.prepare_for_model">
-<span class="sig-name descname"><span class="pre">prepare_for_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_to_multiple_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tensors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_token_type_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_overflowing_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_special_tokens_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prepend_batch_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L996-L1146"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.prepare_for_model" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">prepare_for_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_to_multiple_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tensors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_token_type_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_overflowing_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_special_tokens_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prepend_batch_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1003-L1153"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.prepare_for_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Prepares a sequence of input id, or a pair of sequences of inputs ids so that it can be used by the model. It
 adds special tokens, truncates sequences if overflowing while taking into account the special tokens and
 manages a moving window (with user defined stride) for overflowing tokens. Please Note, for <em>pair_ids</em>
@@ -780,27 +769,40 @@ overflowing tokens. Such a combination of arguments will raise an error.</p>
 <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens" title="egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Tokenizer.build_inputs_with_special_tokens()</span></code></a> function, which defines which tokens are
 automatically added to the input ids. This is usefull if you want to add <code class="docutils literal notranslate"><span class="pre">bos</span></code> or <code class="docutils literal notranslate"><span class="pre">eos</span></code> tokens
 automatically.</p></li>
-<li><p><strong>padding</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or :class:<code class="docutils literal notranslate"><span class="pre">~egrecho.utils.types.PaddingStrategy</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Activates and controls padding. Accepts the following values:</p></li>
-<li><p><strong>'longest'</strong> (<em>- True or</em>) -- Pad to the longest sequence in the batch (or no padding if only a single
-sequence if provided).</p></li>
-<li><p><strong>'max_length'</strong> (<em>-</em>) -- Pad to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the maximum
-acceptable input length for the model if that argument is not provided.</p></li>
-<li><p><strong>'do_not_pad'</strong> (<em>- False or</em>) -- No padding (i.e., can output a batch with sequences of different
-lengths).</p></li>
-<li><p><strong>truncation</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or :class:<code class="docutils literal notranslate"><span class="pre">~egrecho.core.tokenizer.TruncationStrategy</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Activates and controls truncation. Accepts the following values:</p></li>
-<li><p><strong>'longest_first'</strong> (<em>- True or</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or</p></li>
-<li><p><strong>will</strong> (<em>to the maximum acceptable input length for the model if that argument is not provided. This</em>) -- </p></li>
-<li><p><strong>token</strong> (<em>truncate token by</em>) -- </p></li>
-<li><p><strong>of</strong> (<em>removing a token from the longest sequence in the pair if a pair</em>) -- </p></li>
-<li><p><strong>sequences</strong> (<em>truncate the second sequence</em><em> of </em><em>a pair if a pair of</em>) -- </p></li>
-<li><p><strong>'only_first'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the</p></li>
-<li><p><strong>only</strong> (<em>maximum acceptable input length for the model if that argument is not provided. This will</em>) -- </p></li>
-<li><p><strong>sequences</strong> -- </p></li>
-<li><p><strong>'only_second'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the</p></li>
-<li><p><strong>only</strong> -- </p></li>
-<li><p><strong>sequences</strong> -- </p></li>
-<li><p><strong>'do_not_truncate'</strong> (<em>- False or</em>) -- No truncation (i.e., can output batch with sequence lengths</p></li>
-<li><p><strong>size</strong><strong>)</strong><strong>.</strong> (<em>greater than the model maximum admissible input</em>) -- </p></li>
+<li><p><strong>padding</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="../utils/index.html#egrecho.utils.types.PaddingStrategy" title="egrecho.utils.types.PaddingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PaddingStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- <p>Activates
+and controls padding. Accepts the following values:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">'longest'</span></code>: Pad to the longest sequence in the batch (or no padding if only
+a single sequence if provided).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'max_length'</span></code>: Pad to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the
+maximum acceptable input length for the model if that argument is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">'do_not_pad'</span></code> (default): No padding (i.e., can output a batch with sequences
+of different  lengths).</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>truncation</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TruncationStrategy" title="egrecho.core.tokenizer.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- <p>Activates
+and controls truncation. Accepts the following values:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">'longest_first'</span></code>: Truncate to a maximum length specified with the argument
+<code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the maximum acceptable input length for the model if that argument
+is not provided. This will truncate token by token, removing a token from the longest
+sequence in the pair if a pair of sequences (or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_first'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or
+to the maximum acceptable input length for the model if that argument is not provided. This
+will only truncate the first sequence of a pair if a pair of sequences
+(or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_second'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code>
+or to the maximum acceptable input length for the model if that argument is not provided.
+This will only truncate the second sequence of a pair if a pair of sequences
+(or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">'do_not_truncate'</span></code> (default): No truncation (i.e., can
+output batch with sequence lengths greater than the model maximum admissible input size).</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>max_length</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) -- <p>Controls the maximum length to use by one of the truncation/padding parameters.</p>
 <p>If left unset or set to <code class="docutils literal notranslate"><span class="pre">None</span></code>, this will use the predefined model maximum length if a maximum length
 is required by one of the truncation/padding parameters. If the model has no specific maximum input
@@ -816,9 +818,15 @@ which it will tokenize. This is useful for NER or token classification.</p></li>
 <li><p><strong>pad_to_multiple_of</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) -- If set will pad the sequence to a multiple of the provided value. Requires <code class="docutils literal notranslate"><span class="pre">padding</span></code> to be activated.
 This is especially useful to enable the use of Tensor Cores on NVIDIA hardware with compute capability
 <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">7.5</span></code> (Volta).</p></li>
-<li><p><strong>return_tensors</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TensorType" title="egrecho.core.tokenizer.TensorType"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorType</span></code></a>, <em>optional</em>) -- If set, will return tensors instead of list of python integers. Acceptable values are:</p></li>
-<li><p><strong>'pt'</strong> (<em>-</em>) -- Return PyTorch <code class="docutils literal notranslate"><span class="pre">torch.Tensor</span></code> objects.</p></li>
-<li><p><strong>'np'</strong> (<em>-</em>) -- Return Numpy <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> objects.</p></li>
+<li><p><strong>return_tensors</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TensorType" title="egrecho.core.tokenizer.TensorType"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorType</span></code></a>, <em>optional</em>) -- <p>If set, will return tensors instead of list
+of python integers. Acceptable values are:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'pt'</span></code>: Return PyTorch <code class="docutils literal notranslate"><span class="pre">torch.Tensor</span></code> objects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'np'</span></code>: Return Numpy <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> objects.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>return_token_type_ids</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) -- Whether to return token type IDs. If left to the default, will return the token type IDs according to
 the specific tokenizer’s default, defined by the <code class="docutils literal notranslate"><span class="pre">return_outputs</span></code> attribute.</p></li>
 <li><p><strong>return_attention_mask</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) -- Whether to return the attention mask. If left to the default, will return the attention mask according
@@ -829,7 +837,7 @@ of returning overflowing tokens.</p></li>
 <li><p><strong>return_special_tokens_mask</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Whether or not to return special tokens mask information.</p></li>
 <li><p><strong>return_length</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- Whether or not to return the lengths of the encoded inputs.</p></li>
 <li><p><strong>verbose</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>) -- Whether or not to print more information and warnings.</p></li>
-<li><p><strong>**kwargs</strong> -- passed to the <code class="docutils literal notranslate"><span class="pre">self.tokenize()</span></code> method</p></li>
+<li><p><strong>**kwargs</strong> -- passed to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">self.tokenize()</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -858,27 +866,35 @@ regular sequence tokens (when <code class="docutils literal notranslate"><span c
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.truncate_sequences">
-<span class="sig-name descname"><span class="pre">truncate_sequences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_tokens_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longest_first'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1148-L1280"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.truncate_sequences" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">truncate_sequences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_tokens_to_remove</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncation_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'longest_first'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1155-L1289"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.truncate_sequences" title="Permalink to this definition">#</a></dt>
 <dd><p>Truncates a sequence pair in-place following the strategy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ids</strong> (<code class="docutils literal notranslate"><span class="pre">List[int]</span></code>) -- Tokenized input ids of the first sequence. Can be obtained from a string by the :meth:<code class="docutils literal notranslate"><span class="pre">text2ids</span></code>.</p></li>
-<li><p><strong>pair_ids</strong> (<code class="docutils literal notranslate"><span class="pre">List[int]</span></code>, <em>optional</em>) -- Tokenized input ids of the second sequence. Can be obtained from a string by the :meth:<code class="docutils literal notranslate"><span class="pre">text2ids</span></code>.</p></li>
+<li><p><strong>ids</strong> (<code class="docutils literal notranslate"><span class="pre">List[int]</span></code>) -- Tokenized input ids of the first sequence. Can be obtained from a string by the <code class="xref py py-meth docutils literal notranslate"><span class="pre">text2ids()</span></code>.</p></li>
+<li><p><strong>pair_ids</strong> (<code class="docutils literal notranslate"><span class="pre">List[int]</span></code>, <em>optional</em>) -- Tokenized input ids of the second sequence. Can be obtained from a string by the <code class="xref py py-meth docutils literal notranslate"><span class="pre">text2ids()</span></code>.</p></li>
 <li><p><strong>num_tokens_to_remove</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>, defaults to 0) -- Number of tokens to remove using the truncation strategy.</p></li>
-<li><p><strong>truncation_strategy</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TruncationStrategy" title="egrecho.core.tokenizer.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- The strategy to follow for truncation. Can be:</p></li>
-<li><p><strong>'longest_first'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the
-maximum acceptable input length for the model if that argument is not provided. This will truncate
-token by token, removing a token from the longest sequence in the pair if a pair of sequences (or a
-batch of pairs) is provided.</p></li>
-<li><p><strong>'only_first'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the
-maximum acceptable input length for the model if that argument is not provided. This will only
-truncate the first sequence of a pair if a pair of sequences (or a batch of pairs) is provided.</p></li>
-<li><p><strong>'only_second'</strong> (<em>-</em>) -- Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the
-maximum acceptable input length for the model if that argument is not provided. This will only
-truncate the second sequence of a pair if a pair of sequences (or a batch of pairs) is provided.</p></li>
-<li><p><strong>'do_not_truncate'</strong> (<em>-</em>) -- No truncation (i.e., can output batch with sequence lengths greater
-than the model maximum admissible input size).</p></li>
+<li><p><strong>truncation_strategy</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TruncationStrategy" title="egrecho.core.tokenizer.TruncationStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncationStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>) -- <p>The
+strategy to follow for truncation. Can be:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'longest_first'</span></code>: Truncate to a maximum length specified with the argument
+<code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the maximum acceptable input length for the model if that argument
+is not provided. This will truncate token by token, removing a token from the longest
+sequence in the pair if a pair of sequences (or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_first'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code>
+or to the maximum acceptable input length for the model if that argument is not provided.
+This will only truncate the first sequence of a pair if a pair of sequences
+(or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'only_second'</span></code>: Truncate to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code>
+or to the maximum acceptable input length for the model if that argument is not provided.
+This will only truncate the second sequence of a pair if a pair of
+sequences (or a batch of pairs) is provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'do_not_truncate'</span></code> (default): No truncation (i.e., can output batch with sequence
+lengths greater than the model maximum admissible input size).</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>stride</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>, defaults to 0) -- If set to a positive number, the overflowing tokens returned will contain some tokens from the main
 sequence returned. The value of this argument defines the number of additional tokens.</p></li>
 </ul>
@@ -896,7 +912,7 @@ of sequences (or a batch of pairs) is provided.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens">
-<span class="sig-name descname"><span class="pre">build_inputs_with_special_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_ids_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1282-L1300"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_inputs_with_special_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_ids_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1291-L1309"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.build_inputs_with_special_tokens" title="Permalink to this definition">#</a></dt>
 <dd><p>Build model inputs from a sequence or a pair of sequence for sequence classification tasks by concatenating and
 adding special tokens.</p>
 <p>This implementation does not add special tokens and this method should be overridden in a subclass.</p>
@@ -918,7 +934,7 @@ adding special tokens.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.create_token_type_ids_from_sequences">
-<span class="sig-name descname"><span class="pre">create_token_type_ids_from_sequences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_ids_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1302-L1318"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.create_token_type_ids_from_sequences" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create_token_type_ids_from_sequences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_ids_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1311-L1327"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.create_token_type_ids_from_sequences" title="Permalink to this definition">#</a></dt>
 <dd><p>Create the token type IDs corresponding to the sequences passed.
 Should be overridden in a subclass if the model has a special way of building those.</p>
 <dl class="field-list simple">
@@ -939,9 +955,9 @@ Should be overridden in a subclass if the model has a special way of building th
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.get_special_tokens_mask">
-<span class="sig-name descname"><span class="pre">get_special_tokens_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_ids_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">already_has_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1320-L1354"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.get_special_tokens_mask" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_special_tokens_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_ids_1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">already_has_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1329-L1363"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.get_special_tokens_mask" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves sequence ids from a token list that has no special tokens added. This method is called when adding
-special tokens using the tokenizer <cite>prepare_for_model</cite>.</p>
+special tokens using the tokenizer <a class="reference internal" href="#egrecho.core.tokenizer.Tokenizer.prepare_for_model" title="egrecho.core.tokenizer.Tokenizer.prepare_for_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prepare_for_model()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -961,7 +977,7 @@ special tokens using the tokenizer <cite>prepare_for_model</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.pad">
-<span class="sig-name descname"><span class="pre">pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_to_multiple_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tensors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1356-L1522"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.pad" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_to_multiple_of</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_attention_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tensors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1365-L1531"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.pad" title="Permalink to this definition">#</a></dt>
 <dd><p>Pad a single encoded input or a batch of encoded inputs up to predefined length or to the max sequence length
 in the batch.</p>
 <p>Padding side (left/right) padding token ids are defined at the tokenizer level (with <code class="docutils literal notranslate"><span class="pre">self.padding_side</span></code>,
@@ -984,14 +1000,19 @@ collate function.</p>
 <p>Instead of <code class="docutils literal notranslate"><span class="pre">List[int]</span></code> you can have tensors (numpy arrays, PyTorch tensors), see
 the note above for the return type.</p>
 </p></li>
-<li><p><strong>padding</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="../utils/index.html#egrecho.utils.types.PaddingStrategy" title="egrecho.utils.types.PaddingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PaddingStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>) -- Select a strategy to pad the returned sequences (according to the model’s padding side and padding
-index) among:</p></li>
-<li><p><strong>'longest'</strong> (<em>- True or</em>) -- Pad to the longest sequence in the batch (or no padding if only a single
-sequence if provided).</p></li>
-<li><p><strong>'max_length'</strong> (<em>-</em>) -- Pad to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to the maximum
-acceptable input length for the model if that argument is not provided.</p></li>
-<li><p><strong>'do_not_pad'</strong> (<em>- False or</em>) -- No padding (i.e., can output a batch with sequences of different
-lengths).</p></li>
+<li><p><strong>padding</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="../utils/index.html#egrecho.utils.types.PaddingStrategy" title="egrecho.utils.types.PaddingStrategy"><code class="xref py py-class docutils literal notranslate"><span class="pre">PaddingStrategy</span></code></a>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>) -- <p>Select a strategy to pad the returned sequences (according to the model’s padding side and padding
+index) among:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">'longest'</span></code>: Pad to the longest sequence in the batch (or no padding if only
+a single sequence if provided).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'max_length'</span></code>: Pad to a maximum length specified with the argument <code class="docutils literal notranslate"><span class="pre">max_length</span></code> or to
+the maximum acceptable input length for the model if that argument is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">'do_not_pad'</span></code> (default): No padding (i.e., can output a batch with
+sequences of different lengths).</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>max_length</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) -- Maximum length of the returned list and optionally padding length (see above).</p></li>
 <li><p><strong>pad_to_multiple_of</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <em>optional</em>) -- <p>If set will pad the sequence to a multiple of the provided value.</p>
 <p>This is especially useful to enable the use of Tensor Cores on NVIDIA hardware with compute capability
@@ -999,9 +1020,15 @@ lengths).</p></li>
 </p></li>
 <li><p><strong>return_attention_mask</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>) -- Whether to return the attention mask. If left to the default, will return the attention mask according
 to the specific tokenizer’s default, defined by the <code class="docutils literal notranslate"><span class="pre">return_outputs</span></code> attribute.</p></li>
-<li><p><strong>return_tensors</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TensorType" title="egrecho.core.tokenizer.TensorType"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorType</span></code></a>, <em>optional</em>) -- If set, will return tensors instead of list of python integers. Acceptable values are:</p></li>
-<li><p><strong>'pt'</strong> (<em>-</em>) -- Return PyTorch <code class="docutils literal notranslate"><span class="pre">torch.Tensor</span></code> objects.</p></li>
-<li><p><strong>'np'</strong> (<em>-</em>) -- Return Numpy <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> objects.</p></li>
+<li><p><strong>return_tensors</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code> or <a class="reference internal" href="#egrecho.core.tokenizer.TensorType" title="egrecho.core.tokenizer.TensorType"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorType</span></code></a>, <em>optional</em>) -- <p>If set, will
+return tensors instead of list of python integers. Acceptable values are:</p>
+<blockquote>
+<div><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'pt'</span></code>: Return PyTorch <code class="docutils literal notranslate"><span class="pre">torch.Tensor</span></code> objects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'np'</span></code>: Return Numpy <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> objects.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
 <li><p><strong>verbose</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>, <em>optional</em>, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>) -- Whether or not to print more information and warnings.</p></li>
 </ul>
 </dd>
@@ -1013,7 +1040,7 @@ to the specific tokenizer’s default, defined by the <code class="docutils lite
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.batch_decode">
-<span class="sig-name descname"><span class="pre">batch_decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1644-L1671"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.batch_decode" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">batch_decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1652-L1679"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.batch_decode" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert a list of lists of token ids into a list of strings by calling decode.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1034,7 +1061,7 @@ to the specific tokenizer’s default, defined by the <code class="docutils lite
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.Tokenizer.decode">
-<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1673-L1703"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.decode" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_special_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1681-L1711"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.Tokenizer.decode" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts a sequence of ids in a string, using the tokenizer and vocabulary with options to remove special
 tokens and clean up tokenization spaces.</p>
 <p>Similar to doing <code class="docutils literal notranslate"><span class="pre">self.ids2text(token_ids)</span></code>.</p>
@@ -1059,7 +1086,7 @@ tokens and clean up tokenization spaces.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.core.tokenizer.convert_to_tensors">
-<span class="sig-prename descclassname"><span class="pre">egrecho.core.tokenizer.</span></span><span class="sig-name descname"><span class="pre">convert_to_tensors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensor_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prepend_batch_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1730-L1812"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.convert_to_tensors" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.core.tokenizer.</span></span><span class="sig-name descname"><span class="pre">convert_to_tensors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tensor_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prepend_batch_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/tokenizer.py#L1738-L1820"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.tokenizer.convert_to_tensors" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert the inner content of a dict to tensors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1136,7 +1163,7 @@ tokens and clean up tokenization spaces.</p>
 <li><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig"><code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig</span></code></a><ul>
 <li><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.extra_files_names"><code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig.extra_files_names</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.get_extra_files"><code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig.get_extra_files()</span></code></a></li>
-<li><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.from_cfg_dir"><code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig.from_cfg_dir()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.fetch_from"><code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig.fetch_from()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.core.tokenizer.BaseTokenizerConfig.copy_extras"><code class="docutils literal notranslate"><span class="pre">BaseTokenizerConfig.copy_extras()</span></code></a></li>
 </ul>
 </li>
@@ -1190,7 +1217,7 @@ tokens and clean up tokenization spaces.</p>
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=4ea706d9"></script>
     <script src="../../_static/tabs.js?v=3ee01567"></script>
