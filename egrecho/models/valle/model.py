@@ -45,7 +45,12 @@ class Valle(TopVirtualModel):
         self.ar_model = ArDecoder(self.config) if self.config.has_ar else None
         self.nar_model = NarDecoder(self.config) if self.config.has_nar else None
 
-        # self.example_input_array = {"input_features": torch.randn(2, 200, self.config.inputs_dim)}
+        self.example_input_array = {
+            "input_ids": torch.randint(
+                0, self.config.codebook_size, size=[1, 149, self.config.num_codebooks]
+            ),
+            "text_input_ids": torch.randint(0, self.config.vocab_size, size=[1, 40]),
+        }
 
     def sample_nar_qnt_idx(self):
         if (train_nar_rng := getattr(self, "train_nar_rng", None)) is None:
@@ -97,16 +102,17 @@ class Valle(TopVirtualModel):
         outputs = ValleOutput()
         if has_ar:
             # ignore -100
+            ar_tgt_ids = ar_tgt_ids[..., 0]
             if attention_mask is not None:
-                ar_tgt_ids = ar_tgt_ids[..., 0].masked_fill(
-                    ~(attention_mask.bool()), -100
-                )
+                ar_tgt_ids = ar_tgt_ids.masked_fill(~(attention_mask.bool()), -100)
+
             ar_out = self.ar_model.forward(
                 input_ids,
                 attention_mask,
                 text_input_ids=text_input_ids,
                 text_attention_mask=text_attention_mask,
             )
+
             ar_logits = ar_out[0]
 
             ar_loss = loss_fn(
@@ -117,6 +123,7 @@ class Valle(TopVirtualModel):
             outputs.ar_logits = ar_logits
             outputs.ar_loss = ar_loss
             outputs.ar_labels = ar_tgt_ids
+
         if has_nar:
             codebook_idx = self.sample_nar_qnt_idx()
             nar_logits = self.nar_model.forward(
@@ -129,14 +136,15 @@ class Valle(TopVirtualModel):
                 prefix_attention_mask=prefix_attention_mask,
             )
             codebook_size = self.config.codebook_size
+            nar_tgt_ids = input_ids[:, -nar_logits.shape[1] :, codebook_idx]
             nar_loss = loss_fn(
                 nar_logits[..., :codebook_size],
-                input_ids[..., codebook_idx],
+                nar_tgt_ids,
                 ignore_index=codebook_size,
             )
             outputs.nar_logits = nar_logits
             outputs.nar_loss = nar_loss
-            outputs.ar_labels = input_ids[:, -nar_logits.shape[1], codebook_idx]
+            outputs.nar_labels = nar_tgt_ids
         return outputs
 
     @torch.inference_mode()
@@ -181,6 +189,7 @@ class Valle(TopVirtualModel):
         Returns:
           Return the predicted audio code matrix.
         """
+
         if not all(
             completed := (self.nar_model is not None, self.ar_model is not None)
         ):
@@ -195,6 +204,7 @@ class Valle(TopVirtualModel):
                     "[HINT] prompt_text_attention_mask should be of shape `(batch_size, prompt_text_sequence_length)`"
                     ". Mask values selected in `[0, 1]`. While 1 means not pad and 0 means pad."
                 )
+
         bsz = text_input_ids.shape[0]
         device = input_ids.device
 
@@ -249,8 +259,9 @@ def loss_fn(logits, targets, ignore_index: int = -100):
     logits = logits.contiguous()
     targets = targets[:, -logits.shape[1] :].contiguous()
     loss = torch.nn.functional.cross_entropy(
-        logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=ignore_index
+        logits.view(-1, logits.size(-1)), targets.reshape(-1), ignore_index=ignore_index
     )
+
     return loss
 
 
@@ -276,16 +287,16 @@ def example_usage():
         text_attention_mask=x_mask,
     )
 
-    for prefix_mod in ['starter', 'exter']:
+    for prefix_mod in ["starter", "exter"]:
         config.prefix_mode = prefix_mod
         model_inputs = main_model_inputs.copy()
-        if prefix_mod == 'exter':
+        if prefix_mod == "exter":
             prefix_codes = torch.randint(0, 1000, size=[4, 12, 8])
-            model_inputs['prefix_codes'] = prefix_codes
+            model_inputs["prefix_codes"] = prefix_codes
         model = Valle(config)
         print(model)
         print(
-            f'Params num: {model.get_num_params()}, Test prefix_mod={prefix_mod} ....'
+            f"Params num: {model.get_num_params()}, Test prefix_mod={prefix_mod} ...."
         )
         model_inputs = to_device(model_inputs, device)
         model.to(device=device)
@@ -298,7 +309,7 @@ def example_usage():
             ar_loss=valle_outs.ar_loss.detach().item(),
             nar_loss=valle_outs.nar_loss.detach().item(),
         )
-        print(f'Training forward: {stats}')
+        print(f"Training forward: {stats}")
 
         # Generate
         model.eval()
@@ -307,18 +318,18 @@ def example_usage():
         infer_y_lens = torch.randint(4, 8, size=[4])
         infer_y_lens[-1] = 8
         infer_y_mask = make_non_pad_mask(infer_y_lens)
-        model_inputs['input_ids'] = infer_y
-        model_inputs['attention_mask'] = infer_y_mask
-        if prefix_mod == 'exter':
+        model_inputs["input_ids"] = infer_y
+        model_inputs["attention_mask"] = infer_y_mask
+        if prefix_mod == "exter":
             # we assume half of tot text is prompts part and we need exlude it in later nar for this mode.
             prompt_text_lens = x_lens // 2
             prompt_text_attention_mask = make_non_pad_mask(prompt_text_lens)
-            model_inputs['prompt_text_attention_mask'] = prompt_text_attention_mask
+            model_inputs["prompt_text_attention_mask"] = prompt_text_attention_mask
         model_inputs = to_device(model_inputs, device)
         preds, att_mask = model.generate(**model_inputs)
         lens = att_mask.sum(-1)
-        print('Generates codebook:')
-        print(f'gen batch auidos shape: {preds.shape}, lens: {lens}')
+        print("Generates codebook:")
+        print(f"gen batch auidos shape: {preds.shape}, lens: {lens}")
         release_memory(model)
 
 

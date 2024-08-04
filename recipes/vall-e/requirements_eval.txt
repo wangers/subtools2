@@ -1,0 +1,4 @@
+transformers
+jiwer        # 2.5.1
+zhconv     # 1.4.2
+uvicorn       # 0.21.1

@@ -1,0 +1,82 @@
+save_dir: exp/valle/ar_llama
+seed_everything: 42
+data:
+  data_dir: exp/egs/libritts
+  file_patterns:
+    train: cuts*train*
+    val: cuts*dev*
+  filter_min_dur: 1.
+  filter_max_dur: 20
+  max_duration: 150.0
+  bucketing_sampler: true
+  num_buckets: 10
+  concatenate_cuts: false
+  duration_factor: 1.0
+  gap: 0.1
+  shuffle: true
+  buffer_size: 40000
+  shuffle_buffer_size: 100000
+  drop_last: true
+  return_cuts: true
+  num_workers: 8
+  tokenizer_config:
+    language: en-us
+    backend: espeak
+model:
+  rope: true
+  num_layers: 12
+  num_heads: 16
+  hidden_size: 1024
+  dropout: 0.0
+  ffn_type: gated
+  hidden_act: swish
+  bias: false
+  norm_type: rms
+  use_sdpa: true
+  prefix_mode: starter
+  has_ar: true
+  has_nar: false
+resume_ckpt: null
+init_weight: false
+init_weight_params:
+  checkpoint: last.ckpt
+  dirpath: null
+  best_k_fname: best_k_models.yaml
+  best_k_mode: min
+teacher:
+  optimizer: ''
+  lr_scheduler:
+  - eden
+  - warmup_steps: 1000
+    lr_batches: 5000
+    lr_epochs: 4
+    warmup_start: 0.01
+  lr: 0.03
+trainer:
+  accelerator: gpu
+  strategy: auto
+  devices: 0,1
+  precision: 16-mixed
+  fast_dev_run: false
+  max_epochs: 40
+  limit_train_batches: null
+  limit_val_batches: 512
+  val_check_interval: 5000
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 100
+  accumulate_grad_batches: 4
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  inference_mode: true
+  use_distributed_sampler: false
+  profiler: null
+mckpt:
+  filename: epoch{epoch}-val_loss{val_loss:.3f}-step{step}
+  monitor: val_loss
+  save_last: true
+  save_top_k: 10
+  mode: min
+  auto_insert_metric_name: false
+  every_n_epochs: 1
+  # every_n_train_steps: 1000
+  save_on_train_epoch_end: true

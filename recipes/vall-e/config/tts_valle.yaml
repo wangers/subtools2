@@ -1,0 +1,33 @@
+ar:
+  dirpath: exp/valle/ar_llama
+  checkpoint: last.ckpt
+sub_ar: true
+model:
+  checkpoint: last.ckpt
+  version: version
+  dirpath: exp/valle/nar_llama
+  best_k_fname: best_k_models.yaml
+  best_k_mode: min
+
+gpu_id: auto
+demo:
+  text: To get up and running quickly just follow the steps below.
+  # 8455_210777_000067_000000 8463_294825_000043_000000
+  prompt_audio: ./prompts/libritts/8455_210777_000067_000000.wav
+  prompt_text_path: ./prompts/libritts/8455_210777_000067_000000.txt
+  outfile: valle_llama_8455_210777_000067_000000.wav
+  gen_args:
+    phn_dur: 0.2
+    top_k: -100
+    temperature: 1.0
+    top_p: 1.0
+infer:
+  eg_file: 'exp/egs/libritts/egs_test_prompt_200.jsonl'
+  outdir: 'data/infer/libritts/valle/test'
+  gen_args:
+    phn_dur: 0.2
+    top_k: -100
+    temperature: 1.0
+    top_p: 1.0
+export:
+  outdir: exp/valle/valle-final

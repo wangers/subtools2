@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2024-04)
-
 from dataclasses import dataclass
 
 from typing_extensions import Literal, Optional
@@ -88,15 +87,18 @@ class ValleConfig(DataclassConfig):
     hidden_act: str = "swish"
     bias: bool = True
     norm_type: Literal["rms", "ln"] = "ln"
+    ada_norm: bool = True
     norm_eps: Optional[float] = None
     use_sdpa: bool = True
+    nar_sdpa_32bit: bool = True
     prefix_mode: Literal["starter", "exter"] = "starter"
     pad_text_token_id: int = 0
 
     def __post_init__(self):
         assert self.prefix_mode in ["starter", "exter"], self.prefix_mode
+
         self.encodec_config = self.encodec_config or EncodecConfig()
-        self.norm_eps = self.norm_eps or (1e-5 if self.norm_type == "ln" else 1e-6)
+        self.norm_eps = self.norm_eps or 1e-5
 
     @property
     def codebook_size(self):

@@ -8,6 +8,7 @@ Refs:
         http://arxiv.org/abs/2301.02111
     repo: http://github.com/lifeiteng/vall-e
 """
+import contextlib
 import math
 from typing import Any, Literal, Optional, Tuple
 
@@ -15,10 +16,11 @@ import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
 from torch.nn.utils.rnn import pad_sequence
-from valle_config import ValleConfig
 
 from egrecho.core.model_base import ModelBase
+from egrecho.models.valle.valle_config import ValleConfig
 from egrecho.nn.activation import Nonlinearity
+from egrecho.utils.cuda_utils import avoid_float16_autocast_context
 from egrecho.utils.mask import (
     make_causal_mask,
     make_non_pad_mask,
@@ -36,7 +38,8 @@ def apply_rope(x: torch.Tensor, rotary_pe: torch.Tensor) -> torch.Tensor:
         x (`torch.Tensor`): The tensor of shape [bsz, n_head, T, d_model//n_head].
         rotary_emed (`torch.Tensor`): Precomputed rotary of shape [b_rope, T, d_model//n_head//2, 2].
     """
-    assert x.shape[2] == rotary_pe[1]
+
+    assert x.shape[2] == rotary_pe.shape[1]
 
     xshaped = x.float().reshape(
         *x.shape[:-1], -1, 2
@@ -312,6 +315,9 @@ class LayerNorm(nn.Module):
 
 
 class ValleAttention(nn.Module):
+
+    sdpa_32bit = False
+
     def __init__(self, config: ValleConfig):
         super().__init__()
 
@@ -343,7 +349,6 @@ class ValleAttention(nn.Module):
                 log.warning_once(msg, ranks=0)
             except Exception as exc:  # noqa
                 print(f"WARNING: {msg}")
-
         # key, query, value projections for all heads, but in a batch
         self.att_proj = nn.Linear(
             config.hidden_size, 3 * config.hidden_size, bias=config.bias
@@ -384,24 +389,41 @@ class ValleAttention(nn.Module):
                 key = key.contiguous()
                 value = value.contiguous()
 
-            return F.scaled_dot_product_attention(
-                query,
-                key,
-                value,
-                attn_mask=attention_mask,
-                dropout_p=self.dropout if self.training else 0,
+                attention_mask = _cast_attn_bias(attention_mask, query.dtype)
+
+            ctx = (
+                avoid_float16_autocast_context()
+                if self.sdpa_32bit
+                else contextlib.nullcontext()
             )
+            with ctx:
+                attn_output = F.scaled_dot_product_attention(
+                    query,
+                    key,
+                    value,
+                    attn_mask=attention_mask,
+                    dropout_p=self.dropout if self.training else 0,
+                )
+            return attn_output
 
-        attn_weights = torch.matmul(query, key.transpose(-1, -2)) * (
-            1.0 / math.sqrt(self.head_dim)
+        attn_weights = torch.matmul(query, key.transpose(-1, -2)) / math.sqrt(
+            self.head_dim
         )
-
         if attention_mask is not None:
             # Apply the attention mask
             attn_weights = attn_weights + attention_mask
+        attn_weights = torch.max(
+            attn_weights,
+            torch.tensor(
+                torch.finfo(attn_weights.dtype).min, device=attn_weights.device
+            ),
+        )
 
-        attn_weights = nn.functional.softmax(attn_weights, dim=-1)
-        attn_weights = attn_weights.to(value.dtype)
+        # upcast attention to fp32
+        attn_weights = nn.functional.softmax(attn_weights.float(), dim=-1).to(
+            query.dtype
+        )
+
         attn_weights = self.attn_dropout(attn_weights)
 
         # (batch, num_heads, seq_len, seq_len) x (batch, num_heads, seq_len, attn_head_size)
@@ -440,6 +462,7 @@ class ValleAttention(nn.Module):
             present = None
 
         attn_output = self._attn(query, key, value, attention_mask=attention_mask)
+
         attn_output = self._merge_heads(attn_output, self.num_heads, self.head_dim)
         attn_output = self.out_proj(attn_output)
         attn_output = self.resid_dropout(attn_output)
@@ -576,9 +599,10 @@ class NarBlock(nn.Module):
     def __init__(self, config: ValleConfig, layer_idx):
         super().__init__()
 
-        self.norm_1 = norm_fac(config, ada=True)
+        self.norm_1 = norm_fac(config, ada=config.ada_norm)
         self.attn = ValleAttention(config)
-        self.norm_2 = norm_fac(config, ada=True)
+        self.attn.sdpa_32bit = config.nar_sdpa_32bit
+        self.norm_2 = norm_fac(config, ada=config.ada_norm)
         self.mlp = fnn_fac(config)
         self.layer_idx = layer_idx
 
@@ -598,7 +622,6 @@ class NarBlock(nn.Module):
             rotary_pe (`torch.Tensor`):
                 If not None, apply precomputed rotary of shape [bsz, T, d_model//n_head//2, 2].
         """
-
         attn_output, _ = self.attn(
             self.norm_1(hidden_states, stage_embedding),
             attention_mask=attention_mask,
@@ -609,6 +632,7 @@ class NarBlock(nn.Module):
             self.norm_2(hidden_states, stage_embedding)
         )
         outputs = hidden_states
+
         return outputs
 
 
@@ -674,7 +698,7 @@ class Decoder(ValleBase):
         self.layers = nn.ModuleList(
             [block_cls(config, layer_idx) for layer_idx in range(config.num_layers)]
         )
-        self.norm_f = norm_fac(config, ada=not self.is_ar)
+        self.norm_f = norm_fac(config, ada=(not self.is_ar and config.ada_norm))
 
     @property
     def is_ar(self) -> bool:
@@ -773,6 +797,7 @@ class ArDecoder(Decoder):
         past_key_values_length = (
             past_key_values[0][0].shape[2] if past_key_values is not None else 0
         )
+
         if not start_pos:
             text_embeds = self.text_embeddings(text_input_ids)
             text_position_ids = torch.arange(
@@ -782,6 +807,7 @@ class ArDecoder(Decoder):
                 text_embeds, text_position_ids
             )
             input_embeds = torch.cat([text_embeds, input_embeds], dim=1)
+
             if not self.rope:
                 text_inputs_pe = None
             else:
@@ -816,10 +842,12 @@ class ArDecoder(Decoder):
             dtype,
             past_key_values_length=prefix_casual_length,
         )
+
         # (bsz, 1, seq_len, seq_len + past_key_values_length)
         attention_4d_mask = prepare_4d_attention_mask(
             attention_mask, dtype, tgt_len=input_embeds.shape[1]
         )
+
         if not start_pos:
             attention_4d_mask = attention_4d_mask.clone()  # copy in-place edit
             attention_4d_mask[
@@ -834,6 +862,7 @@ class ArDecoder(Decoder):
                 attention_4d_mask[:, :, prefix_casual_length:].bool(),
                 torch.finfo(dtype).min,
             )
+
         else:
             attention_4d_mask = casual_decoder_mask.masked_fill(
                 attention_4d_mask.bool(), torch.finfo(dtype).min
@@ -880,7 +909,7 @@ class ArDecoder(Decoder):
         text_attention_mask: Optional[torch.Tensor] = None,
         phn_dur: float = 0.22,
         top_k: int = -100,
-        temperature: float = 1.0,
+        temperature: float = 0.9,
         top_p: float = 1.0,
     ):
         """
@@ -944,18 +973,20 @@ class ArDecoder(Decoder):
             (bsz, audio_total_len), pad_id, dtype=torch.long, device=device
         )
         tokens[:, : input_ids.shape[1]] = input_ids
+
         prev_pos = 0
         eos_reached = torch.tensor([False] * bsz, device=device)
         eos_idx = torch.full_like(
             eos_reached, fill_value=min_prompt_len, dtype=torch.int32, device=device
         )
+
         stop_id = pad_id
 
         # those generated is True
         input_audio_mask = tokens != pad_id
 
         kv_cache = None
-        cache_attention_mask = None
+        cache_attention_mask = attention_mask
 
         for cur_pos in range(min_prompt_len, audio_total_len):
 
@@ -964,7 +995,7 @@ class ArDecoder(Decoder):
                 cache_attention_mask = torch.cat(
                     [
                         cache_attention_mask,
-                        ~eos_reached[..., None].to(dtype=attention_mask.dtype),
+                        (~eos_reached[..., None]).to(dtype=attention_mask.dtype),
                     ],
                     dim=1,
                 )
@@ -978,16 +1009,19 @@ class ArDecoder(Decoder):
                 input_pos=prev_pos,
             )
             logits = logits[:, -1]
+
             next_token = topk_sampling(
                 logits, top_k=top_k, top_p=top_p, temperature=temperature
             )
 
             next_token = next_token.reshape(-1)
             next_token[eos_reached] = pad_id
+
             # only replace token if prompt has already been generated
             next_token = torch.where(
                 input_audio_mask[:, cur_pos], tokens[:, cur_pos], next_token
             )
+
             tokens[:, cur_pos] = next_token
 
             stops = (torch.argmax(logits, dim=-1) == stop_id) | (next_token == stop_id)
@@ -1088,6 +1122,7 @@ class NarDecoder(Decoder):
             text_attention_mask = torch.ones(text_input_ids.shape[:2], device=device)
 
         text_embeds = self.text_embeddings(text_input_ids)
+
         text_len = text_input_ids.shape[1]
         text_position_ids = torch.arange(0, text_len, device=device).unsqueeze(0)
         text_embeds, text_inputs_pe = self.text_position(text_embeds, text_position_ids)
@@ -1119,6 +1154,7 @@ class NarDecoder(Decoder):
             # the current codebook_idx codebook
             input_embeds = torch.cat(input_embeds, dim=-1)
             input_embeds = input_embeds.sum(dim=-1)
+
             input_embeds = torch.cat([input_prompts, input_embeds], dim=1)
             position_ids = torch.arange(
                 0, input_embeds.shape[1], device=device
@@ -1290,7 +1326,6 @@ class NarDecoder(Decoder):
             )
 
         assert input_ids.shape[-1] == self.num_codebooks, input_ids.shape
-
         # codebook_idx = int(self.train_qnt_rng.integers(1, self.num_codebooks))
         (
             input_embeds,
@@ -1306,6 +1341,7 @@ class NarDecoder(Decoder):
             prefix_codes=prefix_codes,
             prefix_attention_mask=prefix_attention_mask,
         )
+
         if not self.rope:
             input_embeds_pe = None
         stage_embedding = self.nar_stage_embeddings[codebook_idx - 1].weight
@@ -1326,7 +1362,6 @@ class NarDecoder(Decoder):
             hidden_states = layer_outputs
 
         hidden_states = self.norm_f(hidden_states, stage_embedding)
-
         # (B, T, codebook_size + 1)
         logits = self.lm_heads[codebook_idx - 1](hidden_states[:, prefix_len:])
         return logits
@@ -1494,6 +1529,7 @@ def topk_sampling(logits, top_k=10, top_p=1.0, temperature=1.0):
     if temperature != 1.0:
         logits = logits / temperature
     # Top-p/top-k filtering
+
     logits = top_k_top_p_filtering(logits, top_k=top_k, top_p=top_p)
     # Sample
     token = torch.multinomial(F.softmax(logits, dim=-1), num_samples=1)
@@ -1558,3 +1594,18 @@ def padding_codes(
         # return input_ids[:, :-1], input_ids[:, 1:]
 
     return input_ids.squeeze(-1) if src_2d else input_ids, tgt_ids
+
+
+def _cast_attn_bias(bias: torch.Tensor, input_dtype: torch.dtype) -> torch.Tensor:
+    target_dtype = input_dtype
+    if torch.is_autocast_enabled():
+        if bias.device.type == "cuda":
+            target_dtype = torch.get_autocast_gpu_dtype()
+        elif bias.device.type == "cpu":
+            target_dtype = torch.get_autocast_cpu_dtype()
+        else:
+            raise NotImplementedError()
+    if bias.dtype != target_dtype:
+        bias = bias.to(target_dtype)
+        bias.masked_fill_(bias == float("-inf"), torch.finfo(target_dtype).min)
+    return bias

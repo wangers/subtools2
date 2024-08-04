@@ -1,0 +1,4 @@
+lhotse
+encodec        # 2.1.0
+phonemizer     # 3.2.0 https://github.com/csukuangfj/piper-phonemize/releases/tag/2023.12.5
+pypinyin       # 0.50.0
