@@ -91,10 +91,10 @@ The Vall-E consists of AR and NAR submodels, totaling approximately 371M paramet
 | Valle-llama-refine  | 0.538  | **4.12** (0.43, 0.87, 2.81)   |
 
 
-<details>
-<summary>Details</summary>
 
-> [!NOTE]
+<details>
+<summary><strong>NOTE</strong></summary>
+
 > 1. The WER is primarily influenced by the performance of the AR submodel. Meanwhile, the NAR submodel affects the speaker similarity a lot.
 > 2. The Vall-E-Llama converges quickly and easy to train. In contrast, the standard Vall-E converges slowly. For example, the AR submodel was trained for 20 epochs, and the NAR submodel for 35 epochs. I encountered a bot-like result in the TTS audio, which confused the whisper and resulted in a high WER.
 > 3. The comparison between the standard and Llama-style models was performed using identical strategies, as outlined in the ``train_ar.yaml``/``train_nar.yaml`` configuration files, the tensorboard logs can be view [here](#tensorboard).  Additionally, the ``refine`` version was trained for an extended number of total steps, following the ``trian*_llama.yaml`` configuration.
