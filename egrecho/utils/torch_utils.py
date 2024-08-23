@@ -260,6 +260,10 @@ def tensor_has_nan(tensor: torch.Tensor):
     return False
 
 
+def tensor_has_ifnit(tensor: torch.Tensor):
+    return torch.isinf(tensor).any()
+
+
 def single_torch_nj():
     # Torch's multithreaded behavior needs to be disabled or
     # it wastes a lot of CPU and slow things down.

@@ -90,7 +90,7 @@ class ValleConfig(DataclassConfig):
     ada_norm: bool = True
     norm_eps: Optional[float] = None
     use_sdpa: bool = True
-    nar_sdpa_32bit: bool = True
+    nar_sdpa_32bit: bool = False
     prefix_mode: Literal["starter", "exter"] = "starter"
     pad_text_token_id: int = 0
 

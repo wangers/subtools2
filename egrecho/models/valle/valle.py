@@ -41,10 +41,10 @@ def apply_rope(x: torch.Tensor, rotary_pe: torch.Tensor) -> torch.Tensor:
 
     assert x.shape[2] == rotary_pe.shape[1]
 
-    xshaped = x.float().reshape(
-        *x.shape[:-1], -1, 2
-    )  # (bsz, n_head, T, d_model//n_head//2, 2)
-    rotary_pe = rotary_pe.unsqueeze(1)  # b_rope, 1, T, d_model//n_head//2, 2)
+    xshaped = x.reshape(*x.shape[:-1], -1, 2)  # (bsz, n_head, T, d_model//n_head//2, 2)
+    rotary_pe = rotary_pe.unsqueeze(1).type_as(
+        x
+    )  # b_rope, 1, T, d_model//n_head//2, 2)
     x_out2 = torch.stack(
         [
             xshaped[..., 0] * rotary_pe[..., 0] - xshaped[..., 1] * rotary_pe[..., 1],
@@ -52,9 +52,7 @@ def apply_rope(x: torch.Tensor, rotary_pe: torch.Tensor) -> torch.Tensor:
         ],
         -1,
     )
-
-    x_out2 = x_out2.flatten(3)
-    return x_out2.type_as(x)
+    return x_out2.flatten(3)
 
 
 class SineEmbedding(nn.Module):
@@ -243,12 +241,18 @@ class TokenEmbedding(nn.Module):
 
 def norm_fac(config: ValleConfig, ada: bool = False):
     if ada:
-        return AdaptiveLayerNorm(
-            config.hidden_size,
-            bias=config.bias,
-            norm_type=config.norm_type,
-            eps=config.norm_eps,
-        )
+        if config.norm_type == "rms":
+            return AdaptiveRMSNorm(
+                config.hidden_size,
+                eps=config.norm_eps,
+            )
+        else:
+            return AdaptiveLayerNorm(
+                config.hidden_size,
+                bias=config.bias,
+                norm_type=config.norm_type,
+                eps=config.norm_eps,
+            )
     return (
         RMSNorm(config.hidden_size, eps=config.norm_eps)
         if config.norm_type == "rms"
@@ -282,21 +286,49 @@ class AdaptiveLayerNorm(nn.Module):
             split_size_or_sections=self.d_model,
             dim=-1,
         )
-        return weight * self.norm(input) + bias
+        out = weight * self.norm(input) + bias
+        return out
+
+
+class AdaptiveRMSNorm(nn.Module):
+    r"""Adaptive RMS Normalization"""
+
+    def __init__(
+        self,
+        d_model: int,
+        eps: float = 1e-5,
+    ) -> None:
+        super().__init__()
+        self._has_post_initialized = True  # skip global init
+        self.eps = eps
+        self.project_layer = nn.Linear(d_model, d_model, bias=False)
+        nn.init.zeros_(self.project_layer.weight)
+
+    def _norm(self, x):
+        return x * torch.rsqrt(x.pow(2).mean(-1, keepdim=True) + self.eps)
+
+    def forward(self, input: Tensor, embedding: Tensor) -> Tensor:
+        x = self._norm(input.float())
+        weight = self.project_layer(embedding).float()
+
+        x = (weight + 1.0) * x
+        return x.type_as(input)
 
 
 class RMSNorm(torch.nn.Module):
     def __init__(self, d_model: int, eps: float = 1e-6):
         super().__init__()
         self.eps = eps
-        self.weight = nn.Parameter(torch.ones(d_model))
+        # self.weight = nn.Parameter(torch.ones(d_model))
+        self.weight = nn.Parameter(torch.zeros(d_model))
 
     def _norm(self, x):
         return x * torch.rsqrt(x.pow(2).mean(-1, keepdim=True) + self.eps)
 
     def forward(self, x, embedding: Tensor = torch.empty(0)):
-        output = self._norm(x.float()).type_as(x)
-        return output * self.weight
+        output = self._norm(x.float())
+        output = output * (1.0 + self.weight.float())
+        return output.type_as(x)
 
 
 class LayerNorm(nn.Module):
@@ -405,13 +437,14 @@ class ValleAttention(nn.Module):
                     dropout_p=self.dropout if self.training else 0,
                 )
             return attn_output
-
         attn_weights = torch.matmul(query, key.transpose(-1, -2)) / math.sqrt(
             self.head_dim
         )
         if attention_mask is not None:
             # Apply the attention mask
+            attention_mask = _cast_attn_bias(attention_mask, attn_weights.dtype)
             attn_weights = attn_weights + attention_mask
+
         attn_weights = torch.max(
             attn_weights,
             torch.tensor(
@@ -540,7 +573,7 @@ class GatedFFN(nn.Module):
         self.activation = Nonlinearity(activation_type)
 
     def forward(self, x):
-        return self.dropout(self.out_proj(self.activation(self.w1(x)) * self.w3(x)))
+        return self.out_proj(self.dropout(self.activation(self.w1(x)) * self.w3(x)))
 
 
 class ArBlock(nn.Module):
@@ -601,9 +634,11 @@ class NarBlock(nn.Module):
 
         self.norm_1 = norm_fac(config, ada=config.ada_norm)
         self.attn = ValleAttention(config)
+        self.post_att_norm = norm_fac(config)
         self.attn.sdpa_32bit = config.nar_sdpa_32bit
         self.norm_2 = norm_fac(config, ada=config.ada_norm)
         self.mlp = fnn_fac(config)
+        self.post_mlp_norm = norm_fac(config)
         self.layer_idx = layer_idx
 
     def forward(
@@ -627,12 +662,13 @@ class NarBlock(nn.Module):
             attention_mask=attention_mask,
             rotary_pe=rotary_pe,
         )
-        hidden_states = hidden_states + attn_output
-        hidden_states = hidden_states + self.mlp(
-            self.norm_2(hidden_states, stage_embedding)
-        )
-        outputs = hidden_states
 
+        attn_output = self.post_att_norm(attn_output)
+
+        hidden_states = hidden_states + attn_output
+        outputs = hidden_states + self.post_mlp_norm(
+            self.mlp(self.norm_2(hidden_states, stage_embedding))
+        )
         return outputs
 
 
@@ -698,7 +734,7 @@ class Decoder(ValleBase):
         self.layers = nn.ModuleList(
             [block_cls(config, layer_idx) for layer_idx in range(config.num_layers)]
         )
-        self.norm_f = norm_fac(config, ada=(not self.is_ar and config.ada_norm))
+        self.norm_f = norm_fac(config)
 
     @property
     def is_ar(self) -> bool:
@@ -782,6 +818,7 @@ class ArDecoder(Decoder):
 
         # tok embedding
         input_embeds = self.audio_embeddings(input_ids)
+
         device, dtype = input_embeds.device, input_embeds.dtype
         input_bs_seq = input_ids.shape[:2]
         decoder_position_ids = torch.arange(
@@ -1089,7 +1126,6 @@ class NarDecoder(Decoder):
         #     self.lm_heads[j].weight = self.audio_embeddings[j + 2].weight
         for i in range(self.num_codebooks - 1):
             self.lm_heads[i].weight = self.audio_embeddings[i + 1].weight
-
         self.post_init()
         # apply special scaled init to the residual projections, GPT-2 paper
         for pn, p in self.named_parameters():
@@ -1116,11 +1152,11 @@ class NarDecoder(Decoder):
         # from the same utterance.
         # We implement this differently.
         device = input_ids.device
+
         if attention_mask is None:
             attention_mask = torch.ones(input_ids.shape[:2], device=device)
         if text_attention_mask is None:
             text_attention_mask = torch.ones(text_input_ids.shape[:2], device=device)
-
         text_embeds = self.text_embeddings(text_input_ids)
 
         text_len = text_input_ids.shape[1]
@@ -1238,6 +1274,7 @@ class NarDecoder(Decoder):
             text_attention_mask = torch.ones(text_input_ids.shape[:2], device=device)
 
         text_embeds = self.text_embeddings(text_input_ids)
+
         text_len = text_input_ids.shape[1]
         text_position_ids = torch.arange(0, text_len, device=device).unsqueeze(0)
         input_prompts = [
@@ -1327,6 +1364,7 @@ class NarDecoder(Decoder):
 
         assert input_ids.shape[-1] == self.num_codebooks, input_ids.shape
         # codebook_idx = int(self.train_qnt_rng.integers(1, self.num_codebooks))
+
         (
             input_embeds,
             attention_mask,
@@ -1345,11 +1383,11 @@ class NarDecoder(Decoder):
         if not self.rope:
             input_embeds_pe = None
         stage_embedding = self.nar_stage_embeddings[codebook_idx - 1].weight
-        hidden_states = input_embeds
         attention_4d_mask = prepare_4d_attention_mask(
             attention_mask, input_embeds.dtype
         )
-
+        attention_4d_mask = _cast_attn_bias(attention_4d_mask, input_embeds.dtype)
+        hidden_states = input_embeds.type_as(attention_4d_mask)
         for decoder_layer in self.layers:
 
             layer_outputs = decoder_layer(
@@ -1362,8 +1400,10 @@ class NarDecoder(Decoder):
             hidden_states = layer_outputs
 
         hidden_states = self.norm_f(hidden_states, stage_embedding)
+
         # (B, T, codebook_size + 1)
         logits = self.lm_heads[codebook_idx - 1](hidden_states[:, prefix_len:])
+
         return logits
 
     def generate(

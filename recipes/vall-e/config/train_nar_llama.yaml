@@ -26,13 +26,12 @@ model:
   num_layers: 12
   num_heads: 16
   hidden_size: 1024
-  dropout: 0.0
+  dropout: 0.1
   ffn_type: gated
   hidden_act: swish
   bias: false
   norm_type: rms
   use_sdpa: true
-  nar_sdpa_32bit: true
   prefix_mode: starter
   has_ar: false
   has_nar: true
@@ -44,14 +43,17 @@ init_weight_params:
   best_k_fname: best_k_models.yaml
   best_k_mode: min
 teacher:
-  optimizer: ''
+  optimizer:
+  - adamw
+  - weight_decay: 0.01
+    betas: [0.9, 0.95]
   lr_scheduler:
   - eden
   - warmup_steps: 1000
     lr_batches: 5000
     lr_epochs: 4
-    warmup_start: 0.01
-  lr: 0.03
+    warmup_start: 0.1
+  lr: 0.0005
 trainer:
   accelerator: auto
   strategy: ddp_find_unused_parameters_true
