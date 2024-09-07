@@ -13,7 +13,7 @@ import torch.nn.functional as F
 from torch.utils.data.dataloader import default_collate
 
 from egrecho.core.feature_extractor import BaseFeature
-from egrecho.data.features.lhotse_kaldi import LhotseFeat
+from egrecho.data.features.lhotse_kaldi import FEATURE_EXTRACTORS, LhotseFeat
 from egrecho.utils.common import alt_none, dict_union
 from egrecho.utils.logging import get_logger
 from egrecho.utils.misc import ConfigurationException
@@ -325,7 +325,8 @@ class KaldiFeatureExtractor(SequenceFeature):
 
         self.mean_norm = mean_norm
         self.std_norm = std_norm
-
+        if self.mean_norm:
+            padding_value = 0.0
         super().__init__(
             feature_size=self.feature_size,
             sampling_rate=self.sampling_rate,
@@ -440,11 +441,14 @@ class KaldiFeatureExtractor(SequenceFeature):
         output["feature_extractor_type"] = self.__class__.__name__
         output.pop("feature_size", None)
         output.pop("sampling_rate", None)
-        output.pop("padding_value", None)
         return output
 
+    @classmethod
+    def available_extractors(self) -> List[str]:
+        return FEATURE_EXTRACTORS.keys()
 
-class OfflineFeatureExtractor(SequenceFeature):
+
+class OfflineKaldiFeatureExtractor(SequenceFeature):
     """
     Offline-Kaldi feature extractor class, just hanle input feat tensors with padding, collates.
 
@@ -501,6 +505,8 @@ class OfflineFeatureExtractor(SequenceFeature):
         self.return_attention_mask = return_attention_mask
         self.feature_size = self.get_online_extractor().feature_dim
 
+        if self.mean_norm:
+            padding_value = 0.0
         super().__init__(
             feature_size=self.feature_size,
             sampling_rate=self.sampling_rate,
@@ -513,6 +519,8 @@ class OfflineFeatureExtractor(SequenceFeature):
         self,
         features: Union[SingleTensor, BatchTensor],
         sampling_rate: Optional[int] = None,
+        max_length: Optional[int] = None,
+        truncate: Optional[int] = None,
         return_attention_mask: Optional[bool] = None,
         return_tensors: bool = True,
     ) -> dict:
@@ -522,6 +530,10 @@ class OfflineFeatureExtractor(SequenceFeature):
         Args:
             features (Union[SingleTensor, BatchTensor]):
                 Input features, can be either single tensor feature of shape `[T, C]` or batch of tensors.
+            max_length (`int`, *optional*):
+                fix the maximum length of the returned list if `truncate=True`.
+            truncate (`bool`, *optional*):
+                Activates truncation to cut input sequences longer than `max_length` to `max_length`.
             return_attention_mask (Optional[bool]):
                 Whether to return attention mask. if specified, will affect the default set in `__init__`.
             return_tensors (bool):
@@ -576,7 +588,10 @@ class OfflineFeatureExtractor(SequenceFeature):
             ]
         batched_feats = {"input_features": features}
         padded_inputs = self.pad(
-            batched_feats, return_attention_mask=return_attention_mask
+            batched_feats,
+            max_length=max_length,
+            truncate=truncate,
+            return_attention_mask=return_attention_mask,
         )
         if not return_tensors:
             padded_inputs["input_features"] = [feat for feat in padded_inputs]
@@ -594,16 +609,20 @@ class OfflineFeatureExtractor(SequenceFeature):
         output["feature_extractor_type"] = self.__class__.__name__
         output.pop("feature_size", None)
         output.pop("sampling_rate", None)
-        output.pop("padding_value", None)
         return output
 
     def get_online_extractor(self):
-        return KaldiFeatureExtractor(
-            feat_conf=self.feat_conf,
-            mean_norm=self.mean_norm,
-            std_norm=self.std_norm,
-            return_attention_mask=self.return_attention_mask,
-        )
+        cfg = self.to_dict()
+        return KaldiFeatureExtractor.from_dict(cfg)
+
+    @classmethod
+    def available_extractors(self) -> List[str]:
+        return FEATURE_EXTRACTORS.keys()
+
+
+# bc
+class OfflineFeatureExtractor(OfflineKaldiFeatureExtractor):
+    pass
 
 
 class RawWavExtractor(SequenceFeature):

@@ -171,6 +171,7 @@ _PL_AVAILABLE = is_package_available("lightning")
 _TRANSFORMERS_AVAILABLE = is_package_available("transformers")
 _H5PY_AVAILABLE = is_package_available("h5py")
 _KALDI_NATIVE_IO_AVAILABLE = is_package_available("kaldi_native_io")
+_LHOTSE_AVAILABLE = is_package_available("lhotse")
 _JIWER_AVAILABLE = is_package_available("jiwer")
 _ONNX_AVAILABLE = is_package_available("onnx")
 _ONNXRUNTIME_AVAILABLE = is_package_available("onnxruntime") and _ONNX_AVAILABLE

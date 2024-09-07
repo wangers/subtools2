@@ -105,18 +105,78 @@ class LhotseFeat(metaclass=ABCMeta):
         """
         pass
 
-    @abstractmethod
+    # Copied from thrid package ``lhotse``.
     def extract_batch(
         self,
         samples: Union[
             np.ndarray, torch.Tensor, Sequence[np.ndarray], Sequence[torch.Tensor]
         ],
         sampling_rate: int,
+        lengths: Optional[Union[np.ndarray, torch.Tensor]] = None,
     ) -> Union[np.ndarray, torch.Tensor, List[np.ndarray], List[torch.Tensor]]:
         """
-        Performs batch extraction.
+        Performs batch extraction. It is not guaranteed to be faster
+        than :meth:`LhotseFeat.extract` -- it depends on whether
+        the implementation of a particular feature extractor supports
+        accelerated batch computation. If `lengths` is provided, it is
+        assumed that the input is a batch of padded sequences, so we will
+        not perform any further collation.
+
+        .. note::
+            Unless overridden by child classes, it defaults to sequentially
+            calling :meth:`LhotseFeat.extract` on the inputs.
+
+        .. note::
+            This method *should* support variable length inputs.
         """
-        raise NotImplementedError
+        input_is_list = False
+        input_is_torch = False
+
+        if lengths is not None:
+            feat_lens = [
+                compute_num_frames_from_samples(l, self.frame_shift, sampling_rate)
+                for l in lengths
+            ]
+            assert isinstance(
+                samples, torch.Tensor
+            ), "If `lengths` is provided, `samples` must be a batched and padded torch.Tensor."
+        else:
+            if isinstance(samples, list):
+                input_is_list = True
+                pass  # nothing to do with `samples`
+            elif samples.ndim > 1:
+                samples = list(samples)
+            else:
+                # The user passed an array/tensor of shape (num_samples,)
+                samples = [samples.reshape(1, -1)]
+
+            if any(isinstance(x, torch.Tensor) for x in samples):
+                samples = [x.numpy() for x in samples]
+                input_is_torch = True
+
+        result = []
+        for item in samples:
+            res = self.extract(item, sampling_rate=sampling_rate)
+            if lengths is not None:
+                res = res[: feat_lens[len(result)]]
+            result.append(res)
+
+        if input_is_torch:
+            result = [torch.from_numpy(x) for x in result]
+
+        # If all items are of the same shape, concatenate
+        if len(result) == 1:
+            if input_is_list:
+                return result
+            else:
+                return result[0]
+        elif all(item.shape == result[0].shape for item in result[1:]):
+            if input_is_torch:
+                return torch.stack(result, dim=0)
+            else:
+                return np.stack(result, axis=0)
+        else:
+            return result
 
     @property
     @abstractmethod

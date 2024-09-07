@@ -27,7 +27,7 @@ This recipe means to enhance the understanding of speech language models. It is 
 </details>
 
 **Highlights**:
-- [x]  Llama framework upgratded
+- [x]  Llama framework upgraded
 - [x]  TTS Demo & Inference
 - [x]  Multi-GPU traning based on [Lightning](https://github.com/Lightning-AI/pytorch-lightning) trainer
 - [x]  Automatic metrics (SV + ASR)

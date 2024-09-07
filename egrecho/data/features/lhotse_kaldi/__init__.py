@@ -3,6 +3,7 @@
 #   https://github.com/lhotse-speech/lhotse/blob/master/lhotse/features/kaldi
 
 from egrecho.data.features.lhotse_kaldi.extractor import (
+    FEATURE_EXTRACTORS,
     Fbank,
     FbankConfig,
     LhotseFeat,
