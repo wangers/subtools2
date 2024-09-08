@@ -15,7 +15,7 @@ from egrecho.data.features.feature_extractor_audio import (
     BatchTensor,
     SequenceFeature,
     SingleTensor,
-    utterance_cmvn,
+    cmvn_utts,
 )
 from egrecho.utils.common import alt_none, dict_union
 from egrecho.utils.imports import _LHOTSE_AVAILABLE
@@ -25,7 +25,7 @@ from egrecho.utils.torch_utils import to_torch_tensor
 
 if not _LHOTSE_AVAILABLE:
     raise ImportError(
-        'To use ExtLhotseFeatureExtractor,  please ``pip install lhotse`` first.'
+        "To use ExtLhotseFeatureExtractor,  please ``pip install lhotse`` first."
     )
 from lhotse.features.base import FEATURE_EXTRACTORS, FeatureExtractor
 
@@ -278,18 +278,24 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         if not isinstance(feats, list):
             feats = [feat for feat in feats]
 
-        if self.mean_norm or self.std_norm:
-            feats = [
-                utterance_cmvn(feat, mean_norm=self.mean_norm, std_norm=self.std_norm)
-                for feat in feats
-            ]
+        do_norm = self.mean_norm or self.std_norm
         batched_feats = {"input_features": feats}
+        return_mask = do_norm if do_norm else return_attention_mask
         padded_inputs = self.pad(
             batched_feats,
             max_length=max_length,
             truncate=truncate,
-            return_attention_mask=return_attention_mask,
+            return_attention_mask=return_mask,
         )
+        if do_norm:
+            padded_inputs["input_features"] = cmvn_utts(
+                padded_inputs["input_features"],
+                attention_mask=padded_inputs["attention_mask"],
+                padding_value=self.padding_value,
+            )
+            if not bool(return_attention_mask) and not self.return_attention_mask:
+                padded_inputs.pop("attention_mask", None)
+
         if not return_tensors:
             padded_inputs["input_features"] = [feat for feat in padded_inputs]
         return padded_inputs
@@ -360,18 +366,24 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
                 f"does not match self.feature_size ({self.feature_size})."
             )
 
-        if self.mean_norm or self.std_norm:
-            features = [
-                utterance_cmvn(feat, mean_norm=self.mean_norm, std_norm=self.std_norm)
-                for feat in features
-            ]
+        do_norm = self.mean_norm or self.std_norm
         batched_feats = {"input_features": features}
+        return_mask = do_norm if do_norm else return_attention_mask
         padded_inputs = self.pad(
             batched_feats,
             max_length=max_length,
             truncate=truncate,
-            return_attention_mask=return_attention_mask,
+            return_attention_mask=return_mask,
         )
+        if do_norm:
+            padded_inputs["input_features"] = cmvn_utts(
+                padded_inputs["input_features"],
+                attention_mask=padded_inputs["attention_mask"],
+                padding_value=self.padding_value,
+            )
+            if not bool(return_attention_mask) and not self.return_attention_mask:
+                padded_inputs.pop("attention_mask", None)
+
         if not return_tensors:
             padded_inputs["input_features"] = [feat for feat in padded_inputs]
         return padded_inputs

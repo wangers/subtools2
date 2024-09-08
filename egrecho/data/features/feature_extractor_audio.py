@@ -407,18 +407,24 @@ class KaldiFeatureExtractor(SequenceFeature):
         if not isinstance(feats, list):
             feats = [feat for feat in feats]
 
-        if self.mean_norm or self.std_norm:
-            feats = [
-                utterance_cmvn(feat, mean_norm=self.mean_norm, std_norm=self.std_norm)
-                for feat in feats
-            ]
+        do_norm = self.mean_norm or self.std_norm
         batched_feats = {"input_features": feats}
+        return_mask = do_norm if do_norm else return_attention_mask
         padded_inputs = self.pad(
             batched_feats,
             max_length=max_length,
             truncate=truncate,
-            return_attention_mask=return_attention_mask,
+            return_attention_mask=return_mask,
         )
+        if do_norm:
+            padded_inputs["input_features"] = cmvn_utts(
+                padded_inputs["input_features"],
+                attention_mask=padded_inputs["attention_mask"],
+                padding_value=self.padding_value,
+            )
+            if not bool(return_attention_mask) and not self.return_attention_mask:
+                padded_inputs.pop("attention_mask", None)
+
         if not return_tensors:
             padded_inputs["input_features"] = [feat for feat in padded_inputs]
         return padded_inputs
@@ -581,18 +587,24 @@ class OfflineKaldiFeatureExtractor(SequenceFeature):
                 f"does not match self.feature_size ({self.feature_size})."
             )
 
-        if self.mean_norm or self.std_norm:
-            features = [
-                utterance_cmvn(feat, mean_norm=self.mean_norm, std_norm=self.std_norm)
-                for feat in features
-            ]
+        do_norm = self.mean_norm or self.std_norm
         batched_feats = {"input_features": features}
+        return_mask = do_norm if do_norm else return_attention_mask
         padded_inputs = self.pad(
             batched_feats,
             max_length=max_length,
             truncate=truncate,
-            return_attention_mask=return_attention_mask,
+            return_attention_mask=return_mask,
         )
+        if do_norm:
+            padded_inputs["input_features"] = cmvn_utts(
+                padded_inputs["input_features"],
+                attention_mask=padded_inputs["attention_mask"],
+                padding_value=self.padding_value,
+            )
+            if not bool(return_attention_mask) and not self.return_attention_mask:
+                padded_inputs.pop("attention_mask", None)
+
         if not return_tensors:
             padded_inputs["input_features"] = [feat for feat in padded_inputs]
         return padded_inputs
@@ -743,12 +755,13 @@ class RawWavExtractor(SequenceFeature):
         return output
 
 
-def utterance_cmvn(
+def cmvn_single(
     x: torch.Tensor,
     input_length: Optional[int] = None,
     mean_norm: Optional[bool] = True,
     std_norm: Optional[bool] = False,
     padding_value: float = 0.0,
+    eps: float = 1e-7,
 ) -> torch.Tensor:
     """Performs mean and variance normalization of the first dimension of input feature.
 
@@ -765,7 +778,7 @@ def utterance_cmvn(
     Example:
         >>> import torch
         >>> feature = torch.randn([101, 20])
-        >>> feature = utterance_cmvn(feature)
+        >>> feature = cmvn_single(feature)
     """
 
     input_length = x.shape[0] if input_length is None else input_length
@@ -773,7 +786,7 @@ def utterance_cmvn(
     if mean_norm:
         mean = x[:input_length].mean(dim=0)
     if std_norm:
-        std = torch.sqrt(x[:input_length].var(dim=0) + 1e-5)
+        std = torch.sqrt(x[:input_length].var(dim=0) + eps)
     if mean_norm and std_norm:
         x = (x - mean) / std
     elif mean_norm:
@@ -784,3 +797,74 @@ def utterance_cmvn(
         x[input_length:] = padding_value
 
     return x
+
+
+def cmvn_utts(
+    input_features,
+    attention_mask: Optional[torch.Tensor] = None,
+    lengths: Optional[torch.Tensor] = None,
+    mean_norm: Optional[bool] = True,
+    std_norm: Optional[bool] = False,
+    eps: float = 1e-7,
+):
+    """Performs mean and variance normalization of the second dimension of batch input features.
+
+    Args:
+        input_features (torch.Tensor): Input tensor of shape [B, T, F].
+        attention_mask (torch.Tensor): Mask of shape [B, T, F].
+        lengths (torch.Tensor): Length [B,] of input sequence. Note that can't set with ``attention_mask``/
+        mean_norm (bool, optional): If True, the mean will be normalized.
+        std_norm (bool, optional): If True, the standard deviation will be normalized.
+        padding_value (float, optional): Value to pad if input_length is shorter than the sequence length.
+
+    Returns:
+        torch.Tensor: Normalized tensor.
+
+    Example:
+        >>> import torch
+        >>> inputs = torch.randn([10, 101, 20])
+        >>> inp_len = torch.zeros((10,)).uniform_(0, 1) * inputs.shape[1]
+        >>> features = cmvn_utts(inputs, inp_len)
+
+    """
+    bsz = len(input_features)
+    input_is_list = isinstance(input_features, (list, tuple))
+    if (int(attention_mask is None) + int(lengths is None)) == 0:
+        raise ValueError(f"Set both attention_mask and lengths is ilegal.")
+    elif attention_mask is not None:
+        if isinstance(attention_mask, (list, tuple)):
+            lengths = [attention_mask[i].sum(-1).long() for i in range(bsz)]
+        else:
+            lengths = attention_mask.sum(-1).long()
+    elif lengths is not None:
+        lengths = (
+            [int(le) for le in lengths]
+            if isinstance(lengths, (list, tuple))
+            else lengths.long()
+        )
+    else:
+        lengths = (
+            [fea.shape[0] for fea in input_features]
+            if input_is_list
+            else [input_features.shape[1]] * bsz
+        )
+
+    assert len(lengths) == bsz, len(lengths)
+
+    outs = []
+    for snt_id in range(bsz):
+
+        outs.append(
+            cmvn_single(
+                input_features[snt_id],
+                input_length=lengths[snt_id],
+                mean_norm=mean_norm,
+                std_norm=std_norm,
+                eps=eps,
+            )
+        )
+    if input_is_list:
+        return outs
+    else:
+        # tensor
+        return torch.stack(outs, dim=0)
