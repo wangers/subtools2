@@ -227,7 +227,7 @@ class StrEnum(str, Enum):
         return None
 
     @classmethod
-    def make_from_keys(cls_name: str, s_list: List[str]):
+    def make_from_keys(cls, cls_name: str, s_list: List[str]):
         if not isinstance(s_list, (tuple, list)) and any(
             not isinstance(s, str) for s in s_list
         ):

@@ -1,5 +1,5 @@
 
-# VALL-E
+# E2-TTS
 ![python version](https://img.shields.io/badge/python-3.8+-orange.svg)
 ![pytorch version](https://img.shields.io/badge/pytorch-2.0+-green.svg)
 ![Lightning version](https://img.shields.io/badge/Lightning-2.2+-red.svg)
@@ -9,12 +9,10 @@
 
 ## Introduction
 
-[VALL-E](https://arxiv.org/abs/2301.02111) is a pioneering GPT-like TTS framework, which treats TTS as a language model (LM) task with audio codec codes (e.g., [EnCodec](https://github.com/facebookresearch/encodec)) as an intermediate
-representation to replace the traditional mel spectrogram. The LM predicts output tokens of the first quantizer, while tokens of the remaining quantizers are predicted by a non-autoregressive model one by one.
-![image](_images/vall-e.png)
+[E2 TTS](https://arxiv.org/abs/2406.18009v1) is a fully non-autoregressive zero-shot text-to-speech, which learns alignments automatically, simplifies TTS system.
+![image](_images/e2tts.png)
 
-This recipe means to enhance the understanding of speech language models. It is an unofficial PyTorch implementation of VALL-E, which can serve as a baseline for further refinements and advancements.
-
+This recipe is an unofficial PyTorch implementation of E2 TTS. [DiT](https://arxiv.org/abs/2212.09748) framework is adopted here. Training is modeled as a speech infilling task similar to [Voicebox](https://arxiv.org/abs/2306.15687): ![image](_images/voiceebox_speech_infilling.png)
 
 <details>
 <summary><strong>Environments</strong></summary>
@@ -22,22 +20,23 @@ This recipe means to enhance the understanding of speech language models. It is 
 - Python 3.8
 - Pytorch 2.0.1
 - egrecho
-- encodec
-- phonemizer
+- vocos
+- torchdiffeq
 </details>
 
-**Highlights**:
-- [x]  Llama framework upgraded
-- [x]  TTS Demo & Inference
-- [x]  Multi-GPU traning based on [Lightning](https://github.com/Lightning-AI/pytorch-lightning) trainer
-- [x]  Automatic metrics (SV + ASR)
-- [ ]  Webui
 
+**Supports**:
+
+- [x]  [DiT](https://arxiv.org/abs/2212.09748) framework
+- [x]  TTS Demo
+- [x]  Multi-GPU traning based on [Lightning](https://github.com/Lightning-AI/pytorch-lightning) trainer
+- [ ]  Pretrained model
+- [ ]  Automatic metrics (SV + ASR)
 
 
 ## Contents
 
-- [VALL-E](#vall-e)
+- [E2-TTS](#e2-tts)
   - [Introduction](#introduction)
   - [Contents](#contents)
   - [Installation](#installation)
@@ -54,11 +53,11 @@ This recipe means to enhance the understanding of speech language models. It is 
 ## Installation
 We assume you have already installed cuda PyTorch and Egrecho. Next, you should install additional requirements specified in the ``requirements.txt`` file provided by this recipe if necessary.
 ## QuickStart
-Pretrained weights trained on libritts is available at modelscope [link](https://modelscope.cn/models/wangers/vall-e), download that repo and tts a demo as:
-```shell
+Pretrained weights trained on libritts is available at modelscope [dummy-link](), download that repo and tts a demo as:
+<!-- ```shell
 egrecho tts-ve -c=config/tts_valle_pretrained.yaml demo
-```
-Type `egrecho tts-ve -h` for cli usage.
+``` -->
+Type `egrecho tts-e2 -h` for cli usage.
 <span id='maincodes'></span>
 ## Main programs
 
@@ -70,36 +69,13 @@ Type `egrecho tts-ve -h` for cli usage.
   # prepare => train => eval
   bash prepare_libritts.sh
   bash train.sh
-  bash eval_acoustic.sh
   ```
 <span id='results'></span>
 ## Results
-The Vall-E consists of AR and NAR submodels, totaling approximately 371M parameters, as referenced in the paper's configuration.
-* Test data are sampled from Libritts test-clean with audio lengths between 4 and 10 seconds and prepended prompts ranging from 2 to 3 seconds. Resulting a total of **180** test pairs :ok_hand:.
-* SPK is the cosine similarity score of the tts audio and its prompt. The speaker model is [CAM++](https://arxiv.org/abs/2303.00332) trained on voceleb2. Please refer to recipe :wink: [voxcelebSRC](https://github.com/wangers/subtools2/blob/master/recipes/voxcelebSRC/README.md).
-* WER is the word error rate evaluated by [openai/whisper-large-v3](https://huggingface.co/openai/whisper-large-v3) model. Requires Hugging Face 🤗 [Transformers](https://github.com/huggingface/transformers).
-* Llama 🦙 components replacement including:
-  * LayerNorm => RMSNorm
-  * Sinusoidal PE => Rotary PE
-  * FFN => [Gated FFN](https://arxiv.org/pdf/2002.05202)
-  * Bias True => False
 
-| model | SPK <b><span style="color:green">↑</span></b> | WER (I, D, S) <b><span style="color:green">↓</span></b> |
-| :-----  | :--------: | :------- |
-| Vall-E | 0.445    | 20.54 (2.75, 3.54, 14.24)   |
-| Vall-E-llama  | 0.555  | **6.58** (0.78, 1.30, 4.49)   |
-| Valle-llama-refine  | 0.560  | **3.39** (0.55, 0.92, 1.91)   |
+* TODO
 
-
-<details>
-<summary><strong>NOTE</strong></summary>
-
-> 1. The WER is primarily influenced by the performance of the AR submodel. Meanwhile, the NAR submodel affects the speaker similarity a lot.
-> 2. The Vall-E-Llama converges quickly and easy to train. In contrast, the standard Vall-E converges slowly. For example, the AR submodel was trained for 20 epochs, and the NAR submodel for 35 epochs. I encountered a bot-like result in the TTS audio, which confused the whisper and resulted in a high WER.
-> 3. The comparison between the standard and Llama-style models was performed using identical strategies, as outlined in the ``train_ar.yaml``/``train_nar.yaml`` configuration files, the tensorboard logs can be view [here](#tensorboard). Additionally, the ``refine`` version was trained for an extended number of total steps, following the ``trian*_llama.yaml`` configuration.
-</details>
-
-*Conducted by Dexin Liao (2024-07)*
+*Conducted by Dexin Liao (2024-08)*
 <span id='prepdata'></span>
 ## Prepare data
 
@@ -110,13 +86,12 @@ Here provides ``prepare_libritts.sh``:
 <summary>Prepare datasets</summary>
 
 * Download & prepare manifests
-* Encode audio codes based on [EnCodec](https://github.com/facebookresearch/encodec).
-* Tokenize text via espeak (piper-phonemize).
+* Prepare simple cuts for tts.
 * Prepare testset for acoustic evaluation.
 ```bash
-tree exp/egs/libritts/
+tree exp/egs/libritts_simple
 # manifests
-exp/egs/libritts/
+exp/egs/libritts_simple
 ├── cuts_dev.jsonl.gz
 ├── cuts_dev-other.jsonl.gz
 ├── cuts_test.jsonl.gz
@@ -127,20 +102,20 @@ exp/egs/libritts/
 ```
 
 ```shell
-zcat exp/egs/libritts/cuts_dev.jsonl.gz | head -n 1-n
+zcat exp/egs/libritts_simple/cuts_dev.jsonl.gz | head -n 1
 ```
 ```python
 {"id": "6241_66616_000004_000000-0", "start": 0, "duration": 0.82, "channel": 0, ...}
 ```
 ```shell
-cat exp/egs/libritts/egs_test_prompt_200.jsonl | head -n 1
+cat exp/egs/libritts_simple/egs_test_prompt_200.jsonl | head -n 1
 ```
 ```python
 {"id": "7021_79730_000062_000000", "prompt_audio": "data/prompt_test/libritts/audio/7021/702/7021_79730_000061_000000.wav", "prompt_text": "\"Why can't you take me?\" asks Mary.", "audio": "data/prompt_test/libritts/audio/7021/702/7021_79730_000062_000000.wav", "text": "\"I can not tell you why, now,\" replies the mother, \"but perhaps I will explain it to you after I come home."}
 ```
 Lets check the statics of dataset:
 ```shell
-python ./local/display_manifests.py exp/egs/libritts/cuts_train.jsonl.gz
+python ./local/display_manifests.py exp/egs/libritts_simple/cuts_train.jsonl.gz
 ```
 ```txt
 ╒═══════════════════════════╤═══════════╕
@@ -170,7 +145,7 @@ python ./local/display_manifests.py exp/egs/libritts/cuts_train.jsonl.gz
 ├───────────────────────────┼───────────┤
 │ Recordings available:     │ 354779    │
 ├───────────────────────────┼───────────┤
-│ Features available:       │ 354779    │
+│ Features available:       │ 0         │
 ├───────────────────────────┼───────────┤
 │ Supervisions available:   │ 354779    │
 ╘═══════════════════════════╧═══════════╛
@@ -179,20 +154,17 @@ python ./local/display_manifests.py exp/egs/libritts/cuts_train.jsonl.gz
 
 ## Train model
 
-We are ready to train our model. In ``train.sh``, ``--stage 0 --endstage 1`` is training and ``--stage 2 --endstage 2`` infers a demo. In addition, the ``eval_acoustic.sh`` tts the testset and compute its spk score and wer.
+We are ready to train our model. In ``train.sh``, ``--stage 0 --endstage 1`` is training and ``--stage 2 --endstage 2`` infers a demo.
+<!-- In addition, the ``eval_acoustic.sh`` tts the testset and compute its spk score and wer. -->
 The related python scripts are in ``egrecho_inner``:
 + ``pl_train.py:`` Train ar/nar submodel.
-+ ``tts_valle.py``: Inference/demo testset.
-+ ``eval_wer.py``: Computes wer via whisper.
++ ``tts_e2.py``: Inference/demo testset.
+<!-- + ``eval_wer.py``: Computes wer via whisper. -->
 
-It is recommended to use configuration yaml to better control your experiments：``egrecho train-valle -c=config/train_ar_llama.yaml [overwrite opts]``. Type ``egrecho train-valle --print_config > raw.yaml`` to get a raw yaml to revise.
-```shell
-egrecho train-valle -c=config/train_ar_llama.yaml
-# parallel in another process
-egrecho train-valle -c=config/train_nar_llama.yaml
-```
+It is recommended to use configuration yaml to better control your experiments：``egrecho train-e2tts -c=config/e2tts.yaml [overwrite opts]``. Type ``egrecho train-e2tts --print_config > raw.yaml`` to get a raw yaml to revise.
 
-<span id='tensorboard'></span>
+
+<!-- <span id='tensorboard'></span>
 <details>
 <summary>Tensorboard curve 📉</summary>
 
@@ -210,12 +182,26 @@ tree exp/valle/valle-final
 # │   ├── tokens.txt
 # │   └── types.yaml
 # └── model_weight.ckpt
-```
+``` -->
 
 <span id='ref'></span>
 ## Reference
 
-1. https://github.com/lifeiteng/vall-e
-2. https://github.com/meta-llama/llama3
-3. https://github.com/huggingface/distil-whisper
-4. https://github.com/openai/whisper
+```bibtex
+@inproceedings{Eskimez2024E2TE,
+    title   = {E2 TTS: Embarrassingly Easy Fully Non-Autoregressive Zero-Shot TTS},
+    author  = {Sefik Emre Eskimez and Xiaofei Wang and Manthan Thakker and Canrun Li and Chung-Hsien Tsai and Zhen Xiao and Hemin Yang and Zirun Zhu and Min Tang and Xu Tan and Yanqing Liu and Sheng Zhao and Naoyuki Kanda},
+    year    = {2024},
+    url     = {https://api.semanticscholar.org/CorpusID:270738197}
+}
+```
+```bibtex
+@article{Le2023VoiceboxTM,
+    title   = {Voicebox: Text-Guided Multilingual Universal Speech Generation at Scale},
+    author  = {Matt Le and Apoorv Vyas and Bowen Shi and Brian Karrer and Leda Sari and Rashel Moritz and Mary Williamson and Vimal Manohar and Yossi Adi and Jay Mahadeokar and Wei-Ning Hsu},
+    journal = {ArXiv},
+    year    = {2023},
+    volume  = {abs/2306.15687},
+    url     = {https://api.semanticscholar.org/CorpusID:259275061}
+}
+```

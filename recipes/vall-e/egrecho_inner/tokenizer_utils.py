@@ -269,7 +269,7 @@ class EncodecTokenExtractor(FeatureExtractor):
         )
         return padded_tensor, lengths
 
-    def extract_batch(self, samples, sampling_rate, lengths) -> np.ndarray:
+    def extract_batch(self, samples, sampling_rate, **kwargs) -> np.ndarray:
         samples = [wav.squeeze() for wav in samples]
         device = self.device
         samples, lengths = self.pad_tensor_list(samples, device)

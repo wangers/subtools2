@@ -1,0 +1,29 @@
+model:
+  checkpoint: last.ckpt
+  dirpath: exp/e2tts-u
+  best_k_fname: best_k_models.yaml
+  best_k_mode: min
+  ckpt_subdir: checkpoints
+gpu_id: -1
+
+demo:
+  text:  To get up and running quickly just follow the steps below.
+  # To get up and running quickly just follow the steps below.  This I read with great attention
+  # 8455_210777_000067_000000 8463_294825_000043_000000
+  prompt_audio: ../vall-e/prompts/libritts/8455_210777_000067_000000.wav
+  prompt_text_path: ../vall-e/prompts/libritts/8455_210777_000067_000000.txt
+  outfile: e2_8455_210777_000067_000000.wav
+  vocoder: {}
+  gen_dur_sec: 3.0
+  gen_args:
+    steps: 16
+    cfg_strength: 1.
+    max_duration: 4096
+    odeint_kwargs:
+      atol: 1.0e-05
+      rtol: 1.0e-05
+      method: midpoint
+  post_args:
+    with_cond: false
+export:
+  outdir: exp/e2tts/e2tts-final

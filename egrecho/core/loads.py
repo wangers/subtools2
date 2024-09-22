@@ -380,9 +380,9 @@ class SaveLoadHelper:
                     elif isinstance(model_or_state, dict):
                         state_dict = model_or_state.get("state_dict", model_or_state)
                         self._save_state_dict_to_disk(state_dict, tmp_ckpt_path)
+                    shutil.move(tmp_ckpt_path, savedir / self.model_weight_ckpt_name)
                 logger.info(f"About to save config dir in {tmp_cfg_dir}.")
                 self.update_conf_dir(tmp_cfg_dir, *components, types_dict=types_dict)
-                shutil.move(tmp_ckpt_path, savedir / self.model_weight_ckpt_name)
                 self.copy_conf_dir(
                     tmp_cfg_dir, savedir / constants.CHECKPOINT_CONFIG_DIRNAME
                 )

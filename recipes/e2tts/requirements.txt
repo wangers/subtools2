@@ -1,0 +1,6 @@
+lhotse
+vocos
+einops>=0.8.0
+torchdiffeq    # 0.2.4
+phonemizer     # 3.2.0 https://github.com/csukuangfj/piper-phonemize/releases/tag/2023.12.5
+matplotlib

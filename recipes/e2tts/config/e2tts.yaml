@@ -1,0 +1,88 @@
+save_dir: exp/e2tts-u
+seed_everything: 42
+data:
+  data_dir: exp/egs/libritts_simple
+  file_patterns:
+    train: cuts*train*
+    val: cuts*dev*
+  filter_min_dur: 1.
+  filter_max_dur: 20
+  max_duration: 100.0
+  bucketing_sampler: true
+  num_buckets: 10
+  concatenate_cuts: false
+  duration_factor: 1.0
+  quadratic_duration: 20.0
+  gap: 0.1
+  shuffle: true
+  drop_last: true
+  return_cuts: true
+  num_workers: 8
+  tokenizer_config:
+    language: en-us
+    backend: espeak
+  extractor_param:
+    feat_conf:
+      feature_type: vocos-spec
+      sampling_rate: 24000
+model:
+  inputs_dim: 100
+  unet_mode: false
+  backbone: dit-b
+  attn_dropout: 0.0
+  dropout: 0.1
+  ntk_max_position: 8192
+  qkv_bias: false
+  qk_norm: true
+  sandwish_norm: false
+  norm_eps: 1.0e-06
+  use_sdpa: true
+  softclamp_logits: false
+  softclamp_logits_val: 50.0
+  cond_text_net: false
+  with_fourier_features: false
+  frac_lengths_mask:
+  - 0.5
+  - 0.9
+  cond_dropout: 0.2
+  cond_inp_add: false
+  sigma: 0.0
+resume_ckpt: null
+init_weight: false
+init_weight_params:
+  checkpoint: last.ckpt
+  version: version
+  best_k_fname: best_k_models.yaml
+  best_k_mode: min
+  ckpt_subdir: checkpoints
+teacher:
+  optimizer: ''
+  lr_scheduler: ''
+  lr: 0.0001
+  val_mask_frac: 0.7
+trainer:
+  accelerator: auto
+  devices: 0,1
+  precision: 16-mixed
+  fast_dev_run: false
+  max_steps: 1000_000
+  limit_train_batches: null
+  limit_val_batches: 10
+  val_check_interval: 10000
+  log_every_n_steps: 500
+  accumulate_grad_batches: 16
+  gradient_clip_val: 1.0
+  gradient_clip_algorithm: norm
+  inference_mode: true
+  use_distributed_sampler: false
+  profiler: null
+mckpt:
+  filename: epoch{epoch}-val_loss{val_loss:.3f}-step{step}
+  monitor: val_loss
+  save_last: true
+  save_top_k: 10
+  mode: min
+  auto_insert_metric_name: false
+  every_n_epochs: 1
+  # every_n_train_steps: 1000
+  save_on_train_epoch_end: true

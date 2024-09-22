@@ -26,7 +26,7 @@ BatchTensor = Union[Sequence[np.ndarray], Sequence[torch.Tensor]]
 
 EPSILON = 1e-10
 LOG_EPSILON = math.log(EPSILON)
-DEFAULT_FEAT_CONF = {"sampling_rate": 16000, "feature_type": "kaldi-fbank"}
+DEFAULT_FEAT_CONF = {"feature_type": "kaldi-fbank"}
 
 
 @lru_cache(maxsize=8)
@@ -314,22 +314,21 @@ class KaldiFeatureExtractor(SequenceFeature):
 
         # sequence defaults sampling_rate
         sr = {"sampling_rate": sampling_rate} if sampling_rate is not None else {}
-        feat_conf = dict_union(DEFAULT_FEAT_CONF, sr, alt_none(feat_conf, {}))
+        self.feat_conf = dict_union(DEFAULT_FEAT_CONF, sr, alt_none(feat_conf, {}))
         self.scale_bit = scale_bit
-        self.sampling_rate = feat_conf["sampling_rate"]
-
+        extactor = self.extractor
         if rich_feat_info:
-            feat_conf = get_lhotse_feat(**feat_conf).to_dict()
-        self.feat_conf = feat_conf
-        self.feature_size = self.feature_dim
+            self.feat_conf = extactor.to_dict()
+
+        sampling_rate = extactor.config.sampling_rate
+        feature_size = extactor.feature_dim(sampling_rate)
 
         self.mean_norm = mean_norm
         self.std_norm = std_norm
-        if self.mean_norm:
-            padding_value = 0.0
+
         super().__init__(
-            feature_size=self.feature_size,
-            sampling_rate=self.sampling_rate,
+            feature_size=feature_size,
+            sampling_rate=sampling_rate,
             padding_value=padding_value,
             return_attention_mask=return_attention_mask,
             **kwargs,
@@ -430,10 +429,12 @@ class KaldiFeatureExtractor(SequenceFeature):
         return padded_inputs
 
     @property
+    def extractor(self):
+        return get_lhotse_feat(**self.feat_conf)
+
+    @property
     def feature_dim(self) -> int:
-        return get_lhotse_feat(**self.feat_conf).feature_dim(
-            sampling_rate=self.sampling_rate
-        )  # sampling_rate here is for compatible lhotse but invalid
+        return self.feature_size
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -505,17 +506,19 @@ class OfflineKaldiFeatureExtractor(SequenceFeature):
             )
 
         self.feat_conf = dict_union(DEFAULT_FEAT_CONF, feat_conf)
-        self.sampling_rate = self.feat_conf["sampling_rate"]
+
         self.mean_norm = mean_norm
         self.std_norm = std_norm
         self.return_attention_mask = return_attention_mask
-        self.feature_size = self.get_online_extractor().feature_dim
+        online_extractor = self.get_online_extractor()
+        sampling_rate, feature_size = (
+            online_extractor.sampling_rate,
+            online_extractor.feature_dim,
+        )
 
-        if self.mean_norm:
-            padding_value = 0.0
         super().__init__(
-            feature_size=self.feature_size,
-            sampling_rate=self.sampling_rate,
+            feature_size=feature_size,
+            sampling_rate=sampling_rate,
             padding_value=padding_value,
             return_attention_mask=return_attention_mask,
             **kwargs,
@@ -623,9 +626,13 @@ class OfflineKaldiFeatureExtractor(SequenceFeature):
         output.pop("sampling_rate", None)
         return output
 
-    def get_online_extractor(self):
+    def get_online_extractor(self) -> KaldiFeatureExtractor:
         cfg = self.to_dict()
         return KaldiFeatureExtractor.from_dict(cfg)
+
+    @property
+    def feature_dim(self) -> int:
+        return self.feature_size
 
     @classmethod
     def available_extractors(self) -> List[str]:
@@ -827,6 +834,9 @@ def cmvn_utts(
         >>> features = cmvn_utts(inputs, inp_len)
 
     """
+    if not mean_norm and not std_norm:
+        return input_features
+
     bsz = len(input_features)
     input_is_list = isinstance(input_features, (list, tuple))
     if (int(attention_mask is None) + int(lengths is None)) == 0:

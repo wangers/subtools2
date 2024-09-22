@@ -30,7 +30,7 @@ if not _LHOTSE_AVAILABLE:
 from lhotse.features.base import FEATURE_EXTRACTORS, FeatureExtractor
 
 logger = get_logger(__name__)
-DEFAULT_FEAT_CONF = {"sampling_rate": 16000, "feature_type": "kaldi-fbank"}
+DEFAULT_FEAT_CONF = {"feature_type": "kaldi-fbank"}
 
 
 EXTLHOTSE_EXAMPLE_DOCSTRING = r"""
@@ -127,23 +127,22 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
 
         # sequence defaults sampling_rate
         sr = {"sampling_rate": sampling_rate} if sampling_rate is not None else {}
-        feat_conf = dict_union(DEFAULT_FEAT_CONF, sr, alt_none(feat_conf, {}))
+        self.feat_conf = dict_union(DEFAULT_FEAT_CONF, sr, alt_none(feat_conf, {}))
         self.scale_bit = scale_bit
-        self.sampling_rate = feat_conf["sampling_rate"]
 
         if rich_feat_info:
-            feat_conf = get_ext_lhotse_feat(**feat_conf).to_dict()
-        self.feat_conf = feat_conf
-        self.feature_size = self.feature_dim
+            self.feat_conf = get_ext_lhotse_feat(**feat_conf).to_dict()
+
+        extactor = self.extractor
+        sampling_rate = extactor.config.sampling_rate
+        feature_size = extactor.feature_dim(sampling_rate)
 
         self.mean_norm = mean_norm
         self.std_norm = std_norm
-        if self.mean_norm:
-            padding_value = 0.0
 
         super().__init__(
-            feature_size=self.feature_size,
-            sampling_rate=self.sampling_rate,
+            feature_size=feature_size,
+            sampling_rate=sampling_rate,
             padding_value=padding_value,
             return_attention_mask=return_attention_mask,
             **kwargs,
@@ -389,10 +388,12 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         return padded_inputs
 
     @property
+    def extractor(self):
+        return get_ext_lhotse_feat(**self.feat_conf)
+
+    @property
     def feature_dim(self) -> int:
-        return get_ext_lhotse_feat(**self.feat_conf).feature_dim(
-            sampling_rate=self.sampling_rate
-        )  # sampling_rate here is for compatible lhotse but invalid
+        return self.feature_size
 
     def to_dict(self) -> Dict[str, Any]:
         """

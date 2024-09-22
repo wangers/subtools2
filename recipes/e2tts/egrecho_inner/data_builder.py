@@ -7,16 +7,23 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import torch
-from dataset_valle import ValleDataset
+from feature_extractor import E2TTSExtractor
 from lhotse import CutSet, load_manifest_lazy
-from lhotse.dataset import CutConcatenate, DynamicBucketingSampler, SimpleCutSampler
-from tokenizer_valle import OfflineCodesExtractor, ValleTokenizer, ValleTokenizerConfig
+from lhotse.dataset import (
+    CutConcatenate,
+    DynamicBucketingSampler,
+    OnTheFlyFeatures,
+    SimpleCutSampler,
+    SpeechSynthesisDataset,
+)
+from tokenizer_e2tts import E2TTSTokenizer, E2TTSTokenizerConfig
 from torch.utils.data import DataLoader
 
 from egrecho.core.data_builder import DataBuilder, DataBuilderConfig
-from egrecho.data.processors.renamer import _rename_columns
+from egrecho.data.features.feature_extractor_audio import cmvn_utts
 from egrecho.utils.common import dict_union
 from egrecho.utils.logging import get_logger
+from egrecho.utils.mask import make_non_pad_mask
 
 logger = get_logger()
 
@@ -39,6 +46,11 @@ def filter_short_and_long_utterances(
     cuts = cuts.filter(remove_short_and_long_utt)
 
     return cuts
+
+
+default_extractor_param = {
+    "feat_conf": {"feature_type": "vocos-spec", "sampling_rate": 24000},
+}
 
 
 @dataclass
@@ -80,16 +92,19 @@ class LhotseBuilderConfig(DataBuilderConfig):
             The number of training dataloader workers.
         tokenizer_config:
             Tokenizer config dataclass.
+        extractor_param:
+            Feature extractor config
     """
 
     filter_min_dur: float = 0.5
-    filter_max_dur: float = 14.0
+    filter_max_dur: float = 30.0
     max_cuts: Optional[int] = None
     max_duration: float = 40
     bucketing_sampler: bool = True
     num_buckets: int = 10
     concatenate_cuts: bool = False
     duration_factor: float = 1.0
+    quadratic_duration: float = 20.0
     gap: float = 0.1
     shuffle: bool = True
     buffer_size: int = 40000
@@ -98,18 +113,19 @@ class LhotseBuilderConfig(DataBuilderConfig):
     return_cuts: bool = True
     num_workers: int = 8
     tokenizer_config: dict = field(default_factory=lambda: DEFALUT_TOKENIZER_KW)
+    extractor_param: dict = field(default_factory=lambda: default_extractor_param)
 
     def __post_init__(self):
         super().__post_init__()
         self.tokenizer_config = dict_union(
             {"extradir": self.data_dir}, self.tokenizer_config
         )
-        self.tokenizer_config = ValleTokenizerConfig.from_dict(self.tokenizer_config)
+        self.tokenizer_config = E2TTSTokenizerConfig.from_dict(self.tokenizer_config)
         self.collator = self.batch_collator()
 
     def batch_collator(self):
-        extractor = OfflineCodesExtractor()
-        tokenizer = ValleTokenizer(self.tokenizer_config)
+        extractor = E2TTSExtractor(**self.extractor_param)
+        tokenizer = E2TTSTokenizer(self.tokenizer_config)
         return BatchCollator(extractor, tokenizer)
 
 
@@ -141,6 +157,13 @@ class LhotseBuilder(DataBuilder):
     def pad_text_token_id(self):
         return self.tokenizer.pad_id
 
+    @property
+    def pad_feats_val(self):
+        return self.feature_extractor.padding_value
+
+    def lhotse_extractor(self):
+        return self.feature_extractor.extractor
+
     def train_dataloaders(
         self,
         cuts_train: CutSet,
@@ -170,10 +193,11 @@ class LhotseBuilder(DataBuilder):
                 )
             ] + transforms
 
-        train = ValleDataset(
-            cut_transforms=transforms,
+        cuts_train = cuts_train.resample(self.feature_extractor.sampling_rate)
+        train = SpeechSynthesisDataset(
+            feature_input_strategy=OnTheFlyFeatures(extractor=self.lhotse_extractor()),
             return_text=True,
-            return_tokens=True,
+            return_tokens=False,
             return_cuts=self.args.return_cuts,
         )
         cuts_train = filter_short_and_long_utterances(
@@ -188,7 +212,7 @@ class LhotseBuilder(DataBuilder):
                 shuffle=self.args.shuffle,
                 buffer_size=self.args.buffer_size,
                 shuffle_buffer_size=self.args.shuffle_buffer_size,
-                quadratic_duration=10,
+                quadratic_duration=self.args.quadratic_duration,
                 num_cuts_for_bins_estimate=10000,
                 drop_last=self.args.drop_last,
                 max_cuts=self.args.max_cuts,
@@ -222,9 +246,11 @@ class LhotseBuilder(DataBuilder):
         return train_dl
 
     def valid_dataloaders(self, cuts_valid: CutSet) -> DataLoader:
-        validate = ValleDataset(
+        cuts_valid = cuts_valid.resample(self.feature_extractor.sampling_rate)
+        validate = SpeechSynthesisDataset(
+            feature_input_strategy=OnTheFlyFeatures(extractor=self.lhotse_extractor()),
             return_text=True,
-            return_tokens=True,
+            return_tokens=False,
             return_cuts=self.args.return_cuts,
         )
         cuts_valid = filter_short_and_long_utterances(
@@ -250,9 +276,11 @@ class LhotseBuilder(DataBuilder):
         return valid_dl
 
     def test_dataloaders(self, cuts: CutSet) -> DataLoader:
-        test = ValleDataset(
+        cuts = cuts.resample(self.feature_extractor.sampling_rate)
+        test = SpeechSynthesisDataset(
+            feature_input_strategy=OnTheFlyFeatures(extractor=self.lhotse_extractor()),
             return_text=True,
-            return_tokens=True,
+            return_tokens=False,
             return_cuts=self.args.return_cuts,
         )
         sampler = DynamicBucketingSampler(
@@ -309,20 +337,23 @@ class LhotseBuilder(DataBuilder):
 
 @dataclass
 class BatchCollator:
-    feature_extractor: OfflineCodesExtractor
-    tokenizer: ValleTokenizer
+    feature_extractor: E2TTSExtractor
+    tokenizer: E2TTSTokenizer
 
     def __call__(self, batch) -> Dict[str, torch.Tensor]:
+        features, features_lens = batch["features"], batch["features_lens"]
 
-        input_ids = batch["codes"]
-        # input_ids, attention_mask
-        batch_out = _rename_columns(
-            self.feature_extractor(input_ids), {"input_features": "input_ids"}
+        attn_mask = make_non_pad_mask(features_lens)
+        features: torch.Tensor = features.masked_fill(
+            ~attn_mask[..., None], self.feature_extractor.padding_value
         )
+        batch_out = {}
+
+        batch_out["input_features"] = features
+        batch_out["attention_mask"] = attn_mask
 
         # get the tokenized phonemes.
-        phn_outs = self.tokenizer(batch["tokens"], return_tensors="pt")
-
+        phn_outs = self.tokenizer(batch["text"], return_tensors="pt")
         batch_out["text_input_ids"] = phn_outs["input_ids"]
         batch_out["text_attention_mask"] = phn_outs["attention_mask"]
 
@@ -330,13 +361,15 @@ class BatchCollator:
 
 
 if __name__ == "__main__":
-    d = "exp/egs/libritts"
+    d = "exp/egs/libritts_simple"
     cfg = LhotseBuilderConfig(data_dir=d, file_patterns={"train": "cuts_train*"})
     # cfg.to_cfg_file("tst.yml")
     db = LhotseBuilder(cfg)
     dl = db.train_dataloaders(db.train_cuts())
     for i, batch in enumerate(dl):
         print(batch)
-        print(batch["input_ids"])
-        print(batch["text_attention_mask"], batch["text_attention_mask"].shape)
+        print(batch["input_features"])
+        print(batch["text_attention_mask"])
+        print(batch["input_features"].shape, batch["text_attention_mask"].shape)
+        print(batch.keys())
         break
