@@ -4,7 +4,6 @@
 import gzip
 import io
 import os
-import posixpath
 import re
 import stat
 from glob import has_magic
@@ -109,6 +108,14 @@ class FsspecLocalGlob:
                 t = "file"
             else:
                 t = "other"
+
+            size = out.st_size
+            if link:
+                try:
+                    out2 = path.stat(follow_symlinks=True)
+                    size = out2.st_size
+                except OSError:
+                    size = 0
             path = cls._strip_protocol(path.path)
         else:
             # str or path-like
@@ -117,6 +124,7 @@ class FsspecLocalGlob:
             link = stat.S_ISLNK(out.st_mode)
             if link:
                 out = os.stat(path, follow_symlinks=True)
+            size = out.st_size
             if stat.S_ISDIR(out.st_mode):
                 t = "directory"
             elif stat.S_ISREG(out.st_mode):
@@ -125,20 +133,15 @@ class FsspecLocalGlob:
                 t = "other"
         result = {
             "name": path,
-            "size": out.st_size,
+            "size": size,
             "type": t,
             "created": out.st_ctime,
             "islink": link,
         }
         for field in ["mode", "uid", "gid", "mtime", "ino", "nlink"]:
-            result[field] = getattr(out, "st_" + field)
-        if result["islink"]:
+            result[field] = getattr(out, f"st_{field}")
+        if link:
             result["destination"] = os.readlink(path)
-            try:
-                out2 = os.stat(path, follow_symlinks=True)
-                result["size"] = out2.st_size
-            except IOError:
-                result["size"] = 0
         return result
 
     @classmethod
@@ -239,11 +242,13 @@ class FsspecLocalGlob:
 
     @classmethod
     def isfile(cls, path):
-        """Is this entry file-like?"""
-        try:
-            return cls.info(path)["type"] == "file"
-        except:  # noqa: E722
-            return False
+        path = cls._strip_protocol(path)
+        return os.path.isfile(path)
+
+    @classmethod
+    def isdir(cls, path):
+        path = cls._strip_protocol(path)
+        return os.path.isdir(path)
 
     @classmethod
     def exists(cls, path, **kwargs):
@@ -382,11 +387,16 @@ class FsspecLocalGlob:
     @classmethod
     def ls(cls, path, detail=False, **kwargs):
         path = cls._strip_protocol(path)
-        if detail:
+        info = cls.info(path)
+        if info["type"] == "directory":
             with os.scandir(path) as it:
-                return [cls.info(f) for f in it]
+                infos = [cls.info(f) for f in it]
         else:
-            return [posixpath.join(path, f) for f in os.listdir(path)]
+            infos = [info]
+
+        if not detail:
+            return [i["name"] for i in infos]
+        return infos
 
     @classmethod
     def _strip_protocol(cls, path):
@@ -398,47 +408,55 @@ class FsspecLocalGlob:
         return make_path_posix(path).rstrip("/") or cls.root_marker
 
 
-def make_path_posix(path, sep=os.sep):
-    """Make path generic"""
-    if isinstance(path, (list, set, tuple)):
-        return type(path)(make_path_posix(p) for p in path)
-    if "~" in path:
-        path = os.path.expanduser(path)
-    if sep == "/":
-        # most common fast case for posix
-        if path.startswith("/"):
-            return path
-        if path.startswith("./"):
-            path = path[2:]
-        return os.getcwd() + "/" + path
-    if (
-        (sep not in path and "/" not in path)
-        or (sep == "/" and not path.startswith("/"))
-        or (sep == "\\" and ":" not in path and not path.startswith("\\\\"))
-    ):
-        # relative path like "path" or "rel\\path" (win) or rel/path"
-        if os.sep == "\\":
-            # abspath made some more '\\' separators
-            return make_path_posix(os.path.abspath(path))
+def make_path_posix(path):
+    """Make path generic and absolute for current OS"""
+    if not isinstance(path, str):
+        if isinstance(path, (list, set, tuple)):
+            return type(path)(make_path_posix(p) for p in path)
         else:
-            return os.getcwd() + "/" + path
-    if path.startswith("file://"):
-        path = path[7:]
-    if re.match("/[A-Za-z]:", path):
-        # for windows file URI like "file:///C:/folder/file"
-        # or "file:///C:\\dir\\file"
-        path = path[1:].replace("\\", "/").replace("//", "/")
-    if path.startswith("\\\\"):
-        # special case for windows UNC/DFS-style paths, do nothing,
-        # just flip the slashes around (case below does not work!)
-        return path.replace("\\", "/")
-    if re.match("[A-Za-z]:", path):
-        # windows full path like "C:\\local\\path"
-        return path.lstrip("\\").replace("\\", "/").replace("//", "/")
-    if path.startswith("\\"):
-        # windows network path like "\\server\\path"
-        return "/" + path.lstrip("\\").replace("\\", "/").replace("//", "/")
-    return path
+            path = stringify_path(path)
+            if not isinstance(path, str):
+                raise TypeError(f"could not convert {path!r} to string")
+    if os.sep == "/":
+        # Native posix
+        if path.startswith("/"):
+            # most common fast case for posix
+            return path
+        elif path.startswith("~"):
+            return os.path.expanduser(path)
+        elif path.startswith("./"):
+            path = path[2:]
+        elif path == ".":
+            path = ""
+        return f"{os.getcwd()}/{path}"
+    else:
+        # NT handling
+        if path[0:1] == "/" and path[2:3] == ":":
+            # path is like "/c:/local/path"
+            path = path[1:]
+        if path[1:2] == ":":
+            # windows full path like "C:\\local\\path"
+            if len(path) <= 3:
+                # nt root (something like c:/)
+                return path[0] + ":/"
+            path = path.replace("\\", "/")
+            return path
+        elif path[0:1] == "~":
+            return make_path_posix(os.path.expanduser(path))
+        elif path.startswith(("\\\\", "//")):
+            # windows UNC/DFS-style paths
+            return "//" + path[2:].replace("\\", "/")
+        elif path.startswith(("\\", "/")):
+            # windows relative path with root
+            path = path.replace("\\", "/")
+            return f"{os.path.splitdrive(os.getcwd())[0]}{path}"
+        else:
+            path = path.replace("\\", "/")
+            if path.startswith("./"):
+                path = path[2:]
+            elif path == ".":
+                path = ""
+            return f"{make_path_posix(os.getcwd())}/{path}"
 
 
 def stringify_path(filepath):

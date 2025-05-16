@@ -8,16 +8,6 @@ Refs:
        https://arxiv.org/abs/2406.18009
     repo: https://github.com/lucidrains/e2-tts-pytorch/tree/main
 """
-# -*- coding:utf-8 -*-
-# Copyright xmuspeech (Author: Leo 2024-08)
-"""
-E2TTS implementation.
-
-Refs:
-    paper: Embarrassingly Easy Fully Non-Autoregressive Zero-Shot TTS
-       https://arxiv.org/abs/2406.18009
-    repo: https://github.com/lucidrains/e2-tts-pytorch/tree/main
-"""
 import contextlib
 import math
 from copy import deepcopy

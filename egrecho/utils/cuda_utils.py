@@ -31,14 +31,43 @@ def avoid_float16_autocast_context():
 
     if torch.is_autocast_enabled() and torch.get_autocast_gpu_dtype() == torch.float16:
         if torch.jit.is_scripting() or torch.jit.is_tracing():
-            return torch.cuda.amp.autocast(dtype=torch.float32)
+            return torch.amp.autocast('cuda', dtype=torch.float32)
 
         if torch.cuda.is_bf16_supported():
-            return torch.cuda.amp.autocast(dtype=torch.bfloat16)
+            return torch.amp.autocast('cuda', dtype=torch.bfloat16)
         else:
-            return torch.cuda.amp.autocast(dtype=torch.float32)
+            return torch.amp.autocast('cuda', dtype=torch.float32)
     else:
         return nullcontext()
+
+
+# copied from Nemo: nemo/collections/common/data/lhotse/dataloader.py#maybe_set_cuda_expandable_segments
+def maybe_set_cuda_expandable_segments(enabled: bool):
+    """
+    Configures PyTorch memory allocator to expand existing allocated segments
+    instead of re-allocating them when tensor shape grows.
+    This can help speed up the training when sequence length and/or batch size change often,
+    and makes GPU more robust towards OOM.
+
+    See here for more details:
+    https://pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf
+    """
+    if enabled and torch.cuda.is_available():
+        if (
+            (value := os.environ.get("PYTORCH_CUDA_ALLOC_CONF")) is not None
+            and len(value) > 0
+            and "expandable_segments:True" not in value
+        ):
+            warnings.warn(
+                "You have set PYTORCH_CUDA_ALLOC_CONF without expandable_segments:True option. We're setting that option anyway. To disable it, set cuda_expandable_segments=False in NeMo dataloader configuration."
+            )
+
+        try:
+            torch.cuda.memory._set_allocator_settings("expandable_segments:True")
+        except RuntimeError:
+            logger.warning(
+                "Failed to set expandable_segments:True for PyTorch CUDA allocator. You may get training speed improvements if you enable this"
+            )
 
 
 def set_to_cuda(modules):
@@ -519,9 +548,9 @@ class GPUManager:
         chosen_gpu["specified"] = True
         device = self.gpu_id2device[chosen_gpu["index"]]
         logger.info(
-            "Auto select GPU: device={device}\n#### {info}".format(
+            "Auto select GPU: device={device}\n### {info}".format(
                 device=device,
-                info="\n#### ".join(
+                info="\n### ".join(
                     [
                         str(k) + ":" + str(v)
                         for k, v in chosen_gpu.items()

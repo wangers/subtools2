@@ -16,8 +16,6 @@ if sys.version_info < (3, 8):
     print("Python > 3.8 is required.")
     sys.exit(-1)
 
-MIN_PYTORCH_VERSION_MAJOR = 1
-MIN_PYTORCH_VERSION_MINOR = 13
 
 ROOT_DIR = os.path.realpath(os.path.dirname(__file__))
 PATH_REQUIRE = os.path.join(ROOT_DIR, "requirements")
@@ -45,36 +43,6 @@ def load_requirements(path_dir: str, file_name: str = "base.txt"):
             except ValueError:
                 pass
     return req
-
-
-def get_pytorch_version():
-    """
-    This functions finds the PyTorch version.
-
-    Returns:
-        A tuple of integers in the form of (major, minor, patch).
-    """
-    import torch
-
-    torch_version = torch.__version__.split("+")[0]
-    TORCH_MAJOR = int(torch_version.split(".")[0])
-    TORCH_MINOR = int(torch_version.split(".")[1])
-    TORCH_PATCH = int(torch_version.split(".")[2], 16)
-    return TORCH_MAJOR, TORCH_MINOR, TORCH_PATCH
-
-
-def check_pytorch_version(min_major_version, min_minor_version) -> bool:
-    # get pytorch version
-    torch_major, torch_minor, _ = get_pytorch_version()
-
-    # if the
-    if torch_major < min_major_version or (
-        torch_major == min_major_version and torch_minor < min_minor_version
-    ):
-        raise RuntimeError(
-            f"Requires Pytorch {min_major_version}.{min_minor_version} or newer.\n"
-            "refer https://pytorch.org/ to install torch."
-        )
 
 
 def _prepare_extras(skip_pattern: str = "^_", skip_files=("base.txt",)):
@@ -120,24 +88,19 @@ def _prepare_extras(skip_pattern: str = "^_", skip_files=("base.txt",)):
     return extras_req
 
 
-with open("README.md", encoding="utf8") as f:
-    readme = f.read().split("--------------------")[-1]
-
-
 def get_version() -> str:
     """
-    This function reads the VERSION and generates the egrecho/version.py file.
+    This function reads the pyproject.toml and generates the egrecho/version.py file.
 
     Returns:
-        The library version stored in VERSION.
+        The library version stored in pyproject.toml.
     """
     project_path = ROOT_DIR
-    version_txt_path = os.path.join(project_path, "VERSION")
+    toml_path = os.path.join(project_path, "VERSION")
     version_py_path = os.path.join(project_path, "egrecho/version.py")
 
-    with open(version_txt_path) as f:
+    with open(toml_path) as f:
         version = f.read().strip()
-
     # write version into version.py
     with open(version_py_path, "w") as f:
         f.write(f"__version__ = '{version}'\n")
@@ -145,23 +108,34 @@ def get_version() -> str:
 
 
 if __name__ == "__main__":
-    try:
-        check_pytorch_version(MIN_PYTORCH_VERSION_MAJOR, MIN_PYTORCH_VERSION_MINOR)
-        # If the user already installed PyTorch, make sure he has torchaudio too.
-        import torchaudio
-    except ImportError as e:
-        raise ImportError(
-            f"{e}\n#### Please refer https://pytorch.org/ to install torch and torchaudio."
-        )
+
+    with open("README.md", encoding="utf8") as f:
+        readme = f.read().split("--------------------")[-1]
 
     version = get_version()
     reqs = load_requirements(PATH_REQUIRE)
     setup(
+        name='egrecho',
         version=version,
         packages=find_packages(include=("egrecho*",))
         + find_namespace_packages(include=("egrecho_cli*",)),
+        entry_points={
+            "console_scripts": [
+                "egrecho = egrecho_cli.__main__:main",
+            ]
+        },
         install_requires=reqs,
         extras_require=_prepare_extras(),
+        zip_safe=False,
+        include_package_data=True,
         long_description=readme,
         long_description_content_type="text/markdown",
+        author="Dexin Liao",
+        url='https://github.com/wangers/subtools2',
+        license="Apache-2.0 License",
+        classifiers=[
+            "Programming Language :: Python :: 3",
+            "License :: OSI Approved :: Apache Software License",
+            "",
+        ],
     )

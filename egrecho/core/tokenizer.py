@@ -344,10 +344,10 @@ class BaseTokenizer(ABC, GenericFileMixin):
         return self.text2tokens(line)
 
     def text2ids(self, line: TextInput) -> List[int]:
-        return self.text2tokens(self.tokens2ids(line))
+        return self.tokens2ids(self.text2tokens(line))
 
     def ids2text(self, ids: EncodedInput) -> str:
-        return self.ids2tokens(self.tokens2text(ids))
+        return self.tokens2text(self.ids2tokens(ids))
 
     @abstractmethod
     def text2tokens(self, line: TextInput) -> List[str]:

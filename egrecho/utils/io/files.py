@@ -45,6 +45,10 @@ class Url(str):
     pass
 
 
+class FolderNotFoundError(OSError):
+    pass
+
+
 def contains_wildcards(pattern: str) -> bool:
     return any(
         wilcard_character in pattern for wilcard_character in WILDCARD_CHARACTERS
@@ -180,6 +184,26 @@ class DataFilesDict(Dict[str, DataFilesList]):
         return out
 
 
+class DataFoldersDict(Dict[str, List[str]]):
+    """
+    Dict of split_name -> list of data folders (absolute local paths or URLs).
+
+    - ``from_local_or_remote``: resolve patterns from a local path
+    """
+
+    @classmethod
+    def from_local_or_remote(
+        cls,
+        patterns: Dict[str, Union[List[str], str]],
+        base_path: Optional[str] = None,
+    ) -> "DataFoldersDict":
+        out = cls()
+        base_path = base_path if base_path is not None else str(Path().resolve())
+        for key, patterns_for_key in patterns.items():
+            out[key] = resolve_folders_patterns(base_path, patterns_for_key)
+        return out
+
+
 def resolve_patterns_locally_or_by_urls(
     base_path: str, patterns: List[str], allowed_extensions: Optional[Tuple[str]] = None
 ) -> List[Union[Path, Url]]:
@@ -246,6 +270,55 @@ def resolve_patterns_locally_or_by_urls(
     return data_files
 
 
+def resolve_folders_patterns(base_path: str, patterns: List[str]) -> List[Path]:
+    """
+    Resolve all matching folder paths based on the given base path and patterns.
+
+    This function searches the specified base path for all folders that match the given patterns.
+    It returns a list of Path objects representing the matched folders.
+
+    Parameters:
+        base_path (str): Base path to use when resolving relative paths.
+        patterns (List[str]): A list of pattern strings used to match folder names.
+            The paths can be absolute or relative to base_path.
+    Returns:
+        List[Path]: a list of Path objects representing all matched folders.
+    """
+    matched_folders = []
+    if isinstance(patterns, str):
+        patterns = [patterns]
+    for pattern in patterns:
+        if is_remote_url(pattern):
+            matched_folders.append(Url(pattern))
+        else:
+            for path in _resolve_folders_single_pattern_locally(base_path, pattern):
+                matched_folders.append(path)
+
+    return matched_folders
+
+
+# alias
+resolve_patterns = resolve_patterns_locally_or_by_urls
+
+
+def resolve_file(fname: str, base_path: Optional[str] = None):
+    """
+    Resolve a single file
+
+    if given base_path and rel fname, get the file subject the base_path.
+
+    """
+    if is_remote_url(fname):
+        return fname
+    else:
+        if is_relative_path(fname):
+            base_path = str(base_path) if base_path is not None else str(Path())
+
+            return os.path.normpath(os.path.join(base_path, fname))
+        else:
+            return fname
+
+
 def _resolve_single_pattern_locally(
     base_path: str, pattern: str, allowed_extensions: Optional[Tuple[str]] = None
 ) -> List[Path]:
@@ -299,26 +372,40 @@ def _resolve_single_pattern_locally(
     return sorted(out)
 
 
-# alias
-resolve_patterns = resolve_patterns_locally_or_by_urls
-
-
-def resolve_file(fname: str, base_path: Optional[str] = None):
+def _resolve_folders_single_pattern_locally(
+    base_path: str,
+    pattern: str,
+) -> List[Path]:
     """
-    Resolve a single file
-
-    if given base_path and rel fname, get the file subject the base_path.
-
+    Return the absolute paths to all the directory that match the given pattern.
+    It also supports absolute paths in patterns.
     """
-    if is_remote_url(fname):
-        return fname
+
+    if is_relative_path(pattern):
+        pattern = os.path.join(base_path, pattern)
     else:
-        if is_relative_path(fname):
-            base_path = str(base_path) if base_path is not None else str(Path())
+        base_path = os.path.splitdrive(pattern)[0] + os.sep
+    glob_iter = [
+        PurePath(dirpath)
+        for dirpath in FsspecLocalGlob.glob(pattern)
+        if FsspecLocalGlob.isdir(dirpath)
+    ]
+    matched_paths = [
+        Path(os.path.abspath(dirpath))
+        for dirpath in glob_iter
+        if not _is_inside_unrequested_special_dir(
+            os.path.relpath(dirpath, base_path), os.path.relpath(pattern, base_path)
+        )
+        and not _is_unrequested_hidden_file_or_is_inside_unrequested_hidden_dir(
+            os.path.relpath(dirpath, base_path), os.path.relpath(pattern, base_path)
+        )
+    ]  # ignore .ipynb and __pycache__, but keep /../
 
-            return os.path.normpath(os.path.join(base_path, fname))
-        else:
-            return fname
+    if not matched_paths and not contains_wildcards(pattern):
+        raise FolderNotFoundError(
+            f"Unable to find valid folder pattern='{pattern}' at {Path(base_path).resolve()}"
+        )
+    return sorted(matched_paths)
 
 
 def _get_single_origin_metadata_locally_or_by_urls(

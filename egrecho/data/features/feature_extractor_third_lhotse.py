@@ -17,7 +17,7 @@ from egrecho.data.features.feature_extractor_audio import (
     SingleTensor,
     cmvn_utts,
 )
-from egrecho.utils.common import alt_none, dict_union
+from egrecho.utils.common import alt_none, dict_union, get_nested_attr
 from egrecho.utils.imports import _LHOTSE_AVAILABLE
 from egrecho.utils.logging import get_logger
 from egrecho.utils.misc import ConfigurationException, add_end_docstrings
@@ -72,7 +72,6 @@ EXTLHOTSE_EXAMPLE_DOCSTRING_CLS = EXTLHOTSE_EXAMPLE_DOCSTRING.replace(
 )
 
 
-@lru_cache(maxsize=8)
 def get_ext_lhotse_feat(**feat_conf) -> FeatureExtractor:
     return FeatureExtractor.from_dict(feat_conf)
 
@@ -99,6 +98,8 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
             Padding value, default is log of `1e-10`.
         rich_feat_info (bool):
             Whether to include rich feature information. Defaults to False.
+        offline_feats (bool):
+            Accept offline feature inputs or not.
         **kwargs:
             Other arguments.
     """
@@ -116,6 +117,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         return_attention_mask: bool = True,
         padding_value: float = LOG_EPSILON,
         rich_feat_info: bool = False,
+        offline_feats: bool = False,
         **kwargs,
     ):
 
@@ -125,17 +127,18 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
                 f"as an argument, but got ({kwargs.get('feature_size')}), set `feat_conf` to control feature dim."
             )
 
-        # sequence defaults sampling_rate
-        sr = {"sampling_rate": sampling_rate} if sampling_rate is not None else {}
-        self.feat_conf = dict_union(DEFAULT_FEAT_CONF, sr, alt_none(feat_conf, {}))
+        self.feat_conf = dict_union(DEFAULT_FEAT_CONF, alt_none(feat_conf, {}))
         self.scale_bit = scale_bit
 
-        if rich_feat_info:
-            self.feat_conf = get_ext_lhotse_feat(**feat_conf).to_dict()
-
         extactor = self.extractor
-        sampling_rate = extactor.config.sampling_rate
+        if rich_feat_info:
+            self.feat_conf = extactor.to_dict()
+        sampling_rate = self.get_sampling_rate(
+            extractor=extactor,
+            sampling_rate=sampling_rate,
+        )
         feature_size = extactor.feature_dim(sampling_rate)
+        self.set_offline_mode(offline_feats)
 
         self.mean_norm = mean_norm
         self.std_norm = std_norm
@@ -155,9 +158,10 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         sampling_rate: Optional[int] = None,
         max_length: Optional[int] = None,
         truncate: Optional[int] = None,
+        padding_to_max: bool = False,
         return_attention_mask: Optional[bool] = None,
         return_tensors: bool = True,
-        offline_feats: bool = False,
+        offline_feats: Optional[bool] = None,
     ) -> dict:
         """
         Call the feature extractor for feature extraction.
@@ -176,6 +180,8 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
                 fix the maximum length of the returned list if `truncate=True`.
             truncate (`bool`, *optional*):
                 Activates truncation to cut input sequences longer than `max_length` to `max_length`.
+            padding_to_max (`bool`, *optional*):
+                Activates padding to `max_length`.
             return_attention_mask (Optional[bool]):
                 Whether to return attention mask. if specified, will affect the default set in `__init__`.
             return_tensors (bool):
@@ -186,12 +192,14 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         Returns:
             dict: A dictionary containing features.
         """
+        offline_feats = offline_feats or self.offline_feats
         if not offline_feats:
             return self._call_raw(
                 samples=input_values,
                 sampling_rate=sampling_rate,
                 max_length=max_length,
                 truncate=truncate,
+                padding_to_max=padding_to_max,
                 return_attention_mask=return_attention_mask,
                 return_tensors=return_tensors,
             )
@@ -201,6 +209,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
                 sampling_rate=sampling_rate,
                 max_length=max_length,
                 truncate=truncate,
+                padding_to_max=padding_to_max,
                 return_attention_mask=return_attention_mask,
                 return_tensors=return_tensors,
             )
@@ -211,6 +220,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         sampling_rate: Optional[int] = None,
         max_length: Optional[int] = None,
         truncate: Optional[int] = None,
+        padding_to_max: bool = False,
         return_attention_mask: Optional[bool] = None,
         return_tensors: bool = True,
     ) -> dict:
@@ -227,6 +237,8 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
                 fix the maximum length of the returned list if `truncate=True`.
             truncate (`bool`, *optional*):
                 Activates truncation to cut input sequences longer than `max_length` to `max_length`.
+            padding_to_max (`bool`, *optional*):
+                Activates padding to `max_length`.
             return_attention_mask (Optional[bool]):
                 Whether to return attention mask. if specified, will affect the default set in `__init__`.
             return_tensors (bool):
@@ -272,7 +284,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         if self.scale_bit:
             mov = int(self.scale_bit - 1)
             samples = [sample * (1 << mov) for sample in samples]
-        extractor: FeatureExtractor = get_ext_lhotse_feat(**self.feat_conf)
+        extractor: FeatureExtractor = self.extractor
         feats = extractor.extract_batch(samples, sampling_rate=sampling_rate)
         if not isinstance(feats, list):
             feats = [feat for feat in feats]
@@ -284,6 +296,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
             batched_feats,
             max_length=max_length,
             truncate=truncate,
+            padding_to_max=padding_to_max,
             return_attention_mask=return_mask,
         )
         if do_norm:
@@ -305,6 +318,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         sampling_rate: Optional[int] = None,
         max_length: Optional[int] = None,
         truncate: Optional[int] = None,
+        padding_to_max: bool = False,
         return_attention_mask: Optional[bool] = None,
         return_tensors: bool = True,
     ) -> dict:
@@ -320,6 +334,8 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
                 fix the maximum length of the returned list if `truncate=True`.
             truncate (`bool`, *optional*):
                 Activates truncation to cut input sequences longer than `max_length` to `max_length`.
+            padding_to_max (`bool`, *optional*):
+                Activates padding to `max_length`.
             return_tensors (bool):
                 If True, output features in batch is a tensor, otherwise list of tensors. Defaults to True.
 
@@ -372,6 +388,7 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
             batched_feats,
             max_length=max_length,
             truncate=truncate,
+            padding_to_max=padding_to_max,
             return_attention_mask=return_mask,
         )
         if do_norm:
@@ -387,9 +404,64 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
             padded_inputs["input_features"] = [feat for feat in padded_inputs]
         return padded_inputs
 
+    def clear_extractor_cache(self):
+        return self._get_extractor.cache_clear()
+
+    @lru_cache()
+    def _get_extractor(self):
+        return get_ext_lhotse_feat(**self.feat_conf)
+
     @property
     def extractor(self):
-        return get_ext_lhotse_feat(**self.feat_conf)
+        return self._get_extractor()
+
+    def set_offline_mode(self, offline_feats: bool = True):
+        self.offline_feats = offline_feats
+        # clear cache for offline mode
+        if self.offline_feats:
+            self.clear_extractor_cache()
+
+    @classmethod
+    def get_sampling_rate(
+        cls, extractor: FeatureExtractor, sampling_rate: Optional[int] = None
+    ) -> int:
+        candidate_fields = [
+            "sampling_rate",
+            "config.sampling_rate",
+            "config.frame_opts.sampling_rate",
+        ] + list(cls.extra_sampling_rate_fields())
+
+        def _infer_sr():
+
+            for attr_str in candidate_fields:
+                if (sampling_rate := get_nested_attr(extractor, attr_str)) is not None:
+                    return sampling_rate
+            return None
+
+        infered_sampling_rate = _infer_sr()
+
+        if sampling_rate is None and infered_sampling_rate is None:
+            raise ConfigurationException(
+                f'`sampling_rate` is not set, and cannot be inferred from the extractor.'
+            )
+        if (
+            sampling_rate is not None
+            and infered_sampling_rate is not None
+            and sampling_rate != infered_sampling_rate
+        ):
+            logger.warning(
+                f"The sampling rate of the input ({sampling_rate}) does not match the sampling rate of the extractor "
+                f"({infered_sampling_rate}), using the sampling rate of the extractor.",
+                ranks=0,
+            )
+            sampling_rate = infered_sampling_rate
+        sampling_rate = alt_none(sampling_rate, infered_sampling_rate)
+        return sampling_rate
+
+    @classmethod
+    def extra_sampling_rate_fields(cls):
+        """Itf for subclass to add extra sampling rate field"""
+        return []
 
     @property
     def feature_dim(self) -> int:
@@ -406,7 +478,6 @@ class ExtLhotseFeatureExtractor(SequenceFeature):
         output = copy.deepcopy(self.__dict__)
         output["feature_extractor_type"] = self.__class__.__name__
         output.pop("feature_size", None)
-        output.pop("sampling_rate", None)
         return output
 
     @classmethod

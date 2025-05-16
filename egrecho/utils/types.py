@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2023-08)
 
-
+import os
 import warnings
 from collections import OrderedDict
 from dataclasses import fields
@@ -10,6 +10,8 @@ from typing import Any, List, Literal, Optional, Tuple, Union
 
 TRAIN_DATALOADERS = Any  # any iterable or collection of iterables
 EVAL_DATALOADERS = Any  # any iterable or collection of iterables
+
+PathLike = Union[str, bytes, os.PathLike]
 
 
 class ModelOutput(OrderedDict):

@@ -9,6 +9,7 @@ __pycache__
 # data & exp
 data
 !egrecho/data
+!egrecho_inner/data
 !scripts/kaldi_utils/data
 exp
 exp*/

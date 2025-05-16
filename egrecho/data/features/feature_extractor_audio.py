@@ -69,6 +69,7 @@ class SequenceFeature(BaseFeature):
         ],
         max_length: Optional[int] = None,
         truncate: bool = False,
+        padding_to_max: bool = False,
         return_attention_mask: Optional[bool] = None,
     ) -> dict:
         """
@@ -85,6 +86,8 @@ class SequenceFeature(BaseFeature):
                 fix the maximum length of the returned list if `truncate=True`.
             truncate (`bool`, *optional*):
                 Activates truncation to cut input sequences longer than `max_length` to `max_length`.
+            padding_to_max (`bool`, *optional*):
+                Activates padding to `max_length`.
             return_attention_mask (`bool`, *optional*):
                 Whether to return the attention mask. If left to the default, will return the attention mask according
                 to the specific feature_extractor's default.
@@ -140,9 +143,14 @@ class SequenceFeature(BaseFeature):
                 truncate=truncate,
             )
             inputs_to_pad.append(inputs_slice)
+
+        padding_max_length = (
+            max_length if padding_to_max and max_length is not None else -1
+        )
         max_length = max(
             (example[self.model_input_names[0]]).shape[0] for example in inputs_to_pad
         )
+        max_length = max(max_length, padding_max_length)
 
         batch_outputs = {}
         for i in range(batch_size):
@@ -340,6 +348,7 @@ class KaldiFeatureExtractor(SequenceFeature):
         sampling_rate: Optional[int] = None,
         max_length: Optional[int] = None,
         truncate: Optional[int] = None,
+        padding_to_max: bool = False,
         return_attention_mask: Optional[bool] = None,
         return_tensors: bool = True,
     ) -> dict:
@@ -356,6 +365,8 @@ class KaldiFeatureExtractor(SequenceFeature):
                 fix the maximum length of the returned list if `truncate=True`.
             truncate (`bool`, *optional*):
                 Activates truncation to cut input sequences longer than `max_length` to `max_length`.
+            padding_to_max (`bool`, *optional*):
+                Activates padding to `max_length`.
             return_attention_mask (Optional[bool]):
                 Whether to return attention mask. if specified, will affect the default set in `__init__`.
             return_tensors (bool):
@@ -413,6 +424,7 @@ class KaldiFeatureExtractor(SequenceFeature):
             batched_feats,
             max_length=max_length,
             truncate=truncate,
+            padding_to_max=padding_to_max,
             return_attention_mask=return_mask,
         )
         if do_norm:
@@ -530,6 +542,7 @@ class OfflineKaldiFeatureExtractor(SequenceFeature):
         sampling_rate: Optional[int] = None,
         max_length: Optional[int] = None,
         truncate: Optional[int] = None,
+        padding_to_max: bool = False,
         return_attention_mask: Optional[bool] = None,
         return_tensors: bool = True,
     ) -> dict:
@@ -543,6 +556,8 @@ class OfflineKaldiFeatureExtractor(SequenceFeature):
                 fix the maximum length of the returned list if `truncate=True`.
             truncate (`bool`, *optional*):
                 Activates truncation to cut input sequences longer than `max_length` to `max_length`.
+            padding_to_max (`bool`, *optional*):
+                Activates padding to `max_length`.
             return_attention_mask (Optional[bool]):
                 Whether to return attention mask. if specified, will affect the default set in `__init__`.
             return_tensors (bool):
@@ -597,6 +612,7 @@ class OfflineKaldiFeatureExtractor(SequenceFeature):
             batched_feats,
             max_length=max_length,
             truncate=truncate,
+            padding_to_max=padding_to_max,
             return_attention_mask=return_mask,
         )
         if do_norm:

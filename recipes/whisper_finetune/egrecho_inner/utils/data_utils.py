@@ -66,14 +66,13 @@ class XNormlizer:
             raise ValueError(
                 f'Intut text and language shuold be type of str of list of str(s), but got {type(text)}, {type(language)}.'
             )
-        text, language = list(text), list(text)
+        text, language = list(text), list(language)
         if len(text) != len(language) and len(language) == 1:
             language = language * len(text)
         elif len(text) != len(language):
             raise ValueError(
                 f'Dismatch text and language num for {len(text)}, {len(language)}.'
             )
-        text, language = list(text), list(text)
         normlized_text = []
         for txt, lang in zip(text, language):
             if lang in CN_LANGS:

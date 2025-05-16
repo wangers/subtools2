@@ -579,3 +579,13 @@ def omegaconf_handler(config: Optional[Dict[Any, Any]], omegaconf_resolve=True):
             if omegaconf_resolve:
                 return omegaconf2container(config)
     return config
+
+
+def get_nested_attr(obj, attr_string: str, default=None):
+
+    attrs = attr_string.split('.')
+    for attr in attrs:
+        if obj is None:
+            return default
+        obj = getattr(obj, attr, None)
+    return obj if obj is not None else default

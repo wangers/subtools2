@@ -5,7 +5,7 @@ import collections
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, List, Optional, Union
 
 from egrecho.core.config import DataclassConfig, GenericFileMixin
 from egrecho.utils.constants import DATASET_META_FILENAME, DEFAULT_DATA_FILES
@@ -39,6 +39,7 @@ class DataBuilderConfig(DataclassConfig):
             search files in abs path.
     """
 
+    yaml_inline_list: ClassVar[bool] = False
     data_dir: Optional[str] = field(default=None, metadata={"to_dict": False})
     file_patterns: Optional[Union[str, List[str], Dict[str, str]]] = field(
         default_factory=lambda: DEFAULT_DATA_FILES

@@ -50,7 +50,7 @@ def load_audio(
     else:
         raise TypeError(f'Invalid audio inputs type {type(inputs)} => {inputs}')
     if resample_rate is not None and sample_rate != resample_rate:
-        inputs = torchaudio.functional.resample(sample_rate, resample_rate)
+        inputs = torchaudio.functional.resample(inputs, sample_rate, resample_rate)
     inputs = inputs[:1, ...]  # first channel.
     return inputs
 

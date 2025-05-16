@@ -761,7 +761,7 @@ class VocabCounter(Counter):
             vocab.to_file(path, save_vocab=True)
             extra_msg = f"vocab files saves to {savedir} | {fname} "
         print(
-            f"#### Build vocab done. {extra_msg}(vocab_size={len(vocab)} specials={specials})"
+            f"### Build vocab done. {extra_msg}(vocab_size={len(vocab)} specials={specials})"
         )
         return vocab
 

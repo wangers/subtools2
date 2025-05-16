@@ -27,7 +27,7 @@ class Logger:
     """
 
     __loggers = {}
-    # __format = "[ %(name)s - %(pathname)s:%(lineno)s - %(funcName)s - %(levelname)s ]\n#### %(message)s"
+    # __format = "[ %(name)s - %(pathname)s:%(lineno)s - %(funcName)s - %(levelname)s ]\n### %(message)s"
 
     __format = "%(asctime)s >> [ subtools - %(name)s - %(levelname)s ]: %(message)s"
 
@@ -146,7 +146,7 @@ class Logger:
         message_prefix = self.get_msg_prefix(
             *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
         )
-        message = "{}\n#### {}".format(message_prefix, message)
+        message = "{}\n### {}".format(message_prefix, message)
         self._log("info", message, ranks)
 
     def info_once(self, message: str, ranks: List[int] = None) -> None:
@@ -181,7 +181,7 @@ class Logger:
         message_prefix = self.get_msg_prefix(
             *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
         )
-        message = "{}\n#### {}".format(message_prefix, message)
+        message = "{}\n### {}".format(message_prefix, message)
         self._log("warning", message, ranks)
 
     def warning_once(self, message: str, ranks: List[int] = None) -> None:
@@ -216,7 +216,7 @@ class Logger:
         message_prefix = self.get_msg_prefix(
             *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
         )
-        message = "{}\n#### {}".format(message_prefix, message)
+        message = "{}\n### {}".format(message_prefix, message)
         self._log("debug", message, ranks)
 
     def error(
@@ -238,7 +238,7 @@ class Logger:
         message_prefix = self.get_msg_prefix(
             *self.__get_call_info(stack_pos=stack_pos), verbose=verbose
         )
-        message = "{}\n#### {}".format(message_prefix, message)
+        message = "{}\n### {}".format(message_prefix, message)
         self._log("error", message, ranks)
 
     def error_once(

@@ -1,10 +1,12 @@
 from egrecho.utils.io.files import (
     DataFilesDict,
     DataFilesList,
+    DataFoldersDict,
     get_filename,
     is_relative_path,
     is_remote_url,
     resolve_file,
+    resolve_folders_patterns,
     resolve_patterns,
     sanitize_patterns,
 )

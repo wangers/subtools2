@@ -1,8 +1,11 @@
 # -*- encoding: utf-8 -*-
 # Copyright xmuspeech (Author: Leo 2023-08)
 
+import textwrap
 from itertools import chain
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+from egrecho.utils.provider import *
 
 FUNCTION_ITEM = Dict[str, Any]
 
@@ -41,6 +44,7 @@ class Register:
         fn_or_cls: Optional[Callable] = None,
         name: Optional[str] = None,
         override: bool = False,
+        provider_info: Optional[ProviderInfo] = None,
         **metadata,
     ) -> Callable:
         """Adds a function or class.
@@ -49,8 +53,11 @@ class Register:
             fn_or_cls (Callable): The function to be registered.
             name (str): Name string.
             override (bool): Whether override if exists.
+            provider_info (ProviderInfo): infos about provider, which will be merged into metadata.
             **metadata (dict): Additional dict to be saved.
         """
+        if provider_info is not None:
+            metadata["provider_info"] = provider_info
         if fn_or_cls is not None:
             return self._do_register(
                 fn_or_cls=fn_or_cls, name=name, override=override, metadata=metadata
@@ -137,8 +144,19 @@ class Register:
                     "Found no matches that fit your metadata criteria. Try removing some metadata"
                 )
 
-        matches = [e if with_metadata else e["fn"] for e in matches]
-        return matches[0] if strict else matches
+        matches = [matches[0]] if strict else matches
+        ans = []
+        for m in matches:
+            if prov_info := m["metadata"].get('provider_info', None):
+                message = f"Matched '{key}' with provider:\n{textwrap.indent(f'{prov_info}', '    ')}"
+                _rank_zero_info(message)
+            if with_metadata:
+                ans.append(m)
+            else:
+                ans.append(m["fn"])
+            if strict:
+                return ans[0]
+        return ans
 
     def keys(self):
         """Get all name registred."""
@@ -423,3 +441,16 @@ class ConcatStrRegister(StrRegister):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(registers={self.registers})"
+
+
+def _rank_zero_info(message):
+
+    try:
+        from lightning.pytorch.utilities import rank_zero_info
+
+        rank_zero_info(message)
+    except Exception as exc:  # noqa
+        from egrecho.utils.dist import is_global_rank_zero
+
+        if is_global_rank_zero():
+            print(message)

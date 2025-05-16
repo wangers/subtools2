@@ -6,7 +6,7 @@ import importlib
 import textwrap
 import types
 import warnings
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from egrecho.utils.logging import get_logger
 
@@ -76,6 +76,22 @@ def parse_bytes(size) -> float:
     return f"{round(size, 2)}"
 
 
+def parse_size(size: int, unit_type: Literal["abbrev", "multi"] = "abbrev"):
+    """parse `size` to the largest possible unit."""
+    if unit_type == "multi":
+        units = ["", "×10³", "×10⁶", "×10⁹", "×10¹²"]
+    elif unit_type == "abbrev":
+        units = ["", "K", "M", "G", "T"]
+    else:
+        raise ValueError("unknown unit_type")
+    for x in units:
+        if size < 1000.0:
+            return f"{round(size, 2)}{x}"
+        size /= 1000.0
+
+    return f"{round(size, 2)}"
+
+
 def add_start_docstrings(*docstr):
     def docstring_decorator(fn):
         fn.__doc__ = "".join(docstr) + (fn.__doc__ if fn.__doc__ is not None else "")
@@ -112,7 +128,7 @@ def kill_name_proc(grep_str: str, force_kill: bool = False):
     process = subprocess.Popen(grep_command, shell=True, stdout=subprocess.PIPE)
     grep_output, _ = process.communicate()
     print(grep_output.decode())
-    print("#### Matching processes as above. Are you sure you want kill them?")
+    print("### Matching processes as above. Are you sure you want kill them?")
     if if_continue():
         pid_list = []
         for line in grep_output.decode().split("\n"):
@@ -152,7 +168,7 @@ FALSES = ("no", "false", "f", "n", "0")
 
 
 def if_continue() -> bool:
-    print(f"#### Waiting for confirmation: y:{TRUES} / n:{FALSES}")
+    print(f"### Waiting for confirmation: y:{TRUES} / n:{FALSES}")
 
     # Read user input
     user_input = input()
