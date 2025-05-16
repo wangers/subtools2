@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>egrecho.core.loads - Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -415,9 +415,9 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Save/load model in a directory, overwrite this for any special manners.</p>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">egrecho.core.loads</span> <span class="kn">import</span> <span class="n">SaveLoadHelper</span>
-<span class="kn">from</span> <span class="nn">egrecho.models.ecapa.model</span> <span class="kn">import</span> <span class="n">EcapaModel</span>
-<span class="kn">from</span> <span class="nn">egrecho.data.features.feature_extractor_audio</span> <span class="kn">import</span> <span class="n">KaldiFeatureExtractor</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.core.loads</span><span class="w"> </span><span class="kn">import</span> <span class="n">SaveLoadHelper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.models.ecapa.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">EcapaModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.data.features.feature_extractor_audio</span><span class="w"> </span><span class="kn">import</span> <span class="n">KaldiFeatureExtractor</span>
 <span class="n">sl_helper</span> <span class="o">=</span> <span class="n">SaveLoadHelper</span><span class="p">()</span>
 <span class="n">extractor</span> <span class="o">=</span> <span class="n">KaldiFeatureExtractor</span><span class="p">()</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">EcapaModel</span><span class="p">()</span>
@@ -467,7 +467,7 @@ testdir/ecapa/
     <span class="n">kwargs_recurse_override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;_cls_&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="p">,</span> <span class="s2">&quot;init_weight&quot;</span><span class="p">:</span> <span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 <span class="p">)</span>  <span class="c1"># only load model without weight and eliminate the influences of Ecapa model directory</span>
-<span class="kn">from</span> <span class="nn">egrecho.models.valle.model</span> <span class="kn">import</span> <span class="n">Valle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.models.valle.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Valle</span>
 <span class="c1"># Try again.</span>
 <span class="n">hresults</span> <span class="o">=</span> <span class="n">sl_helper</span><span class="o">.</span><span class="n">fetch_from</span><span class="p">(</span>
     <span class="n">dirpath</span><span class="p">,</span>
@@ -502,9 +502,9 @@ outdir like:</p>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">egrecho.core.loads</span> <span class="kn">import</span> <span class="n">SaveLoadHelper</span>
-<span class="kn">from</span> <span class="nn">egrecho.models.ecapa.model</span> <span class="kn">import</span> <span class="n">EcapaModel</span>
-<span class="kn">from</span> <span class="nn">egrecho.data.features.feature_extractor_audio</span> <span class="kn">import</span> <span class="n">KaldiFeatureExtractor</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.core.loads</span><span class="w"> </span><span class="kn">import</span> <span class="n">SaveLoadHelper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.models.ecapa.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">EcapaModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.data.features.feature_extractor_audio</span><span class="w"> </span><span class="kn">import</span> <span class="n">KaldiFeatureExtractor</span>
 <span class="n">sl_helper</span> <span class="o">=</span> <span class="n">SaveLoadHelper</span><span class="p">()</span>
 <span class="n">extractor</span> <span class="o">=</span> <span class="n">KaldiFeatureExtractor</span><span class="p">()</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">EcapaModel</span><span class="p">()</span>
@@ -554,7 +554,7 @@ testdir/ecapa/
     <span class="n">kwargs_recurse_override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;_cls_&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="p">,</span> <span class="s2">&quot;init_weight&quot;</span><span class="p">:</span> <span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 <span class="p">)</span>  <span class="c1"># only load model without weight and eliminate the influences of Ecapa model directory</span>
-<span class="kn">from</span> <span class="nn">egrecho.models.valle.model</span> <span class="kn">import</span> <span class="n">Valle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.models.valle.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Valle</span>
 <span class="c1"># Try again.</span>
 <span class="n">hresults</span> <span class="o">=</span> <span class="n">sl_helper</span><span class="o">.</span><span class="n">fetch_from</span><span class="p">(</span>
     <span class="n">dirpath</span><span class="p">,</span>
@@ -671,9 +671,9 @@ the keys returned by this module’s state dict. Defaults to True.</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">egrecho.core.loads</span> <span class="kn">import</span> <span class="n">SaveLoadHelper</span>
-<span class="kn">from</span> <span class="nn">egrecho.models.ecapa.model</span> <span class="kn">import</span> <span class="n">EcapaModel</span>
-<span class="kn">from</span> <span class="nn">egrecho.data.features.feature_extractor_audio</span> <span class="kn">import</span> <span class="n">KaldiFeatureExtractor</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.core.loads</span><span class="w"> </span><span class="kn">import</span> <span class="n">SaveLoadHelper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.models.ecapa.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">EcapaModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.data.features.feature_extractor_audio</span><span class="w"> </span><span class="kn">import</span> <span class="n">KaldiFeatureExtractor</span>
 <span class="n">sl_helper</span> <span class="o">=</span> <span class="n">SaveLoadHelper</span><span class="p">()</span>
 <span class="n">extractor</span> <span class="o">=</span> <span class="n">KaldiFeatureExtractor</span><span class="p">()</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">EcapaModel</span><span class="p">()</span>
@@ -723,7 +723,7 @@ testdir/ecapa/
     <span class="n">kwargs_recurse_override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;_cls_&quot;</span><span class="p">:</span> <span class="n">model_cls</span><span class="p">,</span> <span class="s2">&quot;init_weight&quot;</span><span class="p">:</span> <span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 <span class="p">)</span>  <span class="c1"># only load model without weight and eliminate the influences of Ecapa model directory</span>
-<span class="kn">from</span> <span class="nn">egrecho.models.valle.model</span> <span class="kn">import</span> <span class="n">Valle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.models.valle.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Valle</span>
 <span class="c1"># Try again.</span>
 <span class="n">hresults</span> <span class="o">=</span> <span class="n">sl_helper</span><span class="o">.</span><span class="n">fetch_from</span><span class="p">(</span>
     <span class="n">dirpath</span><span class="p">,</span>

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>egrecho.core.data_builder - Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -334,7 +334,7 @@
 <span id="egrecho-core-data-builder"></span><h1>egrecho.core.data_builder<a class="headerlink" href="#module-egrecho.core.data_builder" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilderConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.data_builder.</span></span><span class="sig-name descname"><span class="pre">DataBuilderConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_patterns=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L28-L50"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilderConfig" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.data_builder.</span></span><span class="sig-name descname"><span class="pre">DataBuilderConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_patterns=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L28-L51"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilderConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="config.html#egrecho.core.config.DataclassConfig" title="egrecho.core.config.DataclassConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataclassConfig</span></code></a></p>
 <p>Base class for <a class="reference internal" href="#egrecho.core.data_builder.DataBuilder" title="egrecho.core.data_builder.DataBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataBuilder</span></code></a> configuration.</p>
 <dl class="field-list simple">
@@ -352,7 +352,7 @@ search files in abs path.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.data_builder.</span></span><span class="sig-name descname"><span class="pre">DataBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L53-L342"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.core.data_builder.</span></span><span class="sig-name descname"><span class="pre">DataBuilder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L54-L343"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">GenericFileMixin</span></code></p>
 <p>Base builder class for building dataset.</p>
 <p>The subclass should define a class attribute <code class="docutils literal notranslate"><span class="pre">CONFIG_CLS</span></code> that extends arguments,
@@ -376,7 +376,7 @@ if you modify the related data files in this instance. You can use
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder.from_config">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L136-L181"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.from_config" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L137-L182"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.from_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new <a class="reference internal" href="#egrecho.core.data_builder.DataBuilder" title="egrecho.core.data_builder.DataBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataBuilder</span></code></a> instance by providing a configuration
 in the form of a dictionary or a instance if <a class="reference internal" href="#egrecho.core.data_builder.DataBuilderConfig" title="egrecho.core.data_builder.DataBuilderConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataBuilderConfig</span></code></a>. All params after
 <code class="docutils literal notranslate"><span class="pre">config</span></code> will overwrite it.</p>
@@ -403,7 +403,7 @@ search files in that abs path.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder.save_config">
-<span class="sig-name descname"><span class="pre">save_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L183-L192"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.save_config" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">save_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L184-L193"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.save_config" title="Permalink to this definition">#</a></dt>
 <dd><p>save the configuration to a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -414,7 +414,7 @@ search files in that abs path.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder.dump_config">
-<span class="sig-name descname"><span class="pre">dump_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L194-L198"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.dump_config" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">dump_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L195-L199"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.dump_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Dump the configuration to a dict.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -425,7 +425,7 @@ search files in that abs path.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder.build_dataset">
-<span class="sig-name descname"><span class="pre">build_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L200-L228"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.build_dataset" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L201-L229"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.build_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Build dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -442,7 +442,7 @@ search files in that abs path.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder.build_single_dataset">
-<span class="sig-name descname"><span class="pre">build_single_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Split.TRAIN</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L230-L254"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.build_single_dataset" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_single_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Split.TRAIN</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L231-L255"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.build_single_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to build single split datapipe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -473,7 +473,7 @@ search files in that abs path.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.core.data_builder.DataBuilder.estimate_length">
-<span class="sig-name descname"><span class="pre">estimate_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L308-L312"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.estimate_length" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">estimate_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/core/data_builder.py#L309-L313"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.core.data_builder.DataBuilder.estimate_length" title="Permalink to this definition">#</a></dt>
 <dd><p>estimate dataset length.</p>
 </dd></dl>
 

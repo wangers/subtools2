@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>egrecho.core.parser - Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -373,24 +373,24 @@
 <div><p><a class="reference internal" href="#egrecho.core.parser.BaseCommand.get_dummy_parser" title="egrecho.core.parser.BaseCommand.get_dummy_parser"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_dummy_parser()</span></code></a> -&gt; <a class="reference internal" href="#egrecho.core.parser.BaseCommand.setup_parser" title="egrecho.core.parser.BaseCommand.setup_parser"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_parser()</span></code></a> -&gt; parse args -&gt; <a class="reference internal" href="#egrecho.core.parser.BaseCommand.run_from_args" title="egrecho.core.parser.BaseCommand.run_from_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_from_args()</span></code></a></p>
 </div></blockquote>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">egrecho.core.parser</span> <span class="kn">import</span> <span class="n">BaseCommand</span><span class="p">,</span> <span class="n">CommonParser</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.core.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCommand</span><span class="p">,</span> <span class="n">CommonParser</span>
 
-<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">Hello</span><span class="p">(</span><span class="n">BaseCommand</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Hello</span><span class="p">(</span><span class="n">BaseCommand</span><span class="p">):</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_dummy_parser</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_dummy_parser</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">CommonParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Greet&#39;</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">setup_parser</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">:</span> <span class="n">CommonParser</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setup_parser</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">:</span> <span class="n">CommonParser</span><span class="p">):</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_function_arguments</span><span class="p">(</span><span class="n">hello</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">parser</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">run_from_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_from_args</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">hello</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
 
 

@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>egrecho.utils.io.files - Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -335,7 +335,7 @@
 <p>Utilites to parse file paths.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.is_remote_url">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">is_remote_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_or_filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L67-L72"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.is_remote_url" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">is_remote_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url_or_filename</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L71-L76"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.is_remote_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether a path is remote.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -346,13 +346,13 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.get_filename">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">get_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L75-L82"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.get_filename" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">get_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L79-L86"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.get_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>get file’s name from remote or local.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.DataFilesList">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFilesList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L85-L124"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesList" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFilesList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L89-L128"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesList" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Url</span></code>]]</p>
 <p>List of data files (absolute local paths or URLs).</p>
 <ul class="simple">
@@ -368,7 +368,7 @@ It can store:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.sanitize_patterns">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">sanitize_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L127-L148"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.sanitize_patterns" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">sanitize_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L131-L152"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.sanitize_patterns" title="Permalink to this definition">#</a></dt>
 <dd><p>Take the data_files patterns from the user, and format them into a dictionary.
 Each key is the name of the split, and each value is a list of data files patterns (paths or urls).
 The default split is “train”.</p>
@@ -384,7 +384,7 @@ The default split is “train”.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.DataFilesDict">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFilesDict</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L151-L180"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesDict" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFilesDict</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L155-L184"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFilesDict" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="#egrecho.utils.io.files.DataFilesList" title="egrecho.utils.io.files.DataFilesList"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFilesList</span></code></a>]</p>
 <p>Dict of split_name -&gt; list of data files (absolute local paths or URLs).</p>
 <ul class="simple">
@@ -393,9 +393,19 @@ The default split is “train”.</p>
 <p>Moreover each list is a DataFilesList. For more info, see <code class="docutils literal notranslate"><span class="pre">DataFilesList</span></code>.</p>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.DataFoldersDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">DataFoldersDict</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L187-L204"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.DataFoldersDict" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
+<p>Dict of split_name -&gt; list of data folders (absolute local paths or URLs).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_local_or_remote</span></code>: resolve patterns from a local path</p></li>
+</ul>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_patterns_locally_or_by_urls">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_patterns_locally_or_by_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L183-L246"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_patterns_locally_or_by_urls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L207-L270"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls" title="Permalink to this definition">#</a></dt>
 <dd><p>Resolve the paths and URLs of the data files from the patterns passed by the user.
 URLs are just returned as is.</p>
 <p>You can use patterns to resolve multiple local files. Here are a few examples:</p>
@@ -449,8 +459,31 @@ For example: allowed_extensions=[“csv”, “json”, “txt”, “parquet”
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_folders_patterns">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_folders_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L273-L297"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_folders_patterns" title="Permalink to this definition">#</a></dt>
+<dd><p>Resolve all matching folder paths based on the given base path and patterns.</p>
+<p>This function searches the specified base path for all folders that match the given patterns.
+It returns a list of Path objects representing the matched folders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_path</strong> (<em>str</em>) -- Base path to use when resolving relative paths.</p></li>
+<li><p><strong>patterns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) -- A list of pattern strings used to match folder names.
+The paths can be absolute or relative to base_path.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of Path objects representing all matched folders.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Path]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_patterns">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L183-L246"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_patterns" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_patterns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patterns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_extensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L207-L270"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_patterns" title="Permalink to this definition">#</a></dt>
 <dd><p>Resolve the paths and URLs of the data files from the patterns passed by the user.
 URLs are just returned as is.</p>
 <p>You can use patterns to resolve multiple local files. Here are a few examples:</p>
@@ -505,7 +538,7 @@ For example: allowed_extensions=[“csv”, “json”, “txt”, “parquet”
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.io.files.resolve_file">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L306-L321"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_file" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.io.files.</span></span><span class="sig-name descname"><span class="pre">resolve_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/io/files.py#L304-L319"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.io.files.resolve_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Resolve a single file</p>
 <p>if given base_path and rel fname, get the file subject the base_path.</p>
 </dd></dl>
@@ -1094,7 +1127,7 @@ in this case, the pattern must be specified such as ‘%06d’ for str matching.
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">egrecho.utils.io.writer</span> <span class="kn">import</span> <span class="n">TextBoxWriter</span><span class="p">,</span> <span class="n">TXT_BOXEND</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.utils.io.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextBoxWriter</span><span class="p">,</span> <span class="n">TXT_BOXEND</span>
 
 <span class="n">text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;REF:    # short one here</span>
 <span class="s1">HYP: shoe order one    *</span>
@@ -1201,7 +1234,9 @@ are synced with the disk and not just buffered for later writing).</p></li>
 <li><a class="reference internal" href="#egrecho.utils.io.files.DataFilesList"><code class="docutils literal notranslate"><span class="pre">DataFilesList</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.files.sanitize_patterns"><code class="docutils literal notranslate"><span class="pre">sanitize_patterns()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.files.DataFilesDict"><code class="docutils literal notranslate"><span class="pre">DataFilesDict</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.io.files.DataFoldersDict"><code class="docutils literal notranslate"><span class="pre">DataFoldersDict</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.files.resolve_patterns_locally_or_by_urls"><code class="docutils literal notranslate"><span class="pre">resolve_patterns_locally_or_by_urls()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.io.files.resolve_folders_patterns"><code class="docutils literal notranslate"><span class="pre">resolve_folders_patterns()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.files.resolve_patterns"><code class="docutils literal notranslate"><span class="pre">resolve_patterns()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.io.files.resolve_file"><code class="docutils literal notranslate"><span class="pre">resolve_file()</span></code></a></li>
 </ul>

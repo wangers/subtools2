@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>egrecho.utils.apply - Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -418,9 +418,9 @@ is of the <code class="docutils literal notranslate"><span class="pre">wrong_dty
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>From/to dict mixin of dataclass.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
-<span class="gp">... </span><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">DataclassSerialMixin</span><span class="p">):</span>
+<span class="gp">... </span><span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">DataclassSerialMixin</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">123</span>
 <span class="gp">... </span>  <span class="n">b</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;456&quot;</span>
 <span class="gp">...</span>
@@ -619,7 +619,7 @@ type Field.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">e</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dict_union</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">dict_factory</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">)</span>
@@ -638,12 +638,12 @@ type Field.</p>
 <dd><p>Transfer the list in input parameter to hashable tuple, it is useful for <code class="docutils literal notranslate"><span class="pre">lru_cache</span></code>.</p>
 <p>NOTE: Don’t support nest structure.</p>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_input</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">get_input</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@list2tuple</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_input_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">get_input_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">arg_input</span> <span class="o">=</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kwargs_input</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bar&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;go&quot;</span><span class="p">,</span> <span class="s2">&quot;leave&quot;</span><span class="p">,</span> <span class="s2">&quot;break&quot;</span><span class="p">],</span> <span class="s1">&#39;action1&#39;</span><span class="p">:[</span><span class="s1">&#39;buy&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sell&#39;</span><span class="p">,</span> <span class="s1">&#39;argue&#39;</span><span class="p">]]}</span>
@@ -689,8 +689,19 @@ if available (unless we’re in jit) or float32</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.cuda_utils.maybe_set_cuda_expandable_segments">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">maybe_set_cuda_expandable_segments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enabled</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L45-L70"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.maybe_set_cuda_expandable_segments" title="Permalink to this definition">#</a></dt>
+<dd><p>Configures PyTorch memory allocator to expand existing allocated segments
+instead of re-allocating them when tensor shape grows.
+This can help speed up the training when sequence length and/or batch size change often,
+and makes GPU more robust towards OOM.</p>
+<p>See here for more details:
+<a class="reference external" href="https://pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf">https://pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf</a></p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.set_to_cuda">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">set_to_cuda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L44-L59"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.set_to_cuda" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">set_to_cuda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L73-L88"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.set_to_cuda" title="Permalink to this definition">#</a></dt>
 <dd><p>Send modules to gpu.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -701,7 +712,7 @@ if available (unless we’re in jit) or float32</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.get_current_device">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">get_current_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L62-L70"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.get_current_device" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">get_current_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L91-L99"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.get_current_device" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns currently selected device (gpu/cpu).
 If cuda available, return gpu, otherwise return cpu.</p>
 <dl class="field-list simple">
@@ -713,7 +724,7 @@ If cuda available, return gpu, otherwise return cpu.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.to_device">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L103-L149"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.to_device" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L132-L178"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.to_device" title="Permalink to this definition">#</a></dt>
 <dd><p>Move a tensor or collection of tensors to a specified device by inferring the device from another object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -742,7 +753,7 @@ If cuda available, return gpu, otherwise return cpu.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.parse_gpus">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">parse_gpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpus</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L152-L179"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.parse_gpus" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">parse_gpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpus</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L181-L208"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.parse_gpus" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse gpus option.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -760,7 +771,7 @@ N: [0,N);
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.parse_gpus_opt">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">parse_gpus_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpus</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L182-L217"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.parse_gpus_opt" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">parse_gpus_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpus</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L211-L246"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.parse_gpus_opt" title="Permalink to this definition">#</a></dt>
 <dd><p>Similar to <cite>parse_gpus</cite> but combines auto choose a single GPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -785,7 +796,7 @@ N: [0,N);
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.parse_gpu_id">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">parse_gpu_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpu_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L220-L258"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.parse_gpu_id" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">parse_gpu_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpu_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L249-L287"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.parse_gpu_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse single gpu id option.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -807,14 +818,14 @@ N: [0,N);
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.synchronize">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">synchronize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L311-L316"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.synchronize" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">synchronize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L340-L345"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.synchronize" title="Permalink to this definition">#</a></dt>
 <dd><p>Similar to cuda.synchronize().
 Waits for all kernels in all streams on a CUDA device to complete.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.peak_cuda_memory">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">peak_cuda_memory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L319-L333"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.peak_cuda_memory" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">peak_cuda_memory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L348-L362"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.peak_cuda_memory" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the peak gpu memory statistics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -829,7 +840,7 @@ max_cached (float): the cached CUDA memory</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.release_memory">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">release_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">objects</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L337-L371"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.release_memory" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">release_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">objects</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L366-L400"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.release_memory" title="Permalink to this definition">#</a></dt>
 <dd><p>Triggers garbage collection and Releases cuda cache memory.</p>
 <p>This function sets the inputs to <cite>None</cite>, triggers garbage collection to release
 CPU memory references, and attempts to clear GPU memory cache.</p>
@@ -845,7 +856,7 @@ CPU memory references, and attempts to clear GPU memory cache.</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">release_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -856,14 +867,14 @@ CPU memory references, and attempts to clear GPU memory cache.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.AutoGPUMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">AutoGPUMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L374-L377"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.AutoGPUMode" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">AutoGPUMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L403-L406"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.AutoGPUMode" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>An enumeration.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.GPUManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">GPUManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addtional_qargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AutoGPUMode.MAX_MEM</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L380-L569"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">GPUManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addtional_qargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AutoGPUMode.MAX_MEM</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L409-L598"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class enables the automated selection of the most available GPU or another based on specified mode.</p>
 <dl class="field-list simple">
@@ -876,7 +887,7 @@ Defaults to MAX_MEM (max-free) memory.</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">torch</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="nn">torch</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CUDA_VISIBLE_DEVICES&quot;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;1,2&quot;</span>
 <span class="n">gm</span> <span class="o">=</span> <span class="n">GPUManager</span><span class="p">()</span>
 <span class="n">torch_device</span> <span class="o">=</span> <span class="n">gm</span><span class="o">.</span><span class="n">auto_choice</span><span class="p">()</span>
@@ -892,14 +903,14 @@ Defaults to MAX_MEM (max-free) memory.</p></li>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.GPUManager.new_query">
-<span class="sig-name descname"><span class="pre">new_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L457-L478"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager.new_query" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">new_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L486-L507"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager.new_query" title="Permalink to this definition">#</a></dt>
 <dd><p>Running the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command and organizing the results as a list of dictionaries
 containing information searched from <cite>nvidia-smi</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.GPUManager.detect">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AutoGPUMode.MAX_MEM</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L485-L489"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager.detect" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AutoGPUMode.MAX_MEM</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L514-L518"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager.detect" title="Permalink to this definition">#</a></dt>
 <dd><p>A classmethod calls :meth`auto_choice` method to select a GPU and returns dveice id.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -910,7 +921,7 @@ containing information searched from <cite>nvidia-smi</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.GPUManager.auto_choice">
-<span class="sig-name descname"><span class="pre">auto_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L491-L534"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager.auto_choice" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">auto_choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L520-L563"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.GPUManager.auto_choice" title="Permalink to this definition">#</a></dt>
 <dd><p>Auto choice a GPU ID based on specified mode.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -929,7 +940,7 @@ containing information searched from <cite>nvidia-smi</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.device2gpu_id">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">device2gpu_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L572-L577"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.device2gpu_id" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">device2gpu_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_id</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L601-L606"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.device2gpu_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Given the device index and get the unmasked real GPU ID.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -951,19 +962,19 @@ containing information searched from <cite>nvidia-smi</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.is_cuda_available">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">is_cuda_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L591-L600"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.is_cuda_available" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">is_cuda_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L620-L629"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.is_cuda_available" title="Permalink to this definition">#</a></dt>
 <dd><p>check cuda and leave cuda uninitialized.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.patch_nvml_check_env">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">patch_nvml_check_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/../../../../../../opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/contextlib.py#L603-L613"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.patch_nvml_check_env" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">patch_nvml_check_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/../../../../../../opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/contextlib.py#L632-L642"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.patch_nvml_check_env" title="Permalink to this definition">#</a></dt>
 <dd><p>A context manager that patch <code class="docutils literal notranslate"><span class="pre">PYTORCH_NVML_BASED_CUDA_CHECK=1</span></code>, and restore finally.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.cuda_utils.NVMLDeviceCount">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">NVMLDeviceCount</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L616-L789"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.NVMLDeviceCount" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.cuda_utils.</span></span><span class="sig-name descname"><span class="pre">NVMLDeviceCount</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/cuda_utils.py#L645-L818"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.cuda_utils.NVMLDeviceCount" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A tool for nvml-based cuda check for torch &lt; 2.0 which won’t trigger the drivers and leave cuda
 uninitialized.</p>
@@ -1241,8 +1252,8 @@ The order in which the names are provided is kept.</p></li>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#generating vocab from text file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">egrecho.utils.data_utils</span> <span class="kn">import</span> <span class="n">build_vocab_from_iterator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.utils.data_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_vocab_from_iterator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>            <span class="k">yield</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -1276,8 +1287,8 @@ The order in which the names are provided is kept.</p></li>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">#generating vocab from text file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">egrecho.utils.data_utils</span> <span class="kn">import</span> <span class="n">build_vocab_from_iterator</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">egrecho.utils.data_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_vocab_from_iterator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">yield_tokens</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>            <span class="k">yield</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -1928,8 +1939,14 @@ masked.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="egrecho.utils.misc.parse_size">
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">parse_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'abbrev'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L79-L92"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.parse_size" title="Permalink to this definition">#</a></dt>
+<dd><p>parse <cite>size</cite> to the largest possible unit.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.misc.kill_name_proc">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">kill_name_proc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grep_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_kill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L95-L127"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.kill_name_proc" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">kill_name_proc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grep_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_kill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L111-L143"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.kill_name_proc" title="Permalink to this definition">#</a></dt>
 <dd><p>Kills processes based on a grep string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1946,7 +1963,7 @@ If the user agrees, it terminates the processes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.misc.is_picklable">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">is_picklable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L171-L179"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.is_picklable" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">is_picklable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L187-L195"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.is_picklable" title="Permalink to this definition">#</a></dt>
 <dd><p>Tests if an object can be pickled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1957,16 +1974,16 @@ If the user agrees, it terminates the processes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.misc.valid_import_clspath">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">valid_import_clspath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L182-L187"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.valid_import_clspath" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">valid_import_clspath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L198-L203"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.valid_import_clspath" title="Permalink to this definition">#</a></dt>
 <dd><p>Import path must be str with dot pattern (<code class="docutils literal notranslate"><span class="pre">'calendar.Calendar'</span></code>).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.misc.class2str">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">class2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L190-L202"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.class2str" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">class2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L206-L218"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.class2str" title="Permalink to this definition">#</a></dt>
 <dd><p>Extract path from class type.</p>
 <p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">calendar</span> <span class="kn">import</span> <span class="n">Calendar</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">calendar</span><span class="w"> </span><span class="kn">import</span> <span class="n">Calendar</span>
 <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">Calendar</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;calendar.Calendar&#39;&gt;&quot;</span>
 <span class="k">assert</span> <span class="n">class2str</span><span class="p">(</span><span class="n">Calendar</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;calendar.Calendar&quot;</span>
 </pre></div>
@@ -1975,7 +1992,7 @@ If the user agrees, it terminates the processes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.misc.get_import_path">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">get_import_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L206-L243"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.get_import_path" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">get_import_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L222-L259"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.get_import_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the shortest dot import path for the given object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1986,7 +2003,7 @@ If the user agrees, it terminates the processes.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="egrecho.utils.misc.locate_">
-<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">locate_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L254-L313"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.locate_" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">egrecho.utils.misc.</span></span><span class="sig-name descname"><span class="pre">locate_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/misc.py#L270-L329"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.misc.locate_" title="Permalink to this definition">#</a></dt>
 <dd><p>COPIED FROM <a class="reference external" href="https://github.com/facebookresearch/hydra/blob/f8940600d0ab5c695961ad83abd042ffe9458caf/hydra/_internal/utils.py#L614">Hydra</a>.</p>
 <p>Locate an object by name or dotted path, importing as necessary.
 This is similar to the pydoc function <code class="docutils literal notranslate"><span class="pre">locate</span></code>, except that it checks for
@@ -2005,7 +2022,7 @@ the module from the given path from back to front.</p>
 <span id="egrecho-utils-register"></span><h1>egrecho.utils.register<a class="headerlink" href="#module-egrecho.utils.register" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.register.Register">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">Register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L10-L172"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">Register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L13-L190"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class is used to register functions or classes.</p>
 <dl class="field-list simple">
@@ -2017,8 +2034,8 @@ the module from the given path from back to front.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LITTLES</span> <span class="o">=</span> <span class="n">Register</span><span class="p">(</span><span class="s2">&quot;littles&quot;</span><span class="p">)</span>
 
 <span class="nd">@LITTLES</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;litclass&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">LitClass</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LitClass</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
 
@@ -2029,7 +2046,7 @@ the module from the given path from back to front.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.register.Register.register">
-<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_or_cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L39-L68"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register.register" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_or_cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L42-L75"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register.register" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a function or class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2037,6 +2054,7 @@ the module from the given path from back to front.</p>
 <li><p><strong>fn_or_cls</strong> (<em>Callable</em>) -- The function to be registered.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) -- Name string.</p></li>
 <li><p><strong>override</strong> (<em>bool</em>) -- Whether override if exists.</p></li>
+<li><p><strong>provider_info</strong> (<em>ProviderInfo</em>) -- infos about provider, which will be merged into metadata.</p></li>
 <li><p><strong>**metadata</strong> (<em>dict</em>) -- Additional dict to be saved.</p></li>
 </ul>
 </dd>
@@ -2048,7 +2066,7 @@ the module from the given path from back to front.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.register.Register.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L112-L141"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register.get" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L119-L159"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves functions or classes with key name which has already been registed before.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2064,7 +2082,7 @@ the module from the given path from back to front.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.register.Register.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L143-L145"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register.keys" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L161-L163"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.Register.keys" title="Permalink to this definition">#</a></dt>
 <dd><p>Get all name registred.</p>
 </dd></dl>
 
@@ -2072,21 +2090,21 @@ the module from the given path from back to front.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.register.ExternalRegister">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">ExternalRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L175-L179"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.ExternalRegister" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">ExternalRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L193-L197"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.ExternalRegister" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.register.Register" title="egrecho.utils.register.Register"><code class="xref py py-class docutils literal notranslate"><span class="pre">Register</span></code></a></p>
 <p>TODO</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.register.ConcatRegister">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">ConcatRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">registers</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L182-L278"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.ConcatRegister" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">ConcatRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">registers</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L200-L296"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.ConcatRegister" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.register.Register" title="egrecho.utils.register.Register"><code class="xref py py-class docutils literal notranslate"><span class="pre">Register</span></code></a></p>
 <p>This class is used to concatenate multiple registers.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.register.StrRegister">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">StrRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L281-L381"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.StrRegister" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">StrRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L299-L399"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.StrRegister" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Registers multiple strings, which can be used to create alias names.</p>
 <dl class="field-list simple">
@@ -2109,7 +2127,7 @@ the module from the given path from back to front.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.register.StrRegister.register">
-<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str_or_strs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L311-L329"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.StrRegister.register" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str_or_strs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L329-L347"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.StrRegister.register" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a string or sequence of strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2123,7 +2141,7 @@ the module from the given path from back to front.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.register.StrRegister.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L352-L354"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.StrRegister.keys" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L370-L372"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.StrRegister.keys" title="Permalink to this definition">#</a></dt>
 <dd><p>Get all name registred.</p>
 </dd></dl>
 
@@ -2131,7 +2149,7 @@ the module from the given path from back to front.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.register.ConcatStrRegister">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">ConcatStrRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">registers</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L384-L425"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.ConcatStrRegister" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.register.</span></span><span class="sig-name descname"><span class="pre">ConcatStrRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">registers</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/register.py#L402-L443"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.register.ConcatStrRegister" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.register.StrRegister" title="egrecho.utils.register.StrRegister"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrRegister</span></code></a></p>
 <p>This class is used to concatenate multiple registers.</p>
 </dd></dl>
@@ -2245,7 +2263,7 @@ frameworks in a smart order, without the need to import the frameworks).</p>
 <span id="egrecho-utils-types"></span><h1>egrecho.utils.types<a class="headerlink" href="#module-egrecho.utils.types" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.ModelOutput">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">ModelOutput</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L15-L132"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">ModelOutput</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L17-L134"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></p>
 <p>Base class for all model outputs as dataclass. Copied from <a class="reference external" href="https://github.com/huggingface/transformers/blob/main/src/transformers/utils/generic.py#ModelOutput">huggingface modelout</a>.</p>
 <p>Has a <code class="xref py py-meth docutils literal notranslate"><span class="pre">__getitem__()</span></code> that allows indexing by integer or slice (like a
@@ -2258,25 +2276,25 @@ before.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.types.ModelOutput.setdefault">
-<span class="sig-name descname"><span class="pre">setdefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L91-L95"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.setdefault" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setdefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L93-L97"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.setdefault" title="Permalink to this definition">#</a></dt>
 <dd><p>remove this action</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.types.ModelOutput.pop">
-<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L97-L101"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.pop" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L99-L103"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.pop" title="Permalink to this definition">#</a></dt>
 <dd><p>remove this action</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.types.ModelOutput.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L103-L107"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.update" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L105-L109"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.update" title="Permalink to this definition">#</a></dt>
 <dd><p>remove this action</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.types.ModelOutput.to_tuple">
-<span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L128-L132"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.to_tuple" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L130-L134"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.ModelOutput.to_tuple" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert self to a tuple containing all the attributes/keys that are not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2289,17 +2307,17 @@ before.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.SingletonMeta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">SingletonMeta</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L139-L155"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.SingletonMeta" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">SingletonMeta</span></span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L141-L157"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.SingletonMeta" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
 <p>A metaclass for creating singleton classes.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.StrEnum">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">StrEnum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L159-L272"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.StrEnum" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">StrEnum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L161-L274"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.StrEnum" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>Type of any enumerator with allowed comparison to string invariant to cases.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MySE</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">MySE</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">t1</span> <span class="o">=</span> <span class="s2">&quot;T-1&quot;</span>
 <span class="gp">... </span>    <span class="n">t2</span> <span class="o">=</span> <span class="s2">&quot;T-2&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">MySE</span><span class="p">(</span><span class="s2">&quot;T-1&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">MySE</span><span class="o">.</span><span class="n">t1</span>
@@ -2316,7 +2334,7 @@ before.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.types.StrEnum.from_str">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'key'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L184-L212"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.StrEnum.from_str" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'key'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L186-L214"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.StrEnum.from_str" title="Permalink to this definition">#</a></dt>
 <dd><p>Create <code class="docutils literal notranslate"><span class="pre">StrEnum</span></code> from a string matching the key or value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2342,7 +2360,7 @@ before.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="egrecho.utils.types.StrEnum.try_from_str">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">try_from_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'key'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L214-L227"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.StrEnum.try_from_str" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">try_from_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'key'</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L216-L229"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.StrEnum.try_from_str" title="Permalink to this definition">#</a></dt>
 <dd><p>Try to create emun and if it does not match any, return <cite>None</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -2355,21 +2373,21 @@ before.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.Split">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">Split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L275-L287"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.Split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">Split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L277-L289"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.Split" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.types.StrEnum" title="egrecho.utils.types.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></a></p>
 <p>Contains Enums of split.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.FilterType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">FilterType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L290-L295"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.FilterType" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">FilterType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L292-L297"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.FilterType" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.types.StrEnum" title="egrecho.utils.types.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></a></p>
 <p>Filt strategy when dict dumps.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.PaddingStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">PaddingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L298-L306"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.PaddingStrategy" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">PaddingStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L300-L308"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.PaddingStrategy" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.types.StrEnum" title="egrecho.utils.types.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></a></p>
 <p>Possible values for the <cite>padding</cite> argument. Useful for tab-completion in an
 IDE.</p>
@@ -2377,7 +2395,7 @@ IDE.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="egrecho.utils.types.InitWeightType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">InitWeightType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L312-L314"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.InitWeightType" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">egrecho.utils.types.</span></span><span class="sig-name descname"><span class="pre">InitWeightType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/types.py#L314-L316"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.types.InitWeightType" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#egrecho.utils.types.StrEnum" title="egrecho.utils.types.StrEnum"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></a></p>
 <p>An enumeration.</p>
 </dd></dl>
@@ -2523,6 +2541,7 @@ IDE.</p>
 <li><a class="reference internal" href="#module-egrecho.utils.constants">egrecho.utils.constants</a></li>
 <li><a class="reference internal" href="#module-egrecho.utils.cuda_utils">egrecho.utils.cuda_utils</a><ul>
 <li><a class="reference internal" href="#egrecho.utils.cuda_utils.avoid_float16_autocast_context"><code class="docutils literal notranslate"><span class="pre">avoid_float16_autocast_context()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.cuda_utils.maybe_set_cuda_expandable_segments"><code class="docutils literal notranslate"><span class="pre">maybe_set_cuda_expandable_segments()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.cuda_utils.set_to_cuda"><code class="docutils literal notranslate"><span class="pre">set_to_cuda()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.cuda_utils.get_current_device"><code class="docutils literal notranslate"><span class="pre">get_current_device()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.cuda_utils.to_device"><code class="docutils literal notranslate"><span class="pre">to_device()</span></code></a></li>
@@ -2628,6 +2647,7 @@ IDE.</p>
 </li>
 <li><a class="reference internal" href="#module-egrecho.utils.misc">egrecho.utils.misc</a><ul>
 <li><a class="reference internal" href="#egrecho.utils.misc.parse_bytes"><code class="docutils literal notranslate"><span class="pre">parse_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#egrecho.utils.misc.parse_size"><code class="docutils literal notranslate"><span class="pre">parse_size()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.misc.kill_name_proc"><code class="docutils literal notranslate"><span class="pre">kill_name_proc()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.misc.is_picklable"><code class="docutils literal notranslate"><span class="pre">is_picklable()</span></code></a></li>
 <li><a class="reference internal" href="#egrecho.utils.misc.valid_import_clspath"><code class="docutils literal notranslate"><span class="pre">valid_import_clspath()</span></code></a></li>

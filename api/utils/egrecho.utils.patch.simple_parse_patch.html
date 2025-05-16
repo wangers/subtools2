@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>egrecho.utils.patch.simple_parse_patch._utils - Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=649a27d8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -348,8 +348,8 @@
 <dt class="sig sig-object py" id="egrecho.utils.patch.simple_parse_patch._utils.is_literal">
 <span class="sig-prename descclassname"><span class="pre">egrecho.utils.patch.simple_parse_patch._utils.</span></span><span class="sig-name descname"><span class="pre">is_literal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/wangers/subtools2/tree/master/egrecho/utils/patch/simple_parse_patch/_utils.py#L103-L121"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#egrecho.utils.patch.simple_parse_patch._utils.is_literal" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns True with <cite>t</cite> is a Literal type.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_literal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_literal</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
@@ -384,7 +384,7 @@
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_list</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_list</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
@@ -397,7 +397,7 @@
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_list</span><span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span>
 <span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">foo</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">foo</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_list</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
@@ -421,7 +421,7 @@
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
@@ -432,7 +432,7 @@
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_tuple</span><span class="p">(</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">foo</span><span class="p">(</span><span class="nb">tuple</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">foo</span><span class="p">(</span><span class="nb">tuple</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_tuple</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
@@ -458,8 +458,8 @@
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_dict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_dict</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">)</span>
@@ -476,7 +476,7 @@
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_dict</span><span class="p">(</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">foo</span><span class="p">(</span><span class="n">Dict</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">foo</span><span class="p">(</span><span class="n">Dict</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_dict</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
@@ -500,7 +500,7 @@
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_set</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_set</span><span class="p">(</span><span class="n">Set</span><span class="p">)</span>
@@ -515,7 +515,7 @@
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_set</span><span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">])</span>
 <span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">foo</span><span class="p">(</span><span class="n">Set</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">foo</span><span class="p">(</span><span class="n">Set</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_set</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
@@ -539,7 +539,7 @@
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_union</span><span class="p">(</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_union</span><span class="p">(</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span>
