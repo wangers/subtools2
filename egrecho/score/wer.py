@@ -201,10 +201,10 @@ def wer_update(
         >>> references = ["this is the reference", "there is another one"]
         >>> w = wer_update(predictions, references)
         >>> w, w.wer
-        TxtMetricOutput(errors=4, total=8, insertions=1, deletions=0, substitutions=3, jiwer_out=None), 0.5
+        WERCountOutput(errors=4, total=8, insertions=1, deletions=0, substitutions=3, jiwer_out=None), 0.5
         >>> c = wer_update(predictions, references, use_cer=True)
         >>> c, c.wer
-        TxtMetricOutput(errors=14, total=41, insertions=5, deletions=0, substitutions=9, jiwer_out=None), 0.3414
+        WERCountOutput(errors=14, total=41, insertions=5, deletions=0, substitutions=9, jiwer_out=None), 0.3414
         >>> assert sum(len(l) for l in references) == c.total
         ... # Now i want to get aligns
         >>> w = wer_update(predictions,references,details='all')
@@ -447,6 +447,10 @@ class SimpleWER(WERMixin):
         wer = 0.0 if errors == 0 else errors / total
         return TxtMetricOutput(error_rate=wer, total=total)
 
+    def reset(self):
+        self.errors = 0
+        self.total = 0
+
 
 class DetailWER(WERMixin):
     def __init__(
@@ -498,6 +502,13 @@ class DetailWER(WERMixin):
             sub_rate=sub_rate,
             total=total,
         )
+
+    def reset(self):
+        self.errors = 0
+        self.total = 0
+        self.ins = 0
+        self.dels = 0
+        self.subs = 0
 
     @classmethod
     def check_detail_lvl(cls, details: Union[str, WerDetail] = WerDetail.SUBCOUNTS):

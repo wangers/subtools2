@@ -40,9 +40,9 @@ def load_audio(
         if inputs.startswith("http://") or inputs.startswith("https://"):
             inputs = requests.get(inputs).content
     if isinstance(inputs, bytes):
-        inputs, sample_rate = io.BytesIO(inputs)
+        inputs = io.BytesIO(inputs)
 
-    elif isinstance(inputs, io.IOBase) or isinstance(inputs, str):
+    if isinstance(inputs, io.IOBase) or isinstance(inputs, str):
         if torchaudio_ge_2_1():
             inputs, sample_rate = torchaudio.load(inputs, backend="ffmpeg")
         else:
