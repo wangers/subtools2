@@ -353,14 +353,33 @@ class TopVirtualModel(pl.LightningModule, GenericFileMixin):
                 Any extra keyword args needed to init the model.
                 Can also be used to override saved hyperparameter values.
         """
-        model = cls.load_from_checkpoint(
-            checkpoint_path,
-            map_location=map_location,
-            hparams_file=hparams_file,
-            strict=strict,
-            **kwargs,
-        )
+        weights_name = kwargs.pop("model_weights_fname", MODEL_WEIGHTS_FNAME)
+        if str(checkpoint_path).endswith(weights_name):
+            w_dir = str(checkpoint_path)[: -len(weights_name)]
+            config = None
+            if hparams_file:
+
+                hdict = cls.load_cfg_file(hparams_file)
+                config = hdict["config"]
+
+            model = cls.fetch_from(
+                w_dir,
+                config=config,
+                init_weight=checkpoint_path,
+                map_location=map_location,
+                strict=strict,
+                **kwargs,
+            )
+        else:
+            model = cls.load_from_checkpoint(
+                checkpoint_path,
+                map_location=map_location,
+                hparams_file=hparams_file,
+                strict=strict,
+                **kwargs,
+            )
         release_memory()
+
         return model
 
     @add_end_docstrings(SAVEFETCH_EXAMPLE_DOCSTRING)
@@ -441,56 +460,6 @@ class TopVirtualModel(pl.LightningModule, GenericFileMixin):
             for p in self.parameters()
             if p.requires_grad or not only_trainable
         )
-
-    @torch.no_grad()
-    def export_onnx(
-        self,
-        file_path: Union[str, Path],
-        input_sample: Optional[Any] = None,
-        **kwargs: Any,
-    ) -> None:
-        """Exports the model in ONNX format in tracing mode.
-
-        Args:
-            file_path: The path of the file the onnx model should be saved to.
-            input_sample: An input for tracing. Default: None (Use self.example_input_array)
-            \**kwargs: Will be passed to :func:`torch.onnx.export`.
-
-        NOTE:
-            This general method may not appropriate for every model, you can override it for your specify model.
-            If you want a Scripting onnx model, you should
-
-        Example::
-
-            class SimpleModel(TopVirtualModule):
-                def __init__(self):
-                    super().__init__()
-                    self.l1 = torch.nn.Linear(in_features=64, out_features=4)
-
-                def forward(self, x):
-                    return torch.relu(self.l1(x.view(x.size(0), -1)))
-
-            model = SimpleModel()
-            input_sample = torch.randn(1, 64)
-            model.export_onnx("export.onnx", input_sample, export_params=True)
-        """
-        if not is_module_available("onnx"):
-            raise ModuleNotFoundError(
-                f"`Requires `onnx` to be installed to use `{type(self).__name__}.export_onnx()`"
-            )
-        mode = self.training
-
-        if input_sample is None:
-            if self.example_input_array is None:
-                raise ValueError(
-                    "Could not export to ONNX since neither `input_sample` nor"
-                    " `model.example_input_array` attribute is set."
-                )
-            input_sample = self.example_input_array
-        input_sample = to_device(input_sample, self.device)
-
-        torch.onnx.export(self, input_sample, file_path, **kwargs)
-        self.train(mode)
 
     @torch.no_grad()
     def export_jit(

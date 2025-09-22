@@ -101,3 +101,14 @@ class EcapaModel(XvectorMixin):
         embedding = embedding_stats / sum(chunk_sizes)
 
         return XvectorOutput(xvector=embedding)
+
+    def forward_for_onnx(self, input_features):
+        """
+        Backbone forward.
+
+        Args:
+            input_features (Tensor):
+                input tensor of shape (B, T, F)
+        """
+        embd, embd_far = self.ecapa(input_features)
+        return embd

@@ -41,7 +41,7 @@ class DataBuilderConfig(DataclassConfig):
 
     yaml_inline_list: ClassVar[bool] = False
     data_dir: Optional[str] = field(default=None, metadata={"to_dict": False})
-    file_patterns: Optional[Union[str, List[str], Dict[str, str]]] = field(
+    file_patterns: Optional[Union[str, List[str], Dict[str, Any]]] = field(
         default_factory=lambda: DEFAULT_DATA_FILES
     )
 

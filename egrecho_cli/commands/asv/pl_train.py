@@ -85,6 +85,7 @@ class TrainASV(BaseCommand):
             train_parser.add_subclass_arguments(
                 XvectorMixin,
                 "model",
+                fail_untyped=False,
             )
 
             train_parser.add_argument(

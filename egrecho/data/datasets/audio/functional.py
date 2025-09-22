@@ -20,7 +20,7 @@ from egrecho.utils.misc import ConfigurationException, NoneDataException
 from egrecho.utils.torch_utils import audio_collate_fn, tensor_has_nan
 
 from .augments import ASVSpeechAgugmentConfig, SpeechAgugment, SpeedPerturb
-from .augments.dsp import de_silence
+from .augments.dsp import a_law_decoding, a_law_encoding, de_silence
 from .augments.transforms import get_or_create_resampler
 
 logger = get_logger(__name__)
@@ -144,14 +144,17 @@ class PreSpeedPerturb(object):
             Original sample rate of sinals to be perturbed.
         affix_speaker: bool
             If True, it'll affix the speaker colunm according to the resample factor applied.
-        factors : Sequence[float]
+        factors: Sequence[float]
             e.g. [0.95, 1, 1.05], larger -> faster.
+        init_p: float
+            prob to apply, defaults to 1.
     """
 
     def __init__(
         self,
         sample_rate=16000,
         factors=(0.9, 1.0, 1.1),
+        init_p=1.0,
         affix_speaker=True,
     ):
         super().__init__()
@@ -165,6 +168,7 @@ class PreSpeedPerturb(object):
             sample_rate,
             factors=factors,
             record_resample_factor=affix_speaker,
+            init_p=init_p,
         )
 
     def __call__(self, data):
@@ -362,9 +366,15 @@ class SpeechAugPipline(object):
         for batch_sample in processors.batch(data, self.batch_size):
             waveforms = [sample[AUDIO_COLUMN] for sample in batch_sample]
             waveforms, lengths = audio_collate_fn(waveforms)
+            sample_rates = [sample[SAMPLE_RATE_COLUMN] for sample in batch_sample]
+            assert all(
+                sr == sample_rates[0] for sr in sample_rates
+            ), f'all sample rates should be same=> {sample_rates}'
             if ignore_lengths:
                 lengths = None
-            aug_output = self.speechaug(waveforms, lengths)  # output is dict
+            aug_output = self.speechaug(
+                waveforms, lengths, sample_rate=sample_rates[0]
+            )  # output is dict
             aug_waveforms = cast(Tensor, aug_output.samples)
             aug_lengths = cast(Tensor, aug_output.lengths)
             for batch_idx, aug_wav in enumerate(aug_waveforms):
@@ -397,3 +407,23 @@ class SpeechAugPipline(object):
 
     def __repr__(self) -> str:
         return f"{repr(self.speechaug)}\n(batch_size): {self.batch_size}"
+
+
+def a_law_enc_dec(data, quantization_channels=256):
+    """A-law encode and reverse decode
+
+    `[8kHz Float32]` ->  `a_law_encoding()` `[8-bit uint8, 0~255]` -> `a_law_decoding()` `[8kHz Float32, -1~1]`
+
+    Args:
+        data: Iterable[{audio, sample_rate, ...}]
+        quantization_channels: Number of channels. (Default: ``256``)
+
+    Returns:
+        Iterable[{audio, sample_rate, ...}]
+    """
+    for sample in data:
+        waveform = sample[AUDIO_COLUMN]
+        sample[AUDIO_COLUMN] = a_law_decoding(
+            a_law_encoding(waveform, quantization_channels), quantization_channels
+        )
+        yield sample

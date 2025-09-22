@@ -24,7 +24,8 @@ import torchaudio
 from tqdm.contrib import tqdm
 
 from egrecho.data.datasets.audio.augments.base import NoiseSet
-from egrecho.utils.imports import _H5PY_AVAILABLE
+from egrecho.data.datasets.audio.augments.transforms import get_or_create_resampler
+from egrecho.utils.imports import _H5PY_AVAILABLE, torchaudio_ge_2_1
 from egrecho.utils.logging import get_logger
 
 if _H5PY_AVAILABLE:
@@ -114,8 +115,7 @@ class Hdf5NoiseSet(NoiseSet):
         self.valid_length = len(self.load_lists)
 
     def sample(
-        self,
-        cnts: int = 1,
+        self, cnts: int = 1, resample: Optional[int] = None
     ) -> Union[torch.Tensor, List[torch.Tensor]]:
         """
         Random select wav tensors from data base.
@@ -140,6 +140,9 @@ class Hdf5NoiseSet(NoiseSet):
         sample_rates = []
         for input in inputs:
             samples, sr = self.load(*input)
+            if resample:
+                samples = get_or_create_resampler(sr, resample)(samples)
+                sr = resample
             # choose the first channel
             values.append(samples[:1, :])
             sample_rates.append(sr)
@@ -386,6 +389,7 @@ class LmdbNoiseSet(NoiseSet):
     def sample(
         self,
         cnts: int = 1,
+        resample: Optional[int] = None,
     ) -> Union[torch.Tensor, List[torch.Tensor]]:
         """
         Random select wav tensors from data base.
@@ -408,8 +412,12 @@ class LmdbNoiseSet(NoiseSet):
         inputs = [self.load_lists[index] for index in indices]
         values = []
         sample_rates = []
+
         for input in inputs:
             samples, sr = self.load(*input)
+            if resample:
+                samples = get_or_create_resampler(sr, resample)(samples)
+                sr = resample
             # choose the first channel
             values.append(samples[:1, :])
             sample_rates.append(sr)
@@ -451,7 +459,12 @@ class LmdbNoiseSet(NoiseSet):
     def load(self, key, frame_offset=0, num_frames=-1):
         with self.db.begin(write=False) as txn:
             data = txn.get(key.encode())
-            data, rate = torchaudio.backend.soundfile_backend.load(
+            loa_fn = (
+                torchaudio.load
+                if torchaudio_ge_2_1()
+                else torchaudio.backend.soundfile_backend.load
+            )
+            data, rate = loa_fn(
                 io.BytesIO(data), frame_offset=frame_offset, num_frames=num_frames
             )
         return data, rate

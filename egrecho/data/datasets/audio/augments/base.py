@@ -252,7 +252,7 @@ class NoiseSet:
 
         super().__init_subclass__(**kwargs)
 
-    def sample(self, cnts: int = 1):
+    def sample(self, cnts: int = 1, resample: Optional[int] = None):
         """
         Random sample wav tensors from data_source.
         """

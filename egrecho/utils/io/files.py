@@ -122,7 +122,7 @@ class DataFilesList(List[Union[Path, Url]]):
             _get_origin_metadata_locally_or_by_urls(
                 data_files, use_auth_token=use_auth_token
             )
-            if skip_metadata
+            if not skip_metadata
             else None
         )
         return cls(data_files, origin_metadata)

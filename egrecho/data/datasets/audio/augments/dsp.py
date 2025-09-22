@@ -5,6 +5,7 @@
 
 import io
 import math
+import warnings
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -597,61 +598,52 @@ class AudioClip:
         )
 
 
-def _get_mask_param(mask_param: int, p: float, axis_length: int) -> int:
-    if p == 1.0:
-        return mask_param
-    else:
-        return min(mask_param, int(axis_length * p))
+def a_law_encoding(x: torch.Tensor, quantization_channels: int = 256) -> torch.Tensor:
+    """
+    A-law encoding for audio in [-1, 1] → [0, 255] (int64)
+    """
+
+    quant = float(quantization_channels - 1)  # 255
+    if not x.is_floating_point():
+        warnings.warn(
+            "The input Tensor must be of floating type. \
+            This will be an error in the v0.12 release."
+        )
+        x = x.to(torch.float)
+
+    device = x.device
+    dtype = x.dtype
+
+    abs_x = x.abs()
+    sign_x = x.sign()
+
+    A = 87.6
+    A_tensor = torch.tensor(A, device=device, dtype=dtype)
+    x_narrow = A_tensor * abs_x
+    x_wide = 1 + torch.log(x_narrow)
+    x_numerator = torch.where(abs_x < (1 / A_tensor), x_narrow, x_wide)
+
+    x_a = sign_x * x_numerator / (1.0 + torch.log(A_tensor))
+
+    # 映射到 [0, 255] 并四舍五入
+    x_a = ((x_a + 1.0) / 2.0 * quant + 0.5).to(torch.int64)
+    return x_a
 
 
-# def mask_along_time(
-#     samples: torch.Tensor,
-#     mask_param: int,
-#     mask_value: float,
-#     axis: int,
-#     p: float = 1.0,
-# ) -> torch.Tensor:
-#     """Apply a mask along time dimenstion.
-
-#     Args:
-#         samples (Tensor):
-#         mask_param (int): Number of columns to be masked will be uniformly sampled from [0, mask_param]
-#         mask_value (float): Value to assign to the masked columns
-#         axis (int): Axis to apply masking on (2 -> frequency, 3 -> time)
-#         p (float, optional): maximum proportion of columns that can be masked. (Default: 1.0)
-
-#     Returns:
-#         Tensor: Masked spectrograms of dimensions `(batch, channel, freq, time)`
-#     """
-
-#     if axis not in [2, 3]:
-#         raise ValueError("Only Frequency and Time masking are supported")
-
-#     if not 0.0 <= p <= 1.0:
-#         raise ValueError(f"The value of p must be between 0.0 and 1.0 ({p} given).")
-
-#     mask_param = _get_mask_param(mask_param, p, specgrams.shape[axis])
-#     if mask_param < 1:
-#         return specgrams
-
-#     device = specgrams.device
-#     dtype = specgrams.dtype
-
-#     value = torch.rand(specgrams.shape[:2], device=device, dtype=dtype) * mask_param
-#     min_value = torch.rand(specgrams.shape[:2], device=device, dtype=dtype) * (
-#         specgrams.size(axis) - value
-#     )
-
-#     # Create broadcastable mask
-#     mask_start = min_value.long()[..., None, None]
-#     mask_end = (min_value.long() + value.long())[..., None, None]
-#     mask = torch.arange(0, specgrams.size(axis), device=device, dtype=dtype)
-
-#     # Per batch example masking
-#     specgrams = specgrams.transpose(axis, -1)
-#     specgrams = specgrams.masked_fill(
-#         (mask >= mask_start) & (mask < mask_end), mask_value
-#     )
-#     specgrams = specgrams.transpose(axis, -1)
-
-#     return specgrams
+def a_law_decoding(x_q: torch.Tensor, quantization_channels: int = 256) -> torch.Tensor:
+    """
+    A-law decoding: [0, 255] → [-1, 1]
+    """
+    quant = float(quantization_channels - 1)  # 255
+    if not x_q.is_floating_point():
+        x_q = x_q.to(torch.float)
+    A = 87.6
+    A_tensor = torch.tensor(A, device=x_q.device, dtype=x_q.dtype)
+    x_a = (x_q / quant) * 2 - 1.0  # [0,255] -> [-1, 1]
+    ln_a = 1 + torch.log(A_tensor)
+    x_abs = torch.abs(x_a)
+    x_narrow = x_abs * ln_a
+    x_wide = torch.exp(x_narrow - 1)
+    x_numerator = torch.where(x_abs < (1 / ln_a), x_narrow, x_wide)
+    x = torch.sign(x_a) * x_numerator / A_tensor
+    return x

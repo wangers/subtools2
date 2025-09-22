@@ -290,6 +290,8 @@ def parse_gpu_id(
 def _gpus_str2int(gpus: Union[str, int, Sequence[int]]) -> Union[int, List[int]]:
     if isinstance(gpus, str):
         gpus = gpus.strip()
+        if gpus == "-1":
+            return -1
         gpus = gpus.replace("-", ",")
         if "," in gpus:
             return [int(x.strip()) for x in gpus.split(",") if len(x.strip()) > 0]

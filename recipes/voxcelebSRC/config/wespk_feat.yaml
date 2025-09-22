@@ -1,0 +1,13 @@
+scale_bit: 16
+feat_conf:
+  feature_type: fbank
+  window_type: 'hamming'
+  low_freq: 20
+  high_freq: 0
+  energy_floor: 1
+sampling_rate: 16000  # torchaudio feat_conf refuse sr, set it here
+mean_norm: true
+std_norm: false
+padding_side: right
+return_attention_mask: false
+feature_extractor_type: KaldiFeatureExtractor

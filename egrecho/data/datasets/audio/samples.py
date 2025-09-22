@@ -35,6 +35,7 @@ from egrecho.data.iterable import (
     processors,
 )
 from egrecho.utils.common import alt_none, asdict_filt
+from egrecho.utils.imports import torchaudio_ge_2_1
 from egrecho.utils.io import auto_open
 from egrecho.utils.logging import get_logger
 from egrecho.utils.misc import rich_exception_info
@@ -178,7 +179,13 @@ def encode_audio_shard_sample(sample: AudioDew) -> Dict[str, io.BytesIO]:
                 )
                 waveforms = waveforms[:, offset : offset + num_frames]
             stream = io.BytesIO()
-            torchaudio.backend.soundfile_backend.save(
+            sav_fn = (
+                torchaudio.save
+                if torchaudio_ge_2_1()
+                else torchaudio.backend.soundfile_backend.save
+            )
+
+            sav_fn(
                 stream,
                 waveforms,
                 sample_rate,
@@ -241,8 +248,12 @@ def decode_audio_shard(sample: Dict) -> Dict:
         #     ds.close()
         extension = (re.sub(r".*[.]", "", k)).lower()
         if extension in ["flac", "mp3", "m4a", "ogg", "opus", "wav", "wma"]:
-            waveforms, sample_rate = torchaudio.backend.soundfile_backend.load(v)
-
+            loa_fn = (
+                torchaudio.load
+                if torchaudio_ge_2_1()
+                else torchaudio.backend.soundfile_backend.load
+            )
+            waveforms, sample_rate = loa_fn(v)
             ret[AUDIO_COLUMN] = waveforms
             ret[SAMPLE_RATE_COLUMN] = sample_rate
         if extension in ["json", "jsn"]:

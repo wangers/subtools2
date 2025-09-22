@@ -265,7 +265,7 @@ class Mixer(SinglePerturb):
         if self.noise_pad_mode not in ["retake", "repeat"]:
             raise NotImplementedError
 
-    def _load_noise(self, lengths, max_length):
+    def _load_noise(self, lengths, max_length, resample: Optional[int] = None):
         batch_size = len(lengths)
         if not hasattr(self, "noise_sampler"):
             self.noise_sampler = NoiseSet.from_dict(self.db_conf)
@@ -281,7 +281,7 @@ class Mixer(SinglePerturb):
         noises = torch.zeros((noise_sampler_cnt, 1, max_length))
 
         for i in range(noise_sampler_cnt):
-            noise, _ = self.noise_sampler.sample()
+            noise, _ = self.noise_sampler.sample(resample=resample)
             # modify noises to cover whole valid signals.
             if noise.size(-1) < sampler_lengths[i]:
                 if self.noise_pad_mode == "repeat":
@@ -295,7 +295,7 @@ class Mixer(SinglePerturb):
                     pieces = [noise]
                     missing_num_samples = sampler_lengths[i] - noise.size(-1)
                     while missing_num_samples > 0:
-                        piece, _ = self.noise_sampler.sample()
+                        piece, _ = self.noise_sampler.sample(resample=resample)
                         missing_num_samples -= piece.size(-1)
                         pieces.append(piece)
                     noise = torch.cat(
@@ -363,7 +363,7 @@ class Mixer(SinglePerturb):
             torch.ones(batch_size, dtype=torch.int32, device=samples.device)
             * max_length,
         )
-        noise_batch = self._load_noise(noise_lens, max_length)
+        noise_batch = self._load_noise(noise_lens, max_length, resample=sample_rate)
 
         ref_rms = calculate_audio_energy(samples, lengths, rms_energy=True)
         snr = self.snr_generater.sample(
@@ -422,7 +422,7 @@ class ResponseImpulse(SinglePerturb):
 
     sim_prob: float = 0.0
     sim_rir_conf: Optional[dict] = field(
-        default_factory=lambda: dict(sample_rate=16000, max_D=36, max_R=1.6)
+        default_factory=lambda: dict(max_D=36, max_R=1.6)
     )
     rir_fix_len: bool = True
 
@@ -441,7 +441,7 @@ class ResponseImpulse(SinglePerturb):
             db_file=self.noise_db,
         )
 
-    def _load_rir(self, lengths):
+    def _load_rir(self, lengths, resample: Optional[int] = None):
         batch_size = len(lengths)
         if not hasattr(self, "noise_sampler"):
             self.noise_sampler = NoiseSet.from_dict(self.db_conf)
@@ -449,7 +449,7 @@ class ResponseImpulse(SinglePerturb):
 
         noises = []
         for i in range(noise_sampler_cnt):
-            noise, rate = self.noise_sampler.sample()
+            noise, rate = self.noise_sampler.sample(resample=resample)
 
             # when rir wav lengths is longer
             if noise.size(-1) > lengths[i] and self.rir_fix_len:
@@ -498,9 +498,11 @@ class ResponseImpulse(SinglePerturb):
             * samples.shape[-1],
         )
         if torch.rand(1) >= self.sim_prob:
-            rir_ = self._load_rir(true_lengths)
+            rir_ = self._load_rir(true_lengths, resample=sample_rate)
         else:
-            rir_, _ = fast_simulate_rir(batch=batch_size, **self.sim_rir_conf)
+            rir_, _ = fast_simulate_rir(
+                batch=batch_size, sample_rate=sample_rate, **self.sim_rir_conf
+            )
             rir_ = rir_.to(samples.device)
 
         assert (

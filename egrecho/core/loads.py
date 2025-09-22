@@ -907,7 +907,7 @@ class SaveLoadHelper:
     @staticmethod
     def _load_state_dict_from_disk(model_weights, map_location=None):
         # BUG for cuda now, can not del state cache when lightning
-        return torch.load(model_weights, map_location='cpu')
+        return torch.load(model_weights, map_location="cpu", weights_only=True)
 
 
 @rich_exception_info

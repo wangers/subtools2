@@ -114,3 +114,37 @@ if [ "$do_lm" == "true" ]; then
   fi
 
 fi
+
+
+if [ $stage -le 7 ] && [ $endstage -ge 7 ]; then
+  log "stage 7: export pretrained model."
+
+  egrecho export-pretrained \
+    --resolve_pretrain.dirpath ${exp} \
+    --resolve_pretrain.checkpoint $ckpt \
+    --resolve_pretrain.version version \
+    --outdir ${exp}_export
+
+  if [ "$export_onnx" == "true" ]; then
+    log "export onnx model."
+    egrecho pretrained2onnx ${exp}_export
+  fi
+
+fi
+
+if [ "$do_lm" == "true" ]; then
+  if [ $stage -le 8 ] && [ $endstage -ge 8 ]; then
+    log "stage 8: export fine-tuned model."
+    egrecho export-pretrained \
+      --resolve_pretrain.dirpath ${exp}_lm \
+      --resolve_pretrain.checkpoint last.ckpt \
+      --resolve_pretrain.version version \
+      --outdir ${exp}_lm_export
+
+    if [ "$export_onnx" == "true" ]; then
+      log "export onnx model."
+      egrecho pretrained2onnx ${exp}_lm_export
+    fi
+  fi
+
+fi

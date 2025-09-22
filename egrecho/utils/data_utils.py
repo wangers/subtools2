@@ -580,6 +580,16 @@ class ClassLabel(DictFileMixin):
     def __len__(self):
         return len(self.names)
 
+    def __add__(self, other) -> "ClassLabel":
+        names = list(dict.fromkeys(list(self.names) + list(other.names)))
+        return type(self)(names=names)
+
+    def __radd__(self, other):
+        """support the first zero in sum()/reduce"""
+        if other == 0:
+            return self
+        return self.__add__(other)
+
 
 VOCAB_CNT_COL = ("|<units>|", "|<counts>|")
 

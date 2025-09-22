@@ -7,6 +7,7 @@ from typing import List, Optional, Tuple
 import torch
 
 from egrecho.core.module import TopVirtualModel
+from egrecho.core.onnx_export import OnnxConfig, OnnxExportMixin
 from egrecho.utils.types import ModelOutput
 
 
@@ -15,7 +16,7 @@ class XvectorOutput(ModelOutput):
     xvector: Optional[torch.FloatTensor] = None
 
 
-class XvectorMixin(TopVirtualModel):
+class XvectorMixin(TopVirtualModel, OnnxExportMixin):
     """
     Base model for x-vector and provides interface for pipeline.
 
@@ -106,6 +107,32 @@ class XvectorMixin(TopVirtualModel):
     def pipeline_out(cls, model_out: torch.Tensor) -> XvectorOutput:
         """Transform output to dict. overwrite it for your specify model."""
         return XvectorOutput(model_out)
+
+    def onnx_sample(self):
+        return self.example_input_array
+
+    def get_onnx_config(self):
+        return ComOnnxConfig()
+
+
+class ComOnnxConfig(OnnxConfig):
+    @property
+    def inputs(self):
+        """Return an ordered dict contains the model's input arguments name with their dynamic axis.
+
+        Returns:
+            For each output: its name associated to the axes symbolic name and the axis position within the tensor
+        """
+        return {'input_features': {0: 'B', 1: 'T'}}
+
+    @property
+    def outputs(self):
+        """Return an ordered dict contains the model's output arguments name with their dynamic axis.
+
+        Returns:
+            For each output: its name associated to the axes symbolic name and the axis position within the tensor
+        """
+        return {'embs': {0: 'B'}}
 
 
 def get_chunksize(

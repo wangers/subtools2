@@ -24,7 +24,7 @@ logger = get_logger()
 def score_set(
     eval_scp: str,
     trial_fpatterns: Union[str, List[str]],
-    scp_dir: Optional[str] = None,
+    scp_dir: str = '',
     trial_dir: Optional[str] = None,
     helper_scp: Optional[str] = None,
     skip_mean: bool = False,
@@ -127,7 +127,7 @@ def score_set(
                     print(json.dumps(metr, indent=4))
     if metrics:
         save_json(metrics, result_file) if result_file else save_json(
-            metrics, Path(scp_dir) / "eer.results.json"
+            metrics, Path(eval_scp).parent / "eer.results.json"
         )
 
     return metrics

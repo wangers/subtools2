@@ -198,7 +198,7 @@ def torchaudio_ge_2_1():
 
 
 @functools.lru_cache
-def check_ort_requirements(version: str = '1.4'):
+def check_ort_requirements(version: str = ''):
     """
     Check onnxruntime is installed and if the installed version match is recent enough
 

@@ -18,10 +18,7 @@ from egrecho.data.datasets.constants import (
     SAMPLE_RATE_COLUMN,
     SPEAKER_COLUMN,
 )
-from egrecho.data.features.feature_extractor_audio import (
-    KaldiFeatureExtractor,
-    OfflineFeatureExtractor,
-)
+from egrecho.data.features.feature_extractor_audio import KaldiFeatureExtractor
 from egrecho.data.iterable import Processor, processors
 from egrecho.utils.common import dict_union
 from egrecho.utils.data_utils import ClassLabel, Split, get_num_batch
@@ -102,6 +99,8 @@ class ASVBuilderConfig(DataBuilderConfig):
         pre_sp_factors (tuple[float]):
             If not provided (None), will auto initiate with `(0.9, 1.0, 1.1)` for training split only.
             Defaults to None. This will change speaker label.
+        pre_sp_init_p (float):
+            ini prob for pre_sp. defaults to 1.
         rand_chunksize (int):
             fix chunk training, defaults to 200 means 2s audio with 0.01 `frame_shift`.
         chunk_retry_param (dict):
@@ -113,6 +112,8 @@ class ASVBuilderConfig(DataBuilderConfig):
             wheter do signal-level augment, only apply on train split. Defaults to True.
         speech_aug_config (dict):
             config for speechaug. see :class:`egrecho.data.audio.functional.SpeechAugPipline`.
+        a_law_sim (bool):
+            whether a law encode&&decode for 8k
         shard_shuffle_size (int):
             buffer shuffle size of shuffeling for webdataset-like data loading.
         batch_size (int):
@@ -129,7 +130,7 @@ class ASVBuilderConfig(DataBuilderConfig):
     partition: bool = True
     start_sketch: Optional[Tuple[str, ...]] = None
     exbuild_src_kw: Dict[str, Any] = None
-    label_fname: str = "speaker.yaml"
+    label_fname: Union[str, List[str]] = "speaker.yaml"
     filter_conf: Optional[Dict] = field(
         default_factory=lambda: dict(max_length=15.0, truncate=True)
     )
@@ -137,6 +138,7 @@ class ASVBuilderConfig(DataBuilderConfig):
     pre_sp_factors: Optional[Tuple[float, ...]] = field(
         default_factory=lambda: (0.9, 1.0, 1.1)
     )
+    pre_sp_init_p: float = 1.0
 
     rand_chunksize: Optional[int] = 200
     chunk_retry_param: Dict[str, Any] = field(
@@ -148,6 +150,7 @@ class ASVBuilderConfig(DataBuilderConfig):
     speech_aug_config: Optional[Dict] = field(
         default_factory=lambda: dict(batch_size=1, db_dir="/data2/ldx/speech_aug")
     )
+    a_law_sim: bool = False
     shard_shuffle_size: int = 1500
 
     batch_size: int = 128
@@ -162,7 +165,6 @@ class ASVBuilderConfig(DataBuilderConfig):
         self.chunk_retry_param = dict_union(
             default_chunk_retry_param, self.chunk_retry_param
         )
-        self.extractor_param["feat_conf"]["sampling_rate"] = sample_rate
         self.speech_aug_config["sample_rate"] = sample_rate
         if self.start_sketch is None:
             self.start_sketch = (
@@ -313,7 +315,9 @@ class ASVPipeBuilder(DataBuilder):
                 datapipe = Processor(
                     datapipe,
                     audio_functional.PreSpeedPerturb(
-                        sample_rate=config.resample_rate, factors=config.pre_sp_factors
+                        sample_rate=config.resample_rate,
+                        factors=config.pre_sp_factors,
+                        init_p=config.pre_sp_init_p,
                     ),
                 )
 
@@ -339,7 +343,15 @@ class ASVPipeBuilder(DataBuilder):
             datapipe = datapipe.apply(
                 speech_aug, ignore_lengths=(config.rand_chunksize is not None)
             )
-
+        if (
+            config.data_type in ("raw", "shard")
+            and config.resample_rate == 8000
+            and config.a_law_sim
+        ):
+            datapipe = Processor(
+                datapipe,
+                audio_functional.a_law_enc_dec,
+            )
         return datapipe
 
     @property
@@ -391,10 +403,11 @@ def affix_labels(names: List[str], factors: Tuple[float, ...]) -> List[str]:
 class BatchExtractor:
     def __init__(self, extractor_conf: Dict, data_type: str = "raw") -> None:
         self.data_type = data_type
-        if data_type == "offline_feat":
-            self.extractor = OfflineFeatureExtractor.from_dict(extractor_conf)
-        else:
-            self.extractor = KaldiFeatureExtractor.from_dict(extractor_conf)
+        self.offline_feat = data_type == "offline_feat"
+        extractor_conf["offline_feat"] = self.offline_feat
+        self.extractor: KaldiFeatureExtractor = KaldiFeatureExtractor.from_dict(
+            extractor_conf
+        )
 
     def __call__(self, batch: List[Dict]):
         assert isinstance(batch, (list, tuple)) and isinstance(
@@ -417,8 +430,10 @@ class BatchExtractor:
             else:
                 labels = torch.tensor(labels)
             has_label = True
-        if self.data_type == "offline_feat":
-            inputs = self.extractor(batch[OFFLINE_FEAT_COLUMN])
+        if self.offline_feat:
+            inputs = self.extractor(
+                batch[OFFLINE_FEAT_COLUMN], offline_feats=self.offline_feat
+            )
         else:
             sampling_rate = batch[SAMPLE_RATE_COLUMN][0]
             assert all(sr == sampling_rate for sr in batch[SAMPLE_RATE_COLUMN])

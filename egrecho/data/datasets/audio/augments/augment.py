@@ -192,7 +192,6 @@ class ASVSpeechAgugmentConfig(BaseSpeechAugmentConfig):
                 noise_db_type=self.db_type,
                 sim_prob=sim_prob,
                 sim_rir_conf=dict(
-                    sample_rate=self.sample_rate,
                     max_D=alt_none(self.sim_rir_max_D, 36),
                     max_R=alt_none(self.sim_rir_max_R, 1.6),
                 ),
